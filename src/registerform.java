@@ -1,3 +1,17 @@
+
+import java.awt.BasicStroke;
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.border.Border;
+import java.util.HashSet;
+
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -10,13 +24,29 @@
  */
 public class registerform extends javax.swing.JFrame {
 
-    /**
-     * Creates new form registerform
-     */
+    // Simulated database for email and username uniqueness check
+    private static HashSet<String> registeredEmails = new HashSet<>();
+    private static HashSet<String> registeredUsernames = new HashSet<>();
+
     public registerform() {
         initComponents();
     }
+    Color hover = new Color(0, 153, 153);
+    Color defbutton = new Color(0, 51, 51);
 
+    Border empty = BorderFactory.createEmptyBorder();
+
+    void buttonBorderAnimation(JPanel panel) {
+        panel.setBackground(hover);
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        panel.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
+    }
+
+    void buttonDefaultColor(JPanel panel) {
+        panel.setBackground(defbutton);
+        panel.setBorder(empty);
+    }
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -26,21 +56,339 @@ public class registerform extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jLabel4 = new javax.swing.JLabel();
+        main = new javax.swing.JPanel();
+        bg = new javax.swing.JPanel();
+        registericon = new javax.swing.JLabel();
+        tomysystem = new javax.swing.JLabel();
+        welcome = new javax.swing.JLabel();
+        line1 = new javax.swing.JPanel();
+        line2 = new javax.swing.JPanel();
+        fn = new javax.swing.JLabel();
+        enterfn = new javax.swing.JTextField();
+        ln = new javax.swing.JLabel();
+        enterln = new javax.swing.JTextField();
+        email = new javax.swing.JLabel();
+        enteremail = new javax.swing.JTextField();
+        pass = new javax.swing.JLabel();
+        confirm = new javax.swing.JLabel();
+        buttonreg = new javax.swing.JPanel();
+        jLabel11 = new javax.swing.JLabel();
+        enterconfirm = new javax.swing.JPasswordField();
+        enterpass = new javax.swing.JPasswordField();
+        regpanel = new javax.swing.JPanel();
+        register = new javax.swing.JLabel();
+        buttonreg1 = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        user = new javax.swing.JComboBox<>();
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setText("Please Register ");
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        main.setBackground(new java.awt.Color(204, 204, 204));
+        main.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        bg.setBackground(new java.awt.Color(0, 102, 102));
+        bg.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        registericon.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/download (2).png"))); // NOI18N
+        bg.add(registericon, new org.netbeans.lib.awtextra.AbsoluteConstraints(-30, 60, 210, 270));
+
+        tomysystem.setFont(new java.awt.Font("Times New Roman", 3, 18)); // NOI18N
+        tomysystem.setForeground(new java.awt.Color(255, 255, 255));
+        tomysystem.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        tomysystem.setText("TO MY SYSTEM!");
+        bg.add(tomysystem, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 60, 150, 30));
+
+        welcome.setFont(new java.awt.Font("Times New Roman", 3, 18)); // NOI18N
+        welcome.setForeground(new java.awt.Color(204, 204, 204));
+        welcome.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        welcome.setText("WELCOME ");
+        bg.add(welcome, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 120, 30));
+
+        javax.swing.GroupLayout line1Layout = new javax.swing.GroupLayout(line1);
+        line1.setLayout(line1Layout);
+        line1Layout.setHorizontalGroup(
+            line1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 190, Short.MAX_VALUE)
+        );
+        line1Layout.setVerticalGroup(
+            line1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+
+        bg.add(line1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 190, 10));
+
+        javax.swing.GroupLayout line2Layout = new javax.swing.GroupLayout(line2);
+        line2.setLayout(line2Layout);
+        line2Layout.setHorizontalGroup(
+            line2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 190, Short.MAX_VALUE)
+        );
+        line2Layout.setVerticalGroup(
+            line2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 10, Short.MAX_VALUE)
+        );
+
+        bg.add(line2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, -1, -1));
+
+        main.add(bg, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 20, 190, 330));
+
+        fn.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        fn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        fn.setText("First name:");
+        main.add(fn, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 80, 30));
+
+        enterfn.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enterfn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        enterfn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterfnActionPerformed(evt);
+            }
+        });
+        main.add(enterfn, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 40, 170, 30));
+
+        ln.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        ln.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ln.setText("Last name:");
+        main.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 80, 80, 30));
+
+        enterln.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enterln.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        enterln.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterlnActionPerformed(evt);
+            }
+        });
+        main.add(enterln, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 80, 170, 30));
+
+        email.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        email.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        email.setText("Email:");
+        main.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 80, 30));
+
+        enteremail.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enteremail.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        enteremail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enteremailActionPerformed(evt);
+            }
+        });
+        main.add(enteremail, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 120, 170, 30));
+
+        pass.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        pass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pass.setText("Password:");
+        main.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 80, 30));
+
+        confirm.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        confirm.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        confirm.setText("C-Password:");
+        main.add(confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 80, 30));
+
+        buttonreg.setBackground(new java.awt.Color(0, 51, 51));
+        buttonreg.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        buttonreg.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonregMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                buttonregMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                buttonregMouseExited(evt);
+            }
+        });
+
+        jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel11.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel11.setText("Cancel");
+
+        javax.swing.GroupLayout buttonregLayout = new javax.swing.GroupLayout(buttonreg);
+        buttonreg.setLayout(buttonregLayout);
+        buttonregLayout.setHorizontalGroup(
+            buttonregLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+        );
+        buttonregLayout.setVerticalGroup(
+            buttonregLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel11, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+        );
+
+        main.add(buttonreg, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 280, 100, 30));
+
+        enterconfirm.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enterconfirm.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        main.add(enterconfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 200, 170, 30));
+
+        enterpass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enterpass.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        main.add(enterpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 160, 170, 30));
+
+        regpanel.setBackground(new java.awt.Color(0, 51, 51));
+
+        register.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        register.setForeground(new java.awt.Color(255, 255, 255));
+        register.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        register.setText("REGISTER");
+
+        javax.swing.GroupLayout regpanelLayout = new javax.swing.GroupLayout(regpanel);
+        regpanel.setLayout(regpanelLayout);
+        regpanelLayout.setHorizontalGroup(
+            regpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(regpanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(register, javax.swing.GroupLayout.PREFERRED_SIZE, 78, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(392, Short.MAX_VALUE))
+        );
+        regpanelLayout.setVerticalGroup(
+            regpanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(register, javax.swing.GroupLayout.DEFAULT_SIZE, 20, Short.MAX_VALUE)
+        );
+
+        main.add(regpanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 480, 20));
+
+        buttonreg1.setBackground(new java.awt.Color(0, 51, 51));
+        buttonreg1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        buttonreg1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                buttonreg1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                buttonreg1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                buttonreg1MouseExited(evt);
+            }
+        });
+
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("Register");
+
+        javax.swing.GroupLayout buttonreg1Layout = new javax.swing.GroupLayout(buttonreg1);
+        buttonreg1.setLayout(buttonreg1Layout);
+        buttonreg1Layout.setHorizontalGroup(
+            buttonreg1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
+        );
+        buttonreg1Layout.setVerticalGroup(
+            buttonreg1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(buttonreg1Layout.createSequentialGroup()
+                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        main.add(buttonreg1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 280, 100, 30));
+
+        user.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        user.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User\t", "Admin" }));
+        user.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        main.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(100, 240, 170, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(main, javax.swing.GroupLayout.PREFERRED_SIZE, 480, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(main, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void enteremailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enteremailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enteremailActionPerformed
+
+    private void enterfnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterfnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterfnActionPerformed
+
+    private void enterlnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterlnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterlnActionPerformed
+
+    private void buttonregMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonregMouseEntered
+        buttonBorderAnimation(buttonreg);
+    }//GEN-LAST:event_buttonregMouseEntered
+
+    private void buttonregMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonregMouseExited
+        buttonDefaultColor(buttonreg);
+    }//GEN-LAST:event_buttonregMouseExited
+
+    private void buttonreg1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonreg1MouseEntered
+        buttonBorderAnimation(buttonreg1);
+    }//GEN-LAST:event_buttonreg1MouseEntered
+
+    private void buttonreg1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonreg1MouseExited
+        buttonDefaultColor(buttonreg1);
+    }//GEN-LAST:event_buttonreg1MouseExited
+
+    private void buttonregMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonregMouseClicked
+        loginform logForm = new loginform();
+        logForm.setVisible(true);
+        this.dispose(); 
+    }//GEN-LAST:event_buttonregMouseClicked
+
+    private void buttonreg1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_buttonreg1MouseClicked
+        String firstName = enterfn.getText().trim();
+        String lastName = enterln.getText().trim();
+        String email = enteremail.getText().trim();
+        String password = new String(enterpass.getPassword());
+        String confirmPassword = new String(enterconfirm.getPassword());
+        String use_type = user.getSelectedItem().toString();
+
+         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        
+        String url = "jdbc:mysql://localhost:3306/obaob_db";
+        String user = "root";
+        String pass = "";
+        
+        try {
+          
+            Connection conn = DriverManager.getConnection(url, user, pass);
+
+      
+            String sql = "INSERT INTO user_table (firstName, lastName, email, password, confirmPassword, use_type) VALUES (?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, email);
+            pstmt.setString(4, password);
+            pstmt.setString(5, confirmPassword);
+            pstmt.setString(6, use_type);
+
+            int rowsInserted = pstmt.executeUpdate();
+            if (rowsInserted > 0) {
+                JOptionPane.showMessageDialog(this, "Registration Successful!");
+                this.dispose();
+                new loginform().setVisible(true);
+            }
+
+
+            pstmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_buttonreg1MouseClicked
 
     /**
      * @param args the command line arguments
@@ -78,5 +426,30 @@ public class registerform extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JPanel bg;
+    private javax.swing.JPanel buttonreg;
+    private javax.swing.JPanel buttonreg1;
+    private javax.swing.JLabel confirm;
+    private javax.swing.JLabel email;
+    private javax.swing.JPasswordField enterconfirm;
+    private javax.swing.JTextField enteremail;
+    private javax.swing.JTextField enterfn;
+    private javax.swing.JTextField enterln;
+    private javax.swing.JPasswordField enterpass;
+    private javax.swing.JLabel fn;
+    private javax.swing.JLabel jLabel11;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JPanel line1;
+    private javax.swing.JPanel line2;
+    private javax.swing.JLabel ln;
+    private javax.swing.JPanel main;
+    private javax.swing.JLabel pass;
+    private javax.swing.JLabel register;
+    private javax.swing.JLabel registericon;
+    private javax.swing.JPanel regpanel;
+    private javax.swing.JLabel tomysystem;
+    private javax.swing.JComboBox<String> user;
+    private javax.swing.JLabel welcome;
     // End of variables declaration//GEN-END:variables
 }
