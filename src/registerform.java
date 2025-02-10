@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -353,7 +354,16 @@ public class registerform extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
+        if (password.length() < 8) {
+            JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
+        if (confirmPassword.length() < 8) {
+            JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         
         String url = "jdbc:mysql://localhost:3306/obaob_db";
         String user = "root";
@@ -362,7 +372,11 @@ public class registerform extends javax.swing.JFrame {
         try {
           
             Connection conn = DriverManager.getConnection(url, user, pass);
-
+            if (isEmailDuplicate(conn, email)) {
+                JOptionPane.showMessageDialog(this, "Email already exists. Please use a different email.", "Error", JOptionPane.ERROR_MESSAGE);
+                conn.close();
+                return;
+            }
       
             String sql = "INSERT INTO user_table (firstName, lastName, email, password, confirmPassword, use_type) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -389,7 +403,23 @@ public class registerform extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_buttonreg1MouseClicked
+        private boolean isEmailDuplicate(Connection conn, String email) {
+        boolean exists = false;
+        String query = "SELECT COUNT(*) FROM user_table WHERE user_email = ?";
 
+        try (PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                exists = rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return exists;
+    }
     /**
      * @param args the command line arguments
      */
