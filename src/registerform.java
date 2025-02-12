@@ -405,7 +405,7 @@ public class registerform extends javax.swing.JFrame {
     }//GEN-LAST:event_buttonreg1MouseClicked
         private boolean isEmailDuplicate(Connection conn, String email) {
         boolean exists = false;
-        String query = "SELECT COUNT(*) FROM user_table WHERE user_email = ?";
+        String query = "SELECT COUNT(*) FROM user_table WHERE email = ?";
 
         try (PreparedStatement stmt = conn.prepareStatement(query)) {
             stmt.setString(1, email);

@@ -408,9 +408,9 @@ public class loginform extends javax.swing.JFrame {
             if (rs.next()) {
                 JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
 
-                String user_type = rs.getString("user_type");
+                String use_type = rs.getString("use_type");
 
-                if (user_type.equals("Admin")) {
+                if (use_type.equals("Admin")) {
                     adminPage admin = new adminPage();
                     admin.setVisible(true);
                 } else {
