@@ -29,10 +29,6 @@ public class adminPage extends javax.swing.JFrame {
         
         displayData();
        
-       
-        
-        addbutton1.setOpaque(false);
-        addbutton1.setBackground(new Color(0,0,0,0));
     }
     
     Color navcolor = new Color(0,51,51);
@@ -64,14 +60,10 @@ public class adminPage extends javax.swing.JFrame {
         searchbutton = new javax.swing.JPanel();
         add1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
-        editbutton = new javax.swing.JPanel();
+        addbutton2 = new javax.swing.JPanel();
         edit = new javax.swing.JLabel();
         deletebutton = new javax.swing.JPanel();
         add = new javax.swing.JLabel();
-        addbutton1 = new javax.swing.JPanel();
-        add2 = new javax.swing.JLabel();
-        refreshbutton = new javax.swing.JPanel();
-        refresh = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTable1 = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
@@ -80,6 +72,15 @@ public class adminPage extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        addbutton = new javax.swing.JPanel();
+        refresh1 = new javax.swing.JLabel();
+        editbutton1 = new javax.swing.JPanel();
+        edit1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -141,41 +142,41 @@ public class adminPage extends javax.swing.JFrame {
 
         main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 0, 810, 40));
 
-        editbutton.setBackground(new java.awt.Color(0, 51, 51));
-        editbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        editbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+        addbutton2.setBackground(new java.awt.Color(0, 51, 51));
+        addbutton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        addbutton2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                editbuttonMouseClicked(evt);
+                addbutton2MouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                editbuttonMouseEntered(evt);
+                addbutton2MouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                editbuttonMouseExited(evt);
+                addbutton2MouseExited(evt);
             }
         });
 
         edit.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         edit.setForeground(new java.awt.Color(255, 255, 255));
         edit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        edit.setText("EDIT");
+        edit.setText("ADD");
 
-        javax.swing.GroupLayout editbuttonLayout = new javax.swing.GroupLayout(editbutton);
-        editbutton.setLayout(editbuttonLayout);
-        editbuttonLayout.setHorizontalGroup(
-            editbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editbuttonLayout.createSequentialGroup()
+        javax.swing.GroupLayout addbutton2Layout = new javax.swing.GroupLayout(addbutton2);
+        addbutton2.setLayout(addbutton2Layout);
+        addbutton2Layout.setHorizontalGroup(
+            addbutton2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addbutton2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(edit, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        editbuttonLayout.setVerticalGroup(
-            editbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editbuttonLayout.createSequentialGroup()
+        addbutton2Layout.setVerticalGroup(
+            addbutton2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addbutton2Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(edit, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        main.add(editbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 70, 80, 30));
+        main.add(addbutton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 70, 80, 30));
 
         deletebutton.setBackground(new java.awt.Color(0, 51, 51));
         deletebutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -213,74 +214,6 @@ public class adminPage extends javax.swing.JFrame {
 
         main.add(deletebutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 70, 80, 30));
 
-        addbutton1.setBackground(new java.awt.Color(0, 51, 51));
-        addbutton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        addbutton1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addbutton1MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                addbutton1MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                addbutton1MouseExited(evt);
-            }
-        });
-
-        add2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        add2.setForeground(new java.awt.Color(255, 255, 255));
-        add2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        add2.setText("ADD");
-
-        javax.swing.GroupLayout addbutton1Layout = new javax.swing.GroupLayout(addbutton1);
-        addbutton1.setLayout(addbutton1Layout);
-        addbutton1Layout.setHorizontalGroup(
-            addbutton1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(add2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 76, Short.MAX_VALUE)
-        );
-        addbutton1Layout.setVerticalGroup(
-            addbutton1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(add2, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
-        );
-
-        main.add(addbutton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 70, 80, 30));
-
-        refreshbutton.setBackground(new java.awt.Color(0, 51, 51));
-        refreshbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        refreshbutton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                refreshbuttonMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                refreshbuttonMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                refreshbuttonMouseExited(evt);
-            }
-        });
-
-        refresh.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        refresh.setForeground(new java.awt.Color(255, 255, 255));
-        refresh.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        refresh.setText("REFRESH");
-
-        javax.swing.GroupLayout refreshbuttonLayout = new javax.swing.GroupLayout(refreshbutton);
-        refreshbutton.setLayout(refreshbuttonLayout);
-        refreshbuttonLayout.setHorizontalGroup(
-            refreshbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, refreshbuttonLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(refresh, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        refreshbuttonLayout.setVerticalGroup(
-            refreshbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, refreshbuttonLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(refresh, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        main.add(refreshbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 70, -1, -1));
-
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -304,38 +237,139 @@ public class adminPage extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("LOGO");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 70, 160, -1));
+        jLabel1.setText("Administrator");
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 170, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("USER PAGE");
+        jLabel3.setText("SETTINGS");
         jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 260, 170, 30));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 170, 50));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(255, 255, 255));
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("DASHBOARD");
         jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 200, 170, 30));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 170, 50));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("USER PAGE");
+        jLabel5.setText("LOG OUT");
         jLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 350, 170, 30));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 500, 170, 50));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel6.setForeground(new java.awt.Color(255, 255, 255));
         jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("BLOTTER REPORTS");
+        jLabel6.setText("REPORTS");
         jLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 230, 170, 30));
+        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 170, 50));
+
+        jLabel2.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setText("Welcome!");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 100, -1));
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-admin-64.png"))); // NOI18N
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 60, -1));
+
+        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setText("MANAGE CITIZEN");
+        jLabel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 170, 50));
+
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setText("BLOTTER");
+        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 170, 50));
+
+        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setText("MANAGE USER");
+        jLabel10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 170, 50));
 
         main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 170, 640));
+
+        addbutton.setBackground(new java.awt.Color(0, 51, 51));
+        addbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        addbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addbuttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addbuttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addbuttonMouseExited(evt);
+            }
+        });
+
+        refresh1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        refresh1.setForeground(new java.awt.Color(255, 255, 255));
+        refresh1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        refresh1.setText("REFRESH");
+
+        javax.swing.GroupLayout addbuttonLayout = new javax.swing.GroupLayout(addbutton);
+        addbutton.setLayout(addbuttonLayout);
+        addbuttonLayout.setHorizontalGroup(
+            addbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addbuttonLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(refresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        addbuttonLayout.setVerticalGroup(
+            addbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addbuttonLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(refresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        main.add(addbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 70, -1, -1));
+
+        editbutton1.setBackground(new java.awt.Color(0, 51, 51));
+        editbutton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        editbutton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                editbutton1MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                editbutton1MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                editbutton1MouseExited(evt);
+            }
+        });
+
+        edit1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        edit1.setForeground(new java.awt.Color(255, 255, 255));
+        edit1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        edit1.setText("EDIT");
+
+        javax.swing.GroupLayout editbutton1Layout = new javax.swing.GroupLayout(editbutton1);
+        editbutton1.setLayout(editbutton1Layout);
+        editbutton1Layout.setHorizontalGroup(
+            editbutton1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editbutton1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(edit1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        editbutton1Layout.setVerticalGroup(
+            editbutton1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, editbutton1Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(edit1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        main.add(editbutton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 70, 80, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -352,17 +386,17 @@ public class adminPage extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void editbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbuttonMouseClicked
+    private void addbutton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseClicked
 
-    }//GEN-LAST:event_editbuttonMouseClicked
+    }//GEN-LAST:event_addbutton2MouseClicked
 
-    private void editbuttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbuttonMouseEntered
-        editbutton.setBackground(bodycolor);
-    }//GEN-LAST:event_editbuttonMouseEntered
+    private void addbutton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseEntered
+        addbutton2.setBackground(bodycolor);
+    }//GEN-LAST:event_addbutton2MouseEntered
 
-    private void editbuttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbuttonMouseExited
-        editbutton.setBackground(navcolor);
-    }//GEN-LAST:event_editbuttonMouseExited
+    private void addbutton2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseExited
+        addbutton2.setBackground(navcolor);
+    }//GEN-LAST:event_addbutton2MouseExited
 
     private void deletebuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deletebuttonMouseClicked
 
@@ -376,34 +410,33 @@ public class adminPage extends javax.swing.JFrame {
         deletebutton.setBackground(navcolor);
     }//GEN-LAST:event_deletebuttonMouseExited
 
-    private void addbutton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton1MouseClicked
-       
-
-    }//GEN-LAST:event_addbutton1MouseClicked
-
-    private void addbutton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton1MouseEntered
-        addbutton1.setBackground(bodycolor);
-    }//GEN-LAST:event_addbutton1MouseEntered
-
-    private void addbutton1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton1MouseExited
-        addbutton1.setBackground(navcolor);
-    }//GEN-LAST:event_addbutton1MouseExited
-
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
 
     }//GEN-LAST:event_jTextField1ActionPerformed
 
-    private void refreshbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshbuttonMouseClicked
-        displayData();
-    }//GEN-LAST:event_refreshbuttonMouseClicked
+    private void addbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbuttonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_addbuttonMouseClicked
 
-    private void refreshbuttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshbuttonMouseEntered
-        refresh.setForeground(new java.awt.Color(255, 102, 102));
-    }//GEN-LAST:event_refreshbuttonMouseEntered
+    private void addbuttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbuttonMouseEntered
+        addbutton.setBackground(bodycolor);
+    }//GEN-LAST:event_addbuttonMouseEntered
 
-    private void refreshbuttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshbuttonMouseExited
-        refresh.setForeground(new java.awt.Color(0, 0, 0));
-    }//GEN-LAST:event_refreshbuttonMouseExited
+    private void addbuttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbuttonMouseExited
+        addbutton.setBackground(navcolor);
+    }//GEN-LAST:event_addbuttonMouseExited
+
+    private void editbutton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_editbutton1MouseClicked
+
+    private void editbutton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseEntered
+        editbutton1.setBackground(bodycolor);
+    }//GEN-LAST:event_editbutton1MouseEntered
+
+    private void editbutton1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseExited
+        editbutton1.setBackground(navcolor);
+    }//GEN-LAST:event_editbutton1MouseExited
 
     /**
      * @param args the command line arguments
@@ -443,24 +476,29 @@ public class adminPage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel add;
     private javax.swing.JLabel add1;
-    private javax.swing.JLabel add2;
-    private javax.swing.JPanel addbutton1;
+    private javax.swing.JPanel addbutton;
+    private javax.swing.JPanel addbutton2;
     private javax.swing.JPanel deletebutton;
     private javax.swing.JLabel edit;
-    private javax.swing.JPanel editbutton;
+    private javax.swing.JLabel edit1;
+    private javax.swing.JPanel editbutton1;
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel main;
-    private javax.swing.JLabel refresh;
-    private javax.swing.JPanel refreshbutton;
+    private javax.swing.JLabel refresh1;
     private javax.swing.JPanel searchbutton;
     // End of variables declaration//GEN-END:variables
 }
