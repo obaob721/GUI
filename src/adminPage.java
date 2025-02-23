@@ -1,13 +1,14 @@
 
-import java.awt.Color;
 import config.dbConnector;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingUtilities;
 import net.proteanit.sql.DbUtils;
-
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -20,32 +21,54 @@ import net.proteanit.sql.DbUtils;
  * @author PATRICIA
  */
 public class adminPage extends javax.swing.JFrame {
-
+         private CardLayout cardLayout;
+         private JPanel mainPanel, manageUsersPanel, manageCitizensPanel;
+         private JTable userTable, citizenTable;
     /**
      * Creates new form adminPage
      */
     public adminPage() {
         initComponents();
         
-        displayData();
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+        
+        manageUsersPanel = new JPanel(new BorderLayout());
+        userTable = new JTable();
+        manageUsersPanel.add(new JScrollPane(userTable), BorderLayout.CENTER);
+        
+        manageCitizensPanel = new JPanel(new BorderLayout());
+        citizenTable = new JTable();
+        manageCitizensPanel.add(new JScrollPane(citizenTable), BorderLayout.CENTER);
+        
+        mainPanel.add(manageCitizensPanel, "ManageCitizens");
        
-    }
-    
-    Color navcolor = new Color(0,51,51);
-    Color headcolor = new Color(0,51,51);
-    Color bodycolor = new Color(0,153,153);
 
+    }
+    Color navcolor = new Color(0,51,51);
+    Color headcolor = new Color(0,153,153);
+    Color bodycolor = new Color(0,153,153);
+    
     public void displayData(){
         try{
             dbConnector dbc = new dbConnector();
             ResultSet rs = dbc.getData("SELECT * FROM user_table");
-            jTable1.setModel(DbUtils.resultSetToTableModel(rs));
+            user_table.setModel(DbUtils.resultSetToTableModel(rs));
             
         }catch(SQLException ex){
             System.out.println("Errors"+ex.getMessage());
         }
     }
-    
+    private void displayCitizenData() {
+       try{
+            dbConnector dbc = new dbConnector();
+            ResultSet rs = dbc.getData("SELECT * FROM citizen_table");
+            c_table.setModel(DbUtils.resultSetToTableModel(rs));
+            
+        }catch(SQLException ex){
+            System.out.println("Errors"+ex.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -64,23 +87,25 @@ public class adminPage extends javax.swing.JFrame {
         edit = new javax.swing.JLabel();
         deletebutton = new javax.swing.JPanel();
         add = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        citizen = new javax.swing.JScrollPane();
+        c_table = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        dash = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel6 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        managecitizen = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel10 = new javax.swing.JLabel();
+        manageuser = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
         addbutton = new javax.swing.JPanel();
         refresh1 = new javax.swing.JLabel();
         editbutton1 = new javax.swing.JPanel();
         edit1 = new javax.swing.JLabel();
+        appear = new javax.swing.JScrollPane();
+        user_table = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -129,7 +154,7 @@ public class adminPage extends javax.swing.JFrame {
         headerLayout.setHorizontalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headerLayout.createSequentialGroup()
-                .addContainerGap(512, Short.MAX_VALUE)
+                .addContainerGap(502, Short.MAX_VALUE)
                 .addComponent(searchbutton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
         );
@@ -140,7 +165,7 @@ public class adminPage extends javax.swing.JFrame {
                 .addComponent(searchbutton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 0, 810, 40));
+        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 40));
 
         addbutton2.setBackground(new java.awt.Color(0, 51, 51));
         addbutton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -214,9 +239,9 @@ public class adminPage extends javax.swing.JFrame {
 
         main.add(deletebutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 70, 80, 30));
 
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        citizen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        c_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -227,9 +252,9 @@ public class adminPage extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        citizen.setViewportView(c_table);
 
-        main.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, 800, 490));
+        main.add(citizen, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 780, 490));
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -243,30 +268,31 @@ public class adminPage extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("SETTINGS");
-        jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 420, 170, 50));
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-reports-50.png"))); // NOI18N
+        jLabel3.setText("         Reports");
+        jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 180, 50));
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("DASHBOARD");
-        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 170, 50));
+        dash.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        dash.setForeground(new java.awt.Color(255, 255, 255));
+        dash.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        dash.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-dashboard-50.png"))); // NOI18N
+        dash.setText("     Dashboard");
+        dash.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        dash.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dashMouseClicked(evt);
+            }
+        });
+        jPanel1.add(dash, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 180, 50));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("LOG OUT");
-        jLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 500, 170, 50));
-
-        jLabel6.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel6.setText("REPORTS");
-        jLabel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 370, 170, 50));
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-logout-50.png"))); // NOI18N
+        jLabel5.setText("      Logout");
+        jLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 180, 50));
 
         jLabel2.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -274,30 +300,63 @@ public class adminPage extends javax.swing.JFrame {
         jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 100, -1));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-admin-64.png"))); // NOI18N
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 50, 60, -1));
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 60, -1));
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("MANAGE CITIZEN");
-        jLabel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 270, 170, 50));
+        managecitizen.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        managecitizen.setForeground(new java.awt.Color(255, 255, 255));
+        managecitizen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        managecitizen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-people-50.png"))); // NOI18N
+        managecitizen.setText("Manage Citizen");
+        managecitizen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        managecitizen.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                managecitizenMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                managecitizenMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                managecitizenMouseExited(evt);
+            }
+        });
+        jPanel1.add(managecitizen, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 180, 50));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setText("BLOTTER");
-        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 320, 170, 50));
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-strike-50.png"))); // NOI18N
+        jLabel9.setText("         Blotter");
+        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 180, 50));
 
-        jLabel10.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel10.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("MANAGE USER");
-        jLabel10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 220, 170, 50));
+        manageuser.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        manageuser.setForeground(new java.awt.Color(255, 255, 255));
+        manageuser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        manageuser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-user-50.png"))); // NOI18N
+        manageuser.setText("Manage User");
+        manageuser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        manageuser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                manageuserMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                manageuserMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                manageuserMouseExited(evt);
+            }
+        });
+        jPanel1.add(manageuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 180, 50));
 
-        main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 170, 640));
+        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-settings-50.png"))); // NOI18N
+        jLabel4.setText("         Settings");
+        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 50));
+
+        main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 640));
 
         addbutton.setBackground(new java.awt.Color(0, 51, 51));
         addbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -371,6 +430,23 @@ public class adminPage extends javax.swing.JFrame {
 
         main.add(editbutton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 70, 80, 30));
 
+        appear.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+
+        user_table.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Title 1", "Title 2", "Title 3", "Title 4"
+            }
+        ));
+        appear.setViewportView(user_table);
+
+        main.add(appear, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 780, 490));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -385,6 +461,10 @@ public class adminPage extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+
+    }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void addbutton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseClicked
 
@@ -410,9 +490,27 @@ public class adminPage extends javax.swing.JFrame {
         deletebutton.setBackground(navcolor);
     }//GEN-LAST:event_deletebuttonMouseExited
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void dashMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseClicked
+        
+        dash.setVisible(true);
 
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_dashMouseClicked
+
+    private void managecitizenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseClicked
+       
+        citizen.setVisible(true);
+        displayCitizenData();
+    }//GEN-LAST:event_managecitizenMouseClicked
+
+    private void managecitizenMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseEntered
+        managecitizen.setBackground(bodycolor);
+        managecitizen.setOpaque(true);
+    }//GEN-LAST:event_managecitizenMouseEntered
+
+    private void managecitizenMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseExited
+        managecitizen.setBackground(navcolor);
+        managecitizen.setOpaque(true);
+    }//GEN-LAST:event_managecitizenMouseExited
 
     private void addbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbuttonMouseClicked
         // TODO add your handling code here:
@@ -437,6 +535,23 @@ public class adminPage extends javax.swing.JFrame {
     private void editbutton1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseExited
         editbutton1.setBackground(navcolor);
     }//GEN-LAST:event_editbutton1MouseExited
+
+    private void manageuserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseClicked
+        cardLayout.show(mainPanel, "ManageUsers");
+        appear.setVisible(true);
+        citizen.setVisible(false);
+        displayData();     
+    }//GEN-LAST:event_manageuserMouseClicked
+
+    private void manageuserMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseEntered
+        manageuser.setBackground(bodycolor);
+        manageuser.setOpaque(true);
+    }//GEN-LAST:event_manageuserMouseEntered
+
+    private void manageuserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseExited
+         manageuser.setBackground(navcolor);
+         manageuser.setOpaque(true);
+    }//GEN-LAST:event_manageuserMouseExited
 
     /**
      * @param args the command line arguments
@@ -478,27 +593,29 @@ public class adminPage extends javax.swing.JFrame {
     private javax.swing.JLabel add1;
     private javax.swing.JPanel addbutton;
     private javax.swing.JPanel addbutton2;
+    private javax.swing.JScrollPane appear;
+    private javax.swing.JTable c_table;
+    private javax.swing.JScrollPane citizen;
+    private javax.swing.JLabel dash;
     private javax.swing.JPanel deletebutton;
     private javax.swing.JLabel edit;
     private javax.swing.JLabel edit1;
     private javax.swing.JPanel editbutton1;
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel main;
+    private javax.swing.JLabel managecitizen;
+    private javax.swing.JLabel manageuser;
     private javax.swing.JLabel refresh1;
     private javax.swing.JPanel searchbutton;
+    private javax.swing.JTable user_table;
     // End of variables declaration//GEN-END:variables
 }

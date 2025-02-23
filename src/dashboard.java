@@ -30,14 +30,7 @@ public class dashboard extends javax.swing.JFrame {
 
         main = new javax.swing.JPanel();
         navbar = new javax.swing.JPanel();
-        dashboard = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
-        userpage = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        records = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
-        header = new javax.swing.JPanel();
-        jDesktopPane1 = new javax.swing.JDesktopPane();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -46,140 +39,24 @@ public class dashboard extends javax.swing.JFrame {
 
         navbar.setBackground(new java.awt.Color(0, 51, 51));
 
-        dashboard.setBackground(new java.awt.Color(0, 51, 51));
-        dashboard.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                dashboardMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                dashboardMouseExited(evt);
-            }
-        });
-
-        jLabel1.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("DASHBOARD");
-
-        javax.swing.GroupLayout dashboardLayout = new javax.swing.GroupLayout(dashboard);
-        dashboard.setLayout(dashboardLayout);
-        dashboardLayout.setHorizontalGroup(
-            dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        dashboardLayout.setVerticalGroup(
-            dashboardLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 45, Short.MAX_VALUE)
-        );
-
-        userpage.setBackground(new java.awt.Color(0, 51, 51));
-        userpage.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                userpageMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                userpageMouseExited(evt);
-            }
-        });
-
-        jLabel2.setFont(new java.awt.Font("Tahoma", 3, 12)); // NOI18N
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("USER PAGE ");
-
-        javax.swing.GroupLayout userpageLayout = new javax.swing.GroupLayout(userpage);
-        userpage.setLayout(userpageLayout);
-        userpageLayout.setHorizontalGroup(
-            userpageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        userpageLayout.setVerticalGroup(
-            userpageLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(userpageLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, 22, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
-        records.setBackground(new java.awt.Color(0, 51, 51));
-        records.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                recordsMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                recordsMouseExited(evt);
-            }
-        });
-
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("RECORDS OF BLOTTER");
-
-        javax.swing.GroupLayout recordsLayout = new javax.swing.GroupLayout(records);
-        records.setLayout(recordsLayout);
-        recordsLayout.setHorizontalGroup(
-            recordsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 180, Short.MAX_VALUE)
-        );
-        recordsLayout.setVerticalGroup(
-            recordsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(recordsLayout.createSequentialGroup()
-                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-
         javax.swing.GroupLayout navbarLayout = new javax.swing.GroupLayout(navbar);
         navbar.setLayout(navbarLayout);
         navbarLayout.setHorizontalGroup(
             navbarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(dashboard, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(userpage, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(records, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGap(0, 280, Short.MAX_VALUE)
         );
         navbarLayout.setVerticalGroup(
             navbarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(navbarLayout.createSequentialGroup()
-                .addGap(81, 81, 81)
-                .addComponent(dashboard, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(userpage, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(records, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(211, Short.MAX_VALUE))
+            .addGap(0, 460, Short.MAX_VALUE)
         );
 
         main.add(navbar);
-        navbar.setBounds(0, 0, 180, 440);
+        navbar.setBounds(0, -20, 280, 460);
 
-        header.setBackground(new java.awt.Color(0, 153, 153));
-
-        javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
-        header.setLayout(headerLayout);
-        headerLayout.setHorizontalGroup(
-            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 650, Short.MAX_VALUE)
-        );
-        headerLayout.setVerticalGroup(
-            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 40, Short.MAX_VALUE)
-        );
-
-        main.add(header);
-        header.setBounds(180, 0, 650, 40);
-
-        jDesktopPane1.setBackground(new java.awt.Color(204, 255, 204));
-
-        javax.swing.GroupLayout jDesktopPane1Layout = new javax.swing.GroupLayout(jDesktopPane1);
-        jDesktopPane1.setLayout(jDesktopPane1Layout);
-        jDesktopPane1Layout.setHorizontalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 650, Short.MAX_VALUE)
-        );
-        jDesktopPane1Layout.setVerticalGroup(
-            jDesktopPane1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
-        );
-
-        main.add(jDesktopPane1);
-        jDesktopPane1.setBounds(180, 40, 650, 400);
+        jLabel2.setFont(new java.awt.Font("Arial Black", 1, 18)); // NOI18N
+        jLabel2.setText("BlotterMate - Community -");
+        main.add(jLabel2);
+        jLabel2.setBounds(280, 0, 520, 60);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -195,30 +72,6 @@ public class dashboard extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
-    private void dashboardMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardMouseEntered
-       dashboard.setBackground(bodycolor);
-    }//GEN-LAST:event_dashboardMouseEntered
-
-    private void dashboardMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashboardMouseExited
-        dashboard.setBackground(navcolor);
-    }//GEN-LAST:event_dashboardMouseExited
-
-    private void userpageMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userpageMouseExited
-        userpage.setBackground(navcolor);
-    }//GEN-LAST:event_userpageMouseExited
-
-    private void userpageMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_userpageMouseEntered
-        userpage.setBackground(bodycolor);
-    }//GEN-LAST:event_userpageMouseEntered
-
-    private void recordsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recordsMouseEntered
-        records.setBackground(bodycolor);
-    }//GEN-LAST:event_recordsMouseEntered
-
-    private void recordsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_recordsMouseExited
-        records.setBackground(navcolor);
-    }//GEN-LAST:event_recordsMouseExited
 
     /**
      * @param args the command line arguments
@@ -256,15 +109,8 @@ public class dashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel dashboard;
-    private javax.swing.JPanel header;
-    private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel main;
     private javax.swing.JPanel navbar;
-    private javax.swing.JPanel records;
-    private javax.swing.JPanel userpage;
     // End of variables declaration//GEN-END:variables
 }

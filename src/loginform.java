@@ -29,10 +29,9 @@ public class loginform extends javax.swing.JFrame {
     public loginform() {
         initComponents();
         setResizable(false);
-        
     }
-     Color hover = new Color(0,153,153);
-     Color defbutton = new Color(0,51,51);
+     Color hover = new Color(0, 153, 153);
+     Color defbutton = new Color(204,255,204);
      
      Border empty = BorderFactory.createEmptyBorder();
      
@@ -51,7 +50,6 @@ public class loginform extends javax.swing.JFrame {
         String user = enterusername.getText().trim();
         String password = new String(enterpass.getPassword());
 
-        // Validation Checks
         if (user.isEmpty()|| password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
@@ -63,6 +61,10 @@ public class loginform extends javax.swing.JFrame {
         }
         return true;
      }
+    
+    
+    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -72,46 +74,86 @@ public class loginform extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        main = new javax.swing.JPanel();
-        title = new javax.swing.JLabel();
-        username = new javax.swing.JLabel();
+        main1 = new javax.swing.JPanel();
+        jLabel8 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        main2 = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
         enterusername = new javax.swing.JTextField();
+        username = new javax.swing.JLabel();
         pass = new javax.swing.JLabel();
         enterpass = new javax.swing.JPasswordField();
+        click = new javax.swing.JLabel();
         logbg = new javax.swing.JPanel();
-        jLabel4 = new javax.swing.JLabel();
+        login = new javax.swing.JLabel();
         canbg = new javax.swing.JPanel();
         cancel = new javax.swing.JLabel();
-        click = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        main.setBackground(new java.awt.Color(204, 255, 204));
-        main.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        main1.setBackground(new java.awt.Color(255, 255, 255));
+        main1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        title.setBackground(new java.awt.Color(255, 255, 255));
-        title.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        title.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        title.setText("SIGN IN");
-        main.add(title, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 680, 40));
+        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/download_updated.png"))); // NOI18N
+        main1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 306, 217));
 
-        username.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        username.setText("Username:");
-        main.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 110, 92, -1));
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/nother_updated.png"))); // NOI18N
+        main1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
+
+        main2.setBackground(new java.awt.Color(0, 51, 51));
+        main2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("SIGN IN");
+        main2.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 30, 345, -1));
 
         enterusername.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        enterusername.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        main.add(enterusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 130, 234, 35));
+        enterusername.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterusernameActionPerformed(evt);
+            }
+        });
+        main2.add(enterusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 99, 227, 32));
 
-        pass.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        username.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        username.setForeground(new java.awt.Color(255, 255, 255));
+        username.setText("Username:");
+        main2.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 76, -1, -1));
+
+        pass.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        pass.setForeground(new java.awt.Color(255, 255, 255));
         pass.setText("Password:");
-        main.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 170, 92, -1));
+        main2.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 137, -1, -1));
 
         enterpass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        enterpass.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        main.add(enterpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 190, 234, 34));
+        enterpass.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterpassActionPerformed(evt);
+            }
+        });
+        main2.add(enterpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 160, 227, 34));
 
-        logbg.setBackground(new java.awt.Color(0, 51, 51));
+        click.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        click.setForeground(new java.awt.Color(255, 255, 255));
+        click.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        click.setText("Click Here to Register");
+        click.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                clickMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                clickMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                clickMouseExited(evt);
+            }
+        });
+        main2.add(click, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 300, 227, -1));
+
+        logbg.setBackground(new java.awt.Color(204, 255, 204));
         logbg.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         logbg.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -125,28 +167,24 @@ public class loginform extends javax.swing.JFrame {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("Login");
+        login.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        login.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        login.setText("Login");
 
         javax.swing.GroupLayout logbgLayout = new javax.swing.GroupLayout(logbg);
         logbg.setLayout(logbgLayout);
         logbgLayout.setHorizontalGroup(
             logbgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+            .addComponent(login, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         logbgLayout.setVerticalGroup(
             logbgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logbgLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel4)
-                .addContainerGap())
+            .addComponent(login, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
-        main.add(logbg, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 240, -1, -1));
+        main2.add(logbg, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 217, 227, -1));
 
-        canbg.setBackground(new java.awt.Color(0, 51, 51));
+        canbg.setBackground(new java.awt.Color(204, 255, 204));
         canbg.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         canbg.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
@@ -161,7 +199,6 @@ public class loginform extends javax.swing.JFrame {
         });
 
         cancel.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        cancel.setForeground(new java.awt.Color(255, 255, 255));
         cancel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         cancel.setText("Cancel");
 
@@ -169,56 +206,78 @@ public class loginform extends javax.swing.JFrame {
         canbg.setLayout(canbgLayout);
         canbgLayout.setHorizontalGroup(
             canbgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(cancel, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
+            .addComponent(cancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
         );
         canbgLayout.setVerticalGroup(
             canbgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(canbgLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(cancel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(cancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
         );
 
-        main.add(canbg, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 290, -1, -1));
-
-        click.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
-        click.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        click.setText("Click Here to Register");
-        click.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                clickMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                clickMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                clickMouseExited(evt);
-            }
-        });
-        main.add(click, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 340, 234, 35));
+        main2.add(canbg, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 256, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(main1, javax.swing.GroupLayout.DEFAULT_SIZE, 310, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(main2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, 429, Short.MAX_VALUE)
+            .addComponent(main1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(main2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void logbgMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logbgMouseExited
-        buttonDefaultColor(logbg);
-    }//GEN-LAST:event_logbgMouseExited
+    private void enterusernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterusernameActionPerformed
+        
+    }//GEN-LAST:event_enterusernameActionPerformed
 
-    private void logbgMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logbgMouseEntered
-        buttonBorderAnimation(logbg);
-    }//GEN-LAST:event_logbgMouseEntered
+    private void enterpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterpassActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterpassActionPerformed
+
+    private void clickMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickMouseClicked
+       registerform regForm = new registerform();
+        regForm.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_clickMouseClicked
+
+    private void clickMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickMouseEntered
+        click.setForeground(java.awt.Color.GREEN);
+
+    }//GEN-LAST:event_clickMouseEntered
+
+    private void clickMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickMouseExited
+       click.setForeground(java.awt.Color.WHITE);
+    }//GEN-LAST:event_clickMouseExited
+
+    private void canbgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canbgMouseClicked
+       int response = JOptionPane.showConfirmDialog(
+            this,
+            "Are you sure you want to cancel the login process?",
+            "Confirm Cancel",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE
+        );
+
+        if (response == JOptionPane.YES_OPTION) {
+            this.dispose(); 
+        }
+    }//GEN-LAST:event_canbgMouseClicked
+
+    private void canbgMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canbgMouseEntered
+         buttonBorderAnimation(canbg);
+    }//GEN-LAST:event_canbgMouseEntered
+
+    private void canbgMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canbgMouseExited
+       buttonDefaultColor(canbg);
+    }//GEN-LAST:event_canbgMouseExited
 
     private void logbgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logbgMouseClicked
         String email = enterusername.getText();
@@ -231,9 +290,9 @@ public class loginform extends javax.swing.JFrame {
 
         String sql = "SELECT * FROM user_table WHERE email = ? AND password = ?";
 
-        dbConnector db = new dbConnector(); // Create an instance of dbConnector
+        dbConnector db = new dbConnector(); 
 
-        try (Connection conn = db.getConnection();  // Get connection from dbConnector
+        try (Connection conn = db.getConnection();  
             PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, email);
@@ -264,53 +323,20 @@ public class loginform extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_logbgMouseClicked
 
-    private void canbgMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canbgMouseExited
-        buttonDefaultColor(canbg);
-    }//GEN-LAST:event_canbgMouseExited
+    private void logbgMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logbgMouseEntered
+        buttonBorderAnimation(logbg);
+    }//GEN-LAST:event_logbgMouseEntered
 
-    private void canbgMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canbgMouseEntered
-        buttonBorderAnimation(canbg);
-    }//GEN-LAST:event_canbgMouseEntered
+    private void logbgMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logbgMouseExited
+         buttonDefaultColor(logbg);
+    }//GEN-LAST:event_logbgMouseExited
 
-    private void canbgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canbgMouseClicked
-        int response = JOptionPane.showConfirmDialog(
-            this,
-            "Are you sure you want to cancel the login process?",
-            "Confirm Cancel",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE
-        );
-
-        if (response == JOptionPane.YES_OPTION) {
-            // Close the login window or perform any necessary action
-            this.dispose(); // Closes the current window
-        }
-    }//GEN-LAST:event_canbgMouseClicked
-
-    private void clickMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickMouseExited
-        click.setForeground(java.awt.Color.BLACK);
-    }//GEN-LAST:event_clickMouseExited
-
-    private void clickMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickMouseEntered
-        click.setForeground(java.awt.Color.BLUE);
-    }//GEN-LAST:event_clickMouseEntered
-
-    private void clickMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickMouseClicked
-        registerform regForm = new registerform();
-        regForm.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_clickMouseClicked
-
+    
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
+       try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
@@ -342,11 +368,14 @@ public class loginform extends javax.swing.JFrame {
     private javax.swing.JLabel click;
     private javax.swing.JPasswordField enterpass;
     private javax.swing.JTextField enterusername;
-    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel logbg;
-    private javax.swing.JPanel main;
+    private javax.swing.JLabel login;
+    private javax.swing.JPanel main1;
+    private javax.swing.JPanel main2;
     private javax.swing.JLabel pass;
-    private javax.swing.JLabel title;
     private javax.swing.JLabel username;
     // End of variables declaration//GEN-END:variables
 }

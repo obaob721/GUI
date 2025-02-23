@@ -1,5 +1,14 @@
 
+import config.dbConnector;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import net.proteanit.sql.DbUtils;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -12,17 +21,44 @@ import java.awt.Color;
  * @author Admin
  */
 public class userPage extends javax.swing.JFrame {
-
+         private CardLayout cardLayout;
+         private JPanel mainPanel, manageCitizensPanel, dashboardPanel;;
+         private JTable citizenTable;
     /**
      * Creates new form userPage
      */
     public userPage() {
         initComponents();
+        
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
+        
+        JPanel dashboard = new JPanel(new BorderLayout()); 
+        JPanel contentPanel = new JPanel();
+        dashboard.add(contentPanel, BorderLayout.CENTER); 
+        
+        manageCitizensPanel = new JPanel(new BorderLayout());
+        citizenTable = new JTable();
+        manageCitizensPanel.add(new JScrollPane(citizenTable), BorderLayout.CENTER);
+        
+        mainPanel.add(manageCitizensPanel, "ManageCitizens");
+        mainPanel.add(dashboard, "Dashboard");
+
     }
     Color navcolor = new Color(0,51,51);
     Color headcolor = new Color(0,51,51);
     Color bodycolor = new Color(0,153,153);
 
+     private void displayCitizenData() {
+       try{
+            dbConnector dbc = new dbConnector();
+            ResultSet rs = dbc.getData("SELECT * FROM citizen_table");
+            c_table.setModel(DbUtils.resultSetToTableModel(rs));
+            
+        }catch(SQLException ex){
+            System.out.println("Errors"+ex.getMessage());
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -41,16 +77,17 @@ public class userPage extends javax.swing.JFrame {
         edit = new javax.swing.JLabel();
         deletebutton = new javax.swing.JPanel();
         add = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        citizen = new javax.swing.JScrollPane();
+        c_table = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        dash = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
+        managecitizen = new javax.swing.JLabel();
+        jLabel9 = new javax.swing.JLabel();
         addbutton = new javax.swing.JPanel();
         refresh1 = new javax.swing.JLabel();
         editbutton1 = new javax.swing.JPanel();
@@ -103,7 +140,7 @@ public class userPage extends javax.swing.JFrame {
         headerLayout.setHorizontalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headerLayout.createSequentialGroup()
-                .addContainerGap(512, Short.MAX_VALUE)
+                .addContainerGap(502, Short.MAX_VALUE)
                 .addComponent(searchbutton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(38, 38, 38))
         );
@@ -114,7 +151,7 @@ public class userPage extends javax.swing.JFrame {
                 .addComponent(searchbutton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 0, 810, 40));
+        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 40));
 
         addbutton2.setBackground(new java.awt.Color(0, 51, 51));
         addbutton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -188,9 +225,9 @@ public class userPage extends javax.swing.JFrame {
 
         main.add(deletebutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 70, 80, 30));
 
-        jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        citizen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        c_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -201,9 +238,9 @@ public class userPage extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        citizen.setViewportView(c_table);
 
-        main.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 120, 800, 490));
+        main.add(citizen, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 780, 490));
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -217,23 +254,31 @@ public class userPage extends javax.swing.JFrame {
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("SETTINGS");
-        jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 170, 50));
+        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-settings-50.png"))); // NOI18N
+        jLabel3.setText("         Settings");
+        jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 180, 50));
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setText("DASHBOARD");
-        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 170, 50));
+        dash.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        dash.setForeground(new java.awt.Color(255, 255, 255));
+        dash.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        dash.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-dashboard-50.png"))); // NOI18N
+        dash.setText("     Dashboard");
+        dash.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        dash.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                dashMouseClicked(evt);
+            }
+        });
+        jPanel1.add(dash, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 180, 50));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("LOG OUT");
-        jLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 400, 170, 50));
+        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-logout-50.png"))); // NOI18N
+        jLabel5.setText("      Logout");
+        jLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 50));
 
         jLabel2.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -243,14 +288,34 @@ public class userPage extends javax.swing.JFrame {
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-user-50.png"))); // NOI18N
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 60, -1));
 
-        jLabel8.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel8.setText("Manage Citizen");
-        jLabel8.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 170, 50));
+        managecitizen.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        managecitizen.setForeground(new java.awt.Color(255, 255, 255));
+        managecitizen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        managecitizen.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-people-50.png"))); // NOI18N
+        managecitizen.setText("Manage Citizen");
+        managecitizen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        managecitizen.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                managecitizenMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                managecitizenMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                managecitizenMouseExited(evt);
+            }
+        });
+        jPanel1.add(managecitizen, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 180, 50));
 
-        main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 170, 640));
+        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-strike-50.png"))); // NOI18N
+        jLabel9.setText("         Blotter");
+        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 180, 50));
+
+        main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 640));
 
         addbutton.setBackground(new java.awt.Color(0, 51, 51));
         addbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -391,6 +456,28 @@ public class userPage extends javax.swing.JFrame {
 
     }//GEN-LAST:event_addbutton2MouseClicked
 
+    private void dashMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseClicked
+        cardLayout.show(mainPanel, "Dashboards");   
+        dash.setVisible(true);
+       
+    }//GEN-LAST:event_dashMouseClicked
+
+    private void managecitizenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseClicked
+          cardLayout.show(mainPanel, "ManageCitizens");            
+                citizen.setVisible(true);
+                displayCitizenData();        
+    }//GEN-LAST:event_managecitizenMouseClicked
+
+    private void managecitizenMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseEntered
+                managecitizen.setBackground(bodycolor);
+                managecitizen.setOpaque(true);
+    }//GEN-LAST:event_managecitizenMouseEntered
+
+    private void managecitizenMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseExited
+                managecitizen.setBackground(navcolor);
+                managecitizen.setOpaque(true);
+    }//GEN-LAST:event_managecitizenMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -431,6 +518,9 @@ public class userPage extends javax.swing.JFrame {
     private javax.swing.JLabel add1;
     private javax.swing.JPanel addbutton;
     private javax.swing.JPanel addbutton2;
+    private javax.swing.JTable c_table;
+    private javax.swing.JScrollPane citizen;
+    private javax.swing.JLabel dash;
     private javax.swing.JPanel deletebutton;
     private javax.swing.JLabel edit;
     private javax.swing.JLabel edit1;
@@ -439,15 +529,13 @@ public class userPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
-    private javax.swing.JLabel jLabel8;
+    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JPanel main;
+    private javax.swing.JLabel managecitizen;
     private javax.swing.JLabel refresh1;
     private javax.swing.JPanel searchbutton;
     // End of variables declaration//GEN-END:variables
