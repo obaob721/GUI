@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -24,11 +25,13 @@ public class adminPage extends javax.swing.JFrame {
          private CardLayout cardLayout;
          private JPanel mainPanel, manageUsersPanel, manageCitizensPanel;
          private JTable userTable, citizenTable;
+         
     /**
      * Creates new form adminPage
      */
     public adminPage() {
         initComponents();
+        
         
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
@@ -42,9 +45,12 @@ public class adminPage extends javax.swing.JFrame {
         manageCitizensPanel.add(new JScrollPane(citizenTable), BorderLayout.CENTER);
         
         mainPanel.add(manageCitizensPanel, "ManageCitizens");
-       
+        mainPanel.add(manageUsersPanel, "ManageUsers"); 
+
 
     }
+    
+    
     Color navcolor = new Color(0,51,51);
     Color headcolor = new Color(0,153,153);
     Color bodycolor = new Color(0,153,153);
@@ -93,7 +99,7 @@ public class adminPage extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         dash = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        logout = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         managecitizen = new javax.swing.JLabel();
@@ -283,16 +289,33 @@ public class adminPage extends javax.swing.JFrame {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dashMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                dashMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                dashMouseExited(evt);
+            }
         });
         jPanel1.add(dash, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 180, 50));
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-logout-50.png"))); // NOI18N
-        jLabel5.setText("      Logout");
-        jLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 180, 50));
+        logout.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        logout.setForeground(new java.awt.Color(255, 255, 255));
+        logout.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-logout-50.png"))); // NOI18N
+        logout.setText("      Logout");
+        logout.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        logout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logoutMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logoutMouseExited(evt);
+            }
+        });
+        jPanel1.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 180, 50));
 
         jLabel2.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
@@ -491,13 +514,14 @@ public class adminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_deletebuttonMouseExited
 
     private void dashMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseClicked
-        
-        dash.setVisible(true);
+        admindashboard admin = new admindashboard();
+        admin.setVisible(true);
+        this.dispose();
 
     }//GEN-LAST:event_dashMouseClicked
 
     private void managecitizenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseClicked
-       
+        cardLayout.show(mainPanel, "ManageCitizens");
         citizen.setVisible(true);
         displayCitizenData();
     }//GEN-LAST:event_managecitizenMouseClicked
@@ -553,6 +577,39 @@ public class adminPage extends javax.swing.JFrame {
          manageuser.setOpaque(true);
     }//GEN-LAST:event_manageuserMouseExited
 
+    private void dashMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseEntered
+        dash.setBackground(bodycolor);
+        dash.setOpaque(true);
+    }//GEN-LAST:event_dashMouseEntered
+
+    private void dashMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseExited
+         dash.setBackground(navcolor);
+         dash.setOpaque(true);
+    }//GEN-LAST:event_dashMouseExited
+
+    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
+        int response = JOptionPane.showConfirmDialog(this, 
+        "Confirm Log Out?", 
+        "Logout Confirmation", 
+        JOptionPane.YES_NO_OPTION);
+
+        if (response == JOptionPane.YES_OPTION) {
+            new loginform().setVisible(true);
+            this.dispose();
+        } else {           
+        }       
+    }//GEN-LAST:event_logoutMouseClicked
+
+    private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered
+       logout.setBackground(bodycolor);
+       logout.setOpaque(true);
+    }//GEN-LAST:event_logoutMouseEntered
+
+    private void logoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseExited
+       logout.setBackground(navcolor);
+       logout.setOpaque(true);
+    }//GEN-LAST:event_logoutMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -606,11 +663,11 @@ public class adminPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel logout;
     private javax.swing.JPanel main;
     private javax.swing.JLabel managecitizen;
     private javax.swing.JLabel manageuser;

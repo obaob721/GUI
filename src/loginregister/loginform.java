@@ -305,7 +305,7 @@ public class loginform extends javax.swing.JFrame {
                 String use_type = rs.getString("use_type");
 
                 if (use_type.equals("Admin")) {
-                    adminPage admin = new adminPage();
+                    admindashboard admin = new admindashboard();
                     admin.setVisible(true);
                 } else {
                     userPage user = new userPage();
