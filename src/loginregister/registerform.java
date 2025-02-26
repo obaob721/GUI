@@ -180,6 +180,11 @@ public class registerform extends javax.swing.JFrame {
 
         enterpass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         enterpass.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        enterpass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                enterpassKeyPressed(evt);
+            }
+        });
         main.add(enterpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 200, 260, 30));
 
         buttonreg1.setBackground(new java.awt.Color(204, 255, 204));
@@ -278,6 +283,7 @@ public class registerform extends javax.swing.JFrame {
         String password = new String(enterpass.getPassword());
         String confirmPassword = new String(enterconfirm.getPassword());
         String use_type = user.getSelectedItem().toString();
+        String user_status = "Pending";
 
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -307,7 +313,7 @@ public class registerform extends javax.swing.JFrame {
                 return;
             }
 
-            String sql = "INSERT INTO user_table (firstName, lastName, email, password, confirmPassword, use_type) VALUES (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO user_table (firstName, lastName, email, password, confirmPassword, use_type, user_status) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, firstName);
@@ -316,7 +322,8 @@ public class registerform extends javax.swing.JFrame {
             pstmt.setString(4, password);
             pstmt.setString(5, confirmPassword);
             pstmt.setString(6, use_type);
-
+            pstmt.setString(7, user_status);
+            
             int rowsInserted = pstmt.executeUpdate();
             if (rowsInserted > 0) {
                 JOptionPane.showMessageDialog(this, "Registration Successful!");
@@ -356,6 +363,10 @@ public class registerform extends javax.swing.JFrame {
     private void enterfnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterfnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_enterfnActionPerformed
+
+    private void enterpassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_enterpassKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterpassKeyPressed
         private boolean isEmailDuplicate(Connection conn, String email) {
         boolean exists = false;
         String query = "SELECT COUNT(*) FROM user_table WHERE email = ?";

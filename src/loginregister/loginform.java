@@ -2,6 +2,7 @@
 import config.dbConnector;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,6 +11,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+import userPackage.userDashboard;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -132,6 +134,11 @@ public class loginform extends javax.swing.JFrame {
         enterpass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 enterpassActionPerformed(evt);
+            }
+        });
+        enterpass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                enterpassKeyPressed(evt);
             }
         });
         main2.add(enterpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 160, 227, 34));
@@ -308,7 +315,7 @@ public class loginform extends javax.swing.JFrame {
                     admindashboard admin = new admindashboard();
                     admin.setVisible(true);
                 } else {
-                    userPage user = new userPage();
+                    userDashboard user = new userDashboard();
                     user.setVisible(true);
                 }
 
@@ -330,6 +337,53 @@ public class loginform extends javax.swing.JFrame {
     private void logbgMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logbgMouseExited
          buttonDefaultColor(logbg);
     }//GEN-LAST:event_logbgMouseExited
+
+    private void enterpassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_enterpassKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) { 
+        String email = enterusername.getText();
+        String password = new String(enterpass.getPassword());
+        
+        
+        if (email.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter both email and password.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String sql = "SELECT * FROM user_table WHERE email = ? AND password = ?";
+
+        dbConnector db = new dbConnector(); 
+
+        try (Connection conn = db.getConnection();  
+            PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, email);
+            pst.setString(2, password);
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                String use_type = rs.getString("use_type");
+
+                if (use_type.equals("Admin")) {
+                    admindashboard admin = new admindashboard();
+                    admin.setVisible(true);
+                } else {
+                    userPage user = new userPage();
+                    user.setVisible(true);
+                }
+
+                this.dispose();
+
+            } else {
+                JOptionPane.showMessageDialog(this, "Incorrect username or password.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        }
+    }//GEN-LAST:event_enterpassKeyPressed
 
     
     /**

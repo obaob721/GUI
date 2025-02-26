@@ -209,16 +209,16 @@ public class userDashboard extends javax.swing.JFrame {
             .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
         );
 
-        dashboardPanel2.add(settledcases, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 380, 410, 50));
+        dashboardPanel2.add(settledcases, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 480, 410, 50));
 
         jLabel25.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 153), 3));
-        dashboardPanel2.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 370, 410, 100));
+        dashboardPanel2.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 470, 410, 100));
 
         jLabel30.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(0, 51, 102));
         jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel30.setText("0");
-        dashboardPanel2.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 420, 410, 50));
+        dashboardPanel2.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 520, 410, 50));
 
         pendingcases.setBackground(new java.awt.Color(0, 102, 0));
 
@@ -238,16 +238,16 @@ public class userDashboard extends javax.swing.JFrame {
             .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        dashboardPanel2.add(pendingcases, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 500, 410, 40));
+        dashboardPanel2.add(pendingcases, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 370, 410, 40));
 
         jLabel33.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 0), 3));
-        dashboardPanel2.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 490, 410, 90));
+        dashboardPanel2.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 360, 410, 90));
 
         jLabel34.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(0, 102, 0));
         jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel34.setText("0");
-        dashboardPanel2.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 540, 410, 40));
+        dashboardPanel2.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 410, 410, 40));
 
         user.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
@@ -421,14 +421,9 @@ public class userDashboard extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel dash;
-    private javax.swing.JLabel dash1;
     private javax.swing.JLabel dash2;
-    private javax.swing.JPanel dashboardPanel;
-    private javax.swing.JPanel dashboardPanel1;
     private javax.swing.JPanel dashboardPanel2;
     private javax.swing.JPanel header;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel12;
@@ -436,20 +431,17 @@ public class userDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel34;
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
@@ -457,8 +449,6 @@ public class userDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel managecitizen;
-    private javax.swing.JPanel nav;
-    private javax.swing.JPanel nav1;
     private javax.swing.JPanel pendingcases;
     private javax.swing.JPanel settledcases;
     private javax.swing.JPanel sumBlotter;

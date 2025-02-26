@@ -3,12 +3,16 @@ import config.dbConnector;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.TableModel;
 import net.proteanit.sql.DbUtils;
 
 /*
@@ -31,7 +35,7 @@ public class adminPage extends javax.swing.JFrame {
      */
     public adminPage() {
         initComponents();
-        
+        displayData();
         
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
@@ -47,7 +51,6 @@ public class adminPage extends javax.swing.JFrame {
         mainPanel.add(manageCitizensPanel, "ManageCitizens");
         mainPanel.add(manageUsersPanel, "ManageUsers"); 
 
-
     }
     
     
@@ -59,7 +62,7 @@ public class adminPage extends javax.swing.JFrame {
         try{
             dbConnector dbc = new dbConnector();
             ResultSet rs = dbc.getData("SELECT * FROM user_table");
-            user_table.setModel(DbUtils.resultSetToTableModel(rs));
+            c_table.setModel(DbUtils.resultSetToTableModel(rs));
             
         }catch(SQLException ex){
             System.out.println("Errors"+ex.getMessage());
@@ -106,12 +109,24 @@ public class adminPage extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         manageuser = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        addbutton = new javax.swing.JPanel();
+        refresh = new javax.swing.JPanel();
         refresh1 = new javax.swing.JLabel();
         editbutton1 = new javax.swing.JPanel();
         edit1 = new javax.swing.JLabel();
-        appear = new javax.swing.JScrollPane();
-        user_table = new javax.swing.JTable();
+        fn1 = new javax.swing.JLabel();
+        enterfn = new javax.swing.JTextField();
+        ln = new javax.swing.JLabel();
+        enterln = new javax.swing.JTextField();
+        email = new javax.swing.JLabel();
+        enteremail = new javax.swing.JTextField();
+        pass = new javax.swing.JLabel();
+        enterpass = new javax.swing.JPasswordField();
+        confirm2 = new javax.swing.JLabel();
+        enterconfirm = new javax.swing.JPasswordField();
+        confirm = new javax.swing.JLabel();
+        user = new javax.swing.JComboBox<>();
+        userStatusComboBox = new javax.swing.JComboBox<>();
+        confirm1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -258,9 +273,14 @@ public class adminPage extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        c_table.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                c_tableMouseClicked(evt);
+            }
+        });
         citizen.setViewportView(c_table);
 
-        main.add(citizen, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 780, 490));
+        main.add(citizen, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 310, 780, 310));
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -381,17 +401,17 @@ public class adminPage extends javax.swing.JFrame {
 
         main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 640));
 
-        addbutton.setBackground(new java.awt.Color(0, 51, 51));
-        addbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        addbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+        refresh.setBackground(new java.awt.Color(0, 51, 51));
+        refresh.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        refresh.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addbuttonMouseClicked(evt);
+                refreshMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                addbuttonMouseEntered(evt);
+                refreshMouseEntered(evt);
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
-                addbuttonMouseExited(evt);
+                refreshMouseExited(evt);
             }
         });
 
@@ -400,22 +420,22 @@ public class adminPage extends javax.swing.JFrame {
         refresh1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         refresh1.setText("REFRESH");
 
-        javax.swing.GroupLayout addbuttonLayout = new javax.swing.GroupLayout(addbutton);
-        addbutton.setLayout(addbuttonLayout);
-        addbuttonLayout.setHorizontalGroup(
-            addbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addbuttonLayout.createSequentialGroup()
+        javax.swing.GroupLayout refreshLayout = new javax.swing.GroupLayout(refresh);
+        refresh.setLayout(refreshLayout);
+        refreshLayout.setHorizontalGroup(
+            refreshLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, refreshLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(refresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        addbuttonLayout.setVerticalGroup(
-            addbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addbuttonLayout.createSequentialGroup()
+        refreshLayout.setVerticalGroup(
+            refreshLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, refreshLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addComponent(refresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        main.add(addbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(860, 70, -1, -1));
+        main.add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 70, -1, -1));
 
         editbutton1.setBackground(new java.awt.Color(0, 51, 51));
         editbutton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -453,22 +473,96 @@ public class adminPage extends javax.swing.JFrame {
 
         main.add(editbutton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 70, 80, 30));
 
-        appear.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        fn1.setBackground(new java.awt.Color(255, 255, 255));
+        fn1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        fn1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        fn1.setText("First name:");
+        main.add(fn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, 100, 30));
 
-        user_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
+        enterfn.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enterfn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        enterfn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterfnActionPerformed(evt);
             }
-        ));
-        appear.setViewportView(user_table);
+        });
+        main.add(enterfn, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 120, 260, 30));
 
-        main.add(appear, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 120, 780, 490));
+        ln.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        ln.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ln.setText("Last name:");
+        main.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 160, 90, 30));
+
+        enterln.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enterln.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        enterln.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterlnActionPerformed(evt);
+            }
+        });
+        main.add(enterln, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 160, 260, 30));
+
+        email.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        email.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        email.setText("Email:");
+        main.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 90, 30));
+
+        enteremail.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enteremail.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        enteremail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enteremailActionPerformed(evt);
+            }
+        });
+        main.add(enteremail, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 200, 260, 30));
+
+        pass.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        pass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pass.setText("Password:");
+        main.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 120, 90, 30));
+
+        enterpass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enterpass.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        enterpass.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                enterpassKeyPressed(evt);
+            }
+        });
+        main.add(enterpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 120, 260, 30));
+
+        confirm2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        confirm2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        confirm2.setText("C-Password:");
+        main.add(confirm2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 160, 90, 30));
+
+        enterconfirm.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enterconfirm.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        main.add(enterconfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 160, 260, 30));
+
+        confirm.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        confirm.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        confirm.setText("User Status:");
+        main.add(confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 250, 90, 30));
+
+        user.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        user.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User\t", "Admin" }));
+        user.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        main.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 200, 260, 30));
+
+        userStatusComboBox.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        userStatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Approved" }));
+        userStatusComboBox.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        userStatusComboBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                userStatusComboBoxActionPerformed(evt);
+            }
+        });
+        main.add(userStatusComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 250, 220, 30));
+
+        confirm1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        confirm1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        confirm1.setText("User Type:");
+        main.add(confirm1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 200, 90, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -490,7 +584,61 @@ public class adminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void addbutton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseClicked
+        String firstName = enterfn.getText().trim();
+        String lastName = enterln.getText().trim();
+        String email = enteremail.getText().trim();
+        String password = new String(enterpass.getPassword());
+        String confirmPassword = new String(enterconfirm.getPassword());
+        String use_type = user.getSelectedItem().toString();
+        String user_status = "Pending";
 
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (password.length() < 8) {
+            JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (confirmPassword.length() < 8) {
+            JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String url = "jdbc:mysql://localhost:3306/obaob_db";
+        String user = "root";
+        String pass = "";
+
+        try {
+
+            Connection conn = DriverManager.getConnection(url, user, pass);            
+
+            String sql = "INSERT INTO user_table (firstName, lastName, email, password, confirmPassword, use_type, user_status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, email);
+            pstmt.setString(4, password);
+            pstmt.setString(5, confirmPassword);
+            pstmt.setString(6, use_type);
+            pstmt.setString(7, user_status);
+            
+            int rowsInserted = pstmt.executeUpdate();
+            if (rowsInserted > 0) {
+                JOptionPane.showMessageDialog(this, "Registration Successful!");
+                this.dispose();
+                new loginform().setVisible(true);
+            }
+
+            pstmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+   
     }//GEN-LAST:event_addbutton2MouseClicked
 
     private void addbutton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseEntered
@@ -502,7 +650,44 @@ public class adminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_addbutton2MouseExited
 
     private void deletebuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deletebuttonMouseClicked
+        String user_email = enteremail.getText();
 
+        if (user_email.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Please enter an email.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String url = "jdbc:mysql://localhost:3306/obaob_db";
+        String user = "root";
+        String pass = "";
+
+        try {
+            Connection conn = DriverManager.getConnection(url, user, pass);
+
+            
+
+            int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this user?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+            if (confirm != JOptionPane.YES_OPTION) {
+                conn.close();
+                return;
+            }
+
+            String sql = "DELETE FROM user_table WHERE email = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.setString(1, user_email);
+
+            int rowsDeleted = pstmt.executeUpdate();
+            if (rowsDeleted > 0) {
+                JOptionPane.showMessageDialog(this, "User deleted successfully!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Deletion failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            pstmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_deletebuttonMouseClicked
 
     private void deletebuttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deletebuttonMouseEntered
@@ -536,20 +721,86 @@ public class adminPage extends javax.swing.JFrame {
         managecitizen.setOpaque(true);
     }//GEN-LAST:event_managecitizenMouseExited
 
-    private void addbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbuttonMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_addbuttonMouseClicked
+    private void refreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshMouseClicked
+        displayData();
+        enterfn.setText("");  
+        enterln.setText("");  
+        enteremail.setText("");  
+        enterpass.setText("");  
+        enterconfirm.setText("");
+        user.setSelectedIndex(-1);
+        userStatusComboBox.setSelectedIndex(-1);
+  
+    }//GEN-LAST:event_refreshMouseClicked
 
-    private void addbuttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbuttonMouseEntered
-        addbutton.setBackground(bodycolor);
-    }//GEN-LAST:event_addbuttonMouseEntered
+    private void refreshMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshMouseEntered
+        refresh.setBackground(bodycolor);
+    }//GEN-LAST:event_refreshMouseEntered
 
-    private void addbuttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbuttonMouseExited
-        addbutton.setBackground(navcolor);
-    }//GEN-LAST:event_addbuttonMouseExited
+    private void refreshMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshMouseExited
+        refresh.setBackground(navcolor);
+    }//GEN-LAST:event_refreshMouseExited
 
     private void editbutton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseClicked
-        // TODO add your handling code here:
+        
+        String firstName = enterfn.getText().trim();
+        String lastName = enterln.getText().trim();
+        String email = enteremail.getText().trim();
+        String password = new String(enterpass.getPassword());
+        String confirmPassword = new String(enterconfirm.getPassword());
+        String use_type = user.getSelectedItem().toString();
+        String user_status = userStatusComboBox.getSelectedItem().toString();
+
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (password.length() < 8) {
+            JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        if (confirmPassword.length() < 8) {
+            JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        String url = "jdbc:mysql://localhost:3306/obaob_db";
+        String user = "root";
+        String pass = "";
+
+        try {
+
+            Connection conn = DriverManager.getConnection(url, user, pass);
+            
+
+            String sql = "UPDATE user_table SET firstName = ?, lastName = ?,  password = ?, confirmPassword = ?, use_type = ?, user_status = ? WHERE email = ?";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            pstmt.setString(1, firstName);
+            pstmt.setString(2, lastName);
+            pstmt.setString(3, password);
+            pstmt.setString(4, confirmPassword);
+            pstmt.setString(5, use_type);
+            pstmt.setString(6, user_status);
+            pstmt.setString(7, email);
+
+            int rowsUpdated = pstmt.executeUpdate();
+            if (rowsUpdated > 0) {
+                JOptionPane.showMessageDialog(this, "User information updated successfully!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Update failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+
+            pstmt.close();
+            conn.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
+        
     }//GEN-LAST:event_editbutton1MouseClicked
 
     private void editbutton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseEntered
@@ -561,9 +812,6 @@ public class adminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_editbutton1MouseExited
 
     private void manageuserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseClicked
-        cardLayout.show(mainPanel, "ManageUsers");
-        appear.setVisible(true);
-        citizen.setVisible(false);
         displayData();     
     }//GEN-LAST:event_manageuserMouseClicked
 
@@ -610,6 +858,40 @@ public class adminPage extends javax.swing.JFrame {
        logout.setOpaque(true);
     }//GEN-LAST:event_logoutMouseExited
 
+    private void enterfnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterfnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterfnActionPerformed
+
+    private void enterlnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterlnActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterlnActionPerformed
+
+    private void enteremailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enteremailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enteremailActionPerformed
+
+    private void enterpassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_enterpassKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterpassKeyPressed
+
+    private void userStatusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userStatusComboBoxActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_userStatusComboBoxActionPerformed
+
+    private void c_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_tableMouseClicked
+        int i = c_table.getSelectedRow();
+        TableModel model = c_table.getModel();
+        enterfn.setText(model.getValueAt(i,1).toString());
+        enterln.setText(model.getValueAt(i,2).toString());
+        enteremail.setText(model.getValueAt(i,3).toString());
+        enterpass.setText(model.getValueAt(i,4).toString());
+        enterconfirm.setText(model.getValueAt(i,5).toString());
+        String type = model.getValueAt(i, 6).toString();
+        user.setSelectedItem(type);
+        String status = model.getValueAt(i, 7).toString();
+        userStatusComboBox.setSelectedItem(status);
+    }//GEN-LAST:event_c_tableMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -648,16 +930,24 @@ public class adminPage extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel add;
     private javax.swing.JLabel add1;
-    private javax.swing.JPanel addbutton;
     private javax.swing.JPanel addbutton2;
-    private javax.swing.JScrollPane appear;
     private javax.swing.JTable c_table;
     private javax.swing.JScrollPane citizen;
+    private javax.swing.JLabel confirm;
+    private javax.swing.JLabel confirm1;
+    private javax.swing.JLabel confirm2;
     private javax.swing.JLabel dash;
     private javax.swing.JPanel deletebutton;
     private javax.swing.JLabel edit;
     private javax.swing.JLabel edit1;
     private javax.swing.JPanel editbutton1;
+    private javax.swing.JLabel email;
+    private javax.swing.JPasswordField enterconfirm;
+    private javax.swing.JTextField enteremail;
+    private javax.swing.JTextField enterfn;
+    private javax.swing.JTextField enterln;
+    private javax.swing.JPasswordField enterpass;
+    private javax.swing.JLabel fn1;
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -667,12 +957,16 @@ public class adminPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
+    private javax.swing.JLabel ln;
     private javax.swing.JLabel logout;
     private javax.swing.JPanel main;
     private javax.swing.JLabel managecitizen;
     private javax.swing.JLabel manageuser;
+    private javax.swing.JLabel pass;
+    private javax.swing.JPanel refresh;
     private javax.swing.JLabel refresh1;
     private javax.swing.JPanel searchbutton;
-    private javax.swing.JTable user_table;
+    private javax.swing.JComboBox<String> user;
+    private javax.swing.JComboBox<String> userStatusComboBox;
     // End of variables declaration//GEN-END:variables
 }
