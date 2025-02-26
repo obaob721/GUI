@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 16, 2025 at 03:24 PM
+-- Generation Time: Feb 26, 2025 at 12:23 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -34,16 +34,18 @@ CREATE TABLE `user_table` (
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `confirmPassword` varchar(50) NOT NULL,
-  `use_type` varchar(50) NOT NULL
+  `use_type` varchar(50) NOT NULL,
+  `user_status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_table`
 --
 
-INSERT INTO `user_table` (`user_id`, `firstName`, `lastName`, `email`, `password`, `confirmPassword`, `use_type`) VALUES
-(1, 'Lawrence', 'Sumbi', 'guian@gmail.com', '09223198120', '09223198120', 'User	'),
-(2, 'Patricia', 'Obaob', 'pat@gmail.com', '12345678', '12345678', 'Admin');
+INSERT INTO `user_table` (`user_id`, `firstName`, `lastName`, `email`, `password`, `confirmPassword`, `use_type`, `user_status`) VALUES
+(1, 'Lawrence', 'Sumbi', 'guian@gmail.com', '09223198120', '09223198120', 'User	', 'Pending'),
+(2, 'Patricia', 'Obaob', 'pat@gmail.com', '12345678', '12345678', 'Admin', 'Approved'),
+(4, 'sample2', 'sample2', 'sample@gmail.com', '99999999', '99999999', 'User	', 'Pending');
 
 --
 -- Indexes for dumped tables
@@ -63,7 +65,7 @@ ALTER TABLE `user_table`
 -- AUTO_INCREMENT for table `user_table`
 --
 ALTER TABLE `user_table`
-  MODIFY `user_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `user_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
