@@ -1,6 +1,13 @@
+package adminPackage;
 
+
+import config.dbConnector;
 import java.awt.Color;
-import javax.swing.JOptionPane;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import net.proteanit.sql.DbUtils;
 
 
 
@@ -21,13 +28,62 @@ public class admindashboard extends javax.swing.JFrame {
      */
     public admindashboard() {
         initComponents();
+        displayData();
+        displayTotalCitizens();
+        displayPendingUsers();
         
-        
+       
     }
     Color navcolor = new Color(0,51,51);
     Color headcolor = new Color(0,153,153);
     Color bodycolor = new Color(0,153,153);
     
+    
+  public void displayData() {
+    try {
+        dbConnector dbc = new dbConnector();
+        String query = "SELECT CONCAT(firstName, ' ', lastName) AS Full_Name, user_status " +
+                       "FROM user_table " +
+                       "WHERE user_status = 'Pending';";
+
+        ResultSet rs = dbc.getData(query);
+        user_table.setModel(DbUtils.resultSetToTableModel(rs)); 
+    } catch (SQLException ex) {
+        System.out.println("Error: " + ex.getMessage());
+    }
+}
+
+  public void displayTotalCitizens() {
+    dbConnector dbc = new dbConnector();
+    String query = "SELECT COUNT(*) AS total_citizens FROM citizen_table";
+
+    try (ResultSet rs = dbc.getData(query)) {
+        if (rs.next()) {
+            int total = rs.getInt("total_citizens"); 
+            totalCitizensLabel.setText(String.valueOf(total)); 
+        }
+    } catch (SQLException ex) {
+        System.out.println("Error: " + ex.getMessage());
+    }
+}
+  
+ public void displayPendingUsers() {
+     dbConnector dbc = new dbConnector();
+       String query = "SELECT COUNT(*) AS pending_users FROM user_table WHERE user_status = 'Pending'";
+
+     try (ResultSet rs = dbc.getData(query)) {
+
+        if (rs.next()) {
+            int pendingUsers = rs.getInt("pending_users");
+            pendingUsersLabel.setText(String.valueOf(pendingUsers)); 
+        }
+
+    } catch (SQLException ex) {
+        System.out.println("Error: " + ex.getMessage());
+    }
+}
+
+
     
     /**
      * This method is called from within the constructor to initialize the form.
@@ -52,18 +108,18 @@ public class admindashboard extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         header = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
-        jLabel18 = new javax.swing.JLabel();
+        update = new javax.swing.JLabel();
         sumBlotter = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         sumUsers = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
-        jLabel12 = new javax.swing.JLabel();
+        totalUsersLabel = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         sumCitizens = new javax.swing.JPanel();
         jLabel14 = new javax.swing.JLabel();
-        jLabel15 = new javax.swing.JLabel();
+        totalCitizensLabel = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         sumReports = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
@@ -76,7 +132,7 @@ public class admindashboard extends javax.swing.JFrame {
         jLabel30 = new javax.swing.JLabel();
         pendingusers = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
-        jLabel23 = new javax.swing.JLabel();
+        pendingUsersLabel = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         pendingcases = new javax.swing.JPanel();
         jLabel28 = new javax.swing.JLabel();
@@ -218,7 +274,12 @@ public class admindashboard extends javax.swing.JFrame {
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
         jLabel17.setText("BLOTTERMATE COMMUNITY SYSTEM");
 
-        jLabel18.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-refresh-32.png"))); // NOI18N
+        update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-refresh-32.png"))); // NOI18N
+        update.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                updateMouseClicked(evt);
+            }
+        });
 
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
@@ -228,12 +289,12 @@ public class admindashboard extends javax.swing.JFrame {
                 .addGap(0, 22, Short.MAX_VALUE)
                 .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 704, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(jLabel18)
+                .addComponent(update)
                 .addGap(18, 18, 18))
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(update, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 44, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
@@ -286,12 +347,17 @@ public class admindashboard extends javax.swing.JFrame {
 
         sumUsers.setBackground(new java.awt.Color(0, 51, 51));
 
-        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-reports-50.png"))); // NOI18N
+        jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-user-50.png"))); // NOI18N
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel12.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("0");
+        totalUsersLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        totalUsersLabel.setForeground(new java.awt.Color(255, 255, 255));
+        totalUsersLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalUsersLabel.setText("0");
+        totalUsersLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                totalUsersLabelMouseClicked(evt);
+            }
+        });
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
@@ -309,7 +375,7 @@ public class admindashboard extends javax.swing.JFrame {
                         .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(sumUsersLayout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(totalUsersLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel11)
                 .addGap(37, 37, 37))
@@ -321,7 +387,7 @@ public class admindashboard extends javax.swing.JFrame {
                 .addGroup(sumUsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(sumUsersLayout.createSequentialGroup()
-                        .addComponent(jLabel12)
+                        .addComponent(totalUsersLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(44, 44, 44))
@@ -333,10 +399,15 @@ public class admindashboard extends javax.swing.JFrame {
 
         jLabel14.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-people-50.png"))); // NOI18N
 
-        jLabel15.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel15.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel15.setText("0");
+        totalCitizensLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        totalCitizensLabel.setForeground(new java.awt.Color(255, 255, 255));
+        totalCitizensLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalCitizensLabel.setText("0");
+        totalCitizensLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                totalCitizensLabelMouseClicked(evt);
+            }
+        });
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
@@ -354,7 +425,7 @@ public class admindashboard extends javax.swing.JFrame {
                         .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(sumCitizensLayout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addComponent(jLabel15, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(totalCitizensLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel14)
                 .addGap(37, 37, 37))
@@ -366,7 +437,7 @@ public class admindashboard extends javax.swing.JFrame {
                 .addGroup(sumCitizensLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(sumCitizensLayout.createSequentialGroup()
-                        .addComponent(jLabel15)
+                        .addComponent(totalCitizensLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel16, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(44, 44, 44))
@@ -477,11 +548,16 @@ public class admindashboard extends javax.swing.JFrame {
 
         dashboardPanel.add(pendingusers, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 500, 230, 40));
 
-        jLabel23.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel23.setForeground(new java.awt.Color(204, 0, 51));
-        jLabel23.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel23.setText("0");
-        dashboardPanel.add(jLabel23, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 540, 230, 40));
+        pendingUsersLabel.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        pendingUsersLabel.setForeground(new java.awt.Color(204, 0, 51));
+        pendingUsersLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pendingUsersLabel.setText("0");
+        pendingUsersLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pendingUsersLabelMouseClicked(evt);
+            }
+        });
+        dashboardPanel.add(pendingUsersLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 540, 230, 40));
 
         jLabel22.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(153, 0, 0), 3));
         dashboardPanel.add(jLabel22, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 490, 230, 90));
@@ -560,15 +636,15 @@ public class admindashboard extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void dashMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseClicked
-        
+       displayData();
        
 
     }//GEN-LAST:event_dashMouseClicked
 
     private void managecitizenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseClicked
-        adminPage page = new adminPage();
-        page.setVisible(true);
-        this.dispose(); 
+        adminCitizen  oten = new adminCitizen();
+        oten.setVisible(true);
+        this.dispose();
        
     }//GEN-LAST:event_managecitizenMouseClicked
 
@@ -611,16 +687,8 @@ public class admindashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_dashMouseExited
 
     private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-       int response = JOptionPane.showConfirmDialog(this, 
-        "Confirm Log Out?", 
-        "Logout Confirmation", 
-        JOptionPane.YES_NO_OPTION);
-
-        if (response == JOptionPane.YES_OPTION) {
-            new loginform().setVisible(true);
-            this.dispose();
-        } else {           
-        }   
+       
+    
     }//GEN-LAST:event_logoutMouseClicked
 
     private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered
@@ -633,10 +701,28 @@ public class admindashboard extends javax.swing.JFrame {
        logout.setOpaque(true);
     }//GEN-LAST:event_logoutMouseExited
 
+    private void updateMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_updateMouseClicked
+      
+    }//GEN-LAST:event_updateMouseClicked
+
+    private void totalCitizensLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_totalCitizensLabelMouseClicked
+         displayTotalCitizens();
+    }//GEN-LAST:event_totalCitizensLabelMouseClicked
+
+    private void totalUsersLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_totalUsersLabelMouseClicked
+      
+    }//GEN-LAST:event_totalUsersLabelMouseClicked
+
+    private void pendingUsersLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pendingUsersLabelMouseClicked
+        displayPendingUsers();
+    }//GEN-LAST:event_pendingUsersLabelMouseClicked
+
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
+        
+     
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -675,19 +761,15 @@ public class admindashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
-    private javax.swing.JLabel jLabel12;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel14;
-    private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
-    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
-    private javax.swing.JLabel jLabel23;
     private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
@@ -708,6 +790,7 @@ public class admindashboard extends javax.swing.JFrame {
     private javax.swing.JLabel managecitizen;
     private javax.swing.JLabel manageuser;
     private javax.swing.JPanel nav;
+    private javax.swing.JLabel pendingUsersLabel;
     private javax.swing.JPanel pendingcases;
     private javax.swing.JPanel pendingusers;
     private javax.swing.JPanel settledcases;
@@ -715,6 +798,9 @@ public class admindashboard extends javax.swing.JFrame {
     private javax.swing.JPanel sumCitizens;
     private javax.swing.JPanel sumReports;
     private javax.swing.JPanel sumUsers;
+    private javax.swing.JLabel totalCitizensLabel;
+    private javax.swing.JLabel totalUsersLabel;
+    private javax.swing.JLabel update;
     private javax.swing.JScrollPane user;
     private javax.swing.JTable user_table;
     // End of variables declaration//GEN-END:variables

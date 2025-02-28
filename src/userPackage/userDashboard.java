@@ -1,9 +1,10 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package userPackage;
+
+import config.dbConnector;
+import java.awt.Color;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 /**
  *
@@ -16,7 +17,28 @@ public class userDashboard extends javax.swing.JFrame {
      */
     public userDashboard() {
         initComponents();
+        displayTotalCitizens();
     }
+    Color navcolor = new Color(0,51,51);
+    Color headcolor = new Color(0,51,51);
+    Color bodycolor = new Color(0,153,153);
+    
+    public void displayTotalCitizens() {
+    dbConnector dbc = new dbConnector();
+    String query = "SELECT COUNT(*) AS total_citizens FROM citizen_table";
+
+    try (ResultSet rs = dbc.getData(query)) {
+        if (rs.next()) {
+            int total = rs.getInt("total_citizens"); 
+            totalCitizensLabel.setText(String.valueOf(total)); // Display count in the label
+        }
+    } catch (SQLException ex) {
+        System.out.println("Error: " + ex.getMessage());
+    }
+}
+
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -31,15 +53,15 @@ public class userDashboard extends javax.swing.JFrame {
         header = new javax.swing.JPanel();
         jLabel17 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
+        jLabel36 = new javax.swing.JLabel();
         sumBlotter = new javax.swing.JPanel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
         jLabel13 = new javax.swing.JLabel();
         sumCitizens = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
+        totalCitizensLabel = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
-        jLabel29 = new javax.swing.JLabel();
         settledcases = new javax.swing.JPanel();
         jLabel26 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
@@ -48,10 +70,7 @@ public class userDashboard extends javax.swing.JFrame {
         jLabel32 = new javax.swing.JLabel();
         jLabel33 = new javax.swing.JLabel();
         jLabel34 = new javax.swing.JLabel();
-        user = new javax.swing.JScrollPane();
-        user_table = new javax.swing.JTable();
         jLabel35 = new javax.swing.JLabel();
-        jLabel36 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel5 = new javax.swing.JLabel();
         jLabel6 = new javax.swing.JLabel();
@@ -95,16 +114,22 @@ public class userDashboard extends javax.swing.JFrame {
 
         dashboardPanel2.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 50));
 
+        jLabel36.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel36.setForeground(new java.awt.Color(102, 102, 0));
+        jLabel36.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel36.setText("USER DASHBOARD");
+        dashboardPanel2.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 70, 800, 60));
+
         sumBlotter.setBackground(new java.awt.Color(0, 51, 51));
 
         jLabel11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-strike-50.png"))); // NOI18N
 
-        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel12.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel12.setForeground(new java.awt.Color(255, 255, 255));
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setText("0");
 
-        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel13.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel13.setForeground(new java.awt.Color(255, 255, 255));
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel13.setText("Total Blotter");
@@ -114,42 +139,45 @@ public class userDashboard extends javax.swing.JFrame {
         sumBlotterLayout.setHorizontalGroup(
             sumBlotterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(sumBlotterLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
                 .addGroup(sumBlotterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(sumBlotterLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(sumBlotterLayout.createSequentialGroup()
-                        .addGap(19, 19, 19)
-                        .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 521, Short.MAX_VALUE)
                 .addComponent(jLabel11)
-                .addGap(54, 54, 54))
+                .addGap(36, 36, 36))
         );
         sumBlotterLayout.setVerticalGroup(
             sumBlotterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sumBlotterLayout.createSequentialGroup()
+            .addGroup(sumBlotterLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(sumBlotterLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(sumBlotterLayout.createSequentialGroup()
-                        .addComponent(jLabel12)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(44, 44, 44))
+                .addComponent(jLabel12)
+                .addGap(18, 18, 18)
+                .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(sumBlotterLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel11, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        dashboardPanel2.add(sumBlotter, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 230, 420, 90));
+        dashboardPanel2.add(sumBlotter, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 270, 770, 120));
 
         sumCitizens.setBackground(new java.awt.Color(0, 51, 51));
 
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-people-50.png"))); // NOI18N
 
-        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel20.setText("0");
+        totalCitizensLabel.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        totalCitizensLabel.setForeground(new java.awt.Color(255, 255, 255));
+        totalCitizensLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalCitizensLabel.setText("0");
+        totalCitizensLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                totalCitizensLabelMouseClicked(evt);
+            }
+        });
 
-        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel21.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(255, 255, 255));
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel21.setText("Total Citizens");
@@ -165,31 +193,26 @@ public class userDashboard extends javax.swing.JFrame {
                         .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(sumCitizensLayout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(totalCitizensLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel19)
                 .addGap(37, 37, 37))
         );
         sumCitizensLayout.setVerticalGroup(
             sumCitizensLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, sumCitizensLayout.createSequentialGroup()
+            .addGroup(sumCitizensLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(sumCitizensLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(sumCitizensLayout.createSequentialGroup()
-                        .addComponent(jLabel20)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(44, 44, 44))
+                        .addComponent(totalCitizensLabel)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(21, 21, 21))
+                    .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
 
-        dashboardPanel2.add(sumCitizens, new org.netbeans.lib.awtextra.AbsoluteConstraints(540, 120, 420, 100));
-
-        jLabel29.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        jLabel29.setForeground(new java.awt.Color(102, 102, 0));
-        jLabel29.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel29.setText("SUMMARY OF THE CITIZENS");
-        dashboardPanel2.add(jLabel29, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 60, 340, 30));
+        dashboardPanel2.add(sumCitizens, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 140, 770, 120));
 
         settledcases.setBackground(new java.awt.Color(0, 51, 102));
 
@@ -202,23 +225,23 @@ public class userDashboard extends javax.swing.JFrame {
         settledcases.setLayout(settledcasesLayout);
         settledcasesLayout.setHorizontalGroup(
             settledcasesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+            .addComponent(jLabel26, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
         );
         settledcasesLayout.setVerticalGroup(
             settledcasesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, 50, Short.MAX_VALUE)
+            .addComponent(jLabel26, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        dashboardPanel2.add(settledcases, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 480, 410, 50));
+        dashboardPanel2.add(settledcases, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 460, 350, 40));
 
         jLabel25.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 153), 3));
-        dashboardPanel2.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 470, 410, 100));
+        dashboardPanel2.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 450, 350, 120));
 
         jLabel30.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel30.setForeground(new java.awt.Color(0, 51, 102));
         jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel30.setText("0");
-        dashboardPanel2.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 520, 410, 50));
+        dashboardPanel2.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 500, 350, 70));
 
         pendingcases.setBackground(new java.awt.Color(0, 102, 0));
 
@@ -231,52 +254,29 @@ public class userDashboard extends javax.swing.JFrame {
         pendingcases.setLayout(pendingcasesLayout);
         pendingcasesLayout.setHorizontalGroup(
             pendingcasesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
+            .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 350, Short.MAX_VALUE)
         );
         pendingcasesLayout.setVerticalGroup(
             pendingcasesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel32, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
+            .addComponent(jLabel32, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
         );
 
-        dashboardPanel2.add(pendingcases, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 370, 410, 40));
+        dashboardPanel2.add(pendingcases, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 460, 350, 40));
 
         jLabel33.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 0), 3));
-        dashboardPanel2.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 360, 410, 90));
+        dashboardPanel2.add(jLabel33, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 450, 350, 120));
 
         jLabel34.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
         jLabel34.setForeground(new java.awt.Color(0, 102, 0));
         jLabel34.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel34.setText("0");
-        dashboardPanel2.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 410, 410, 40));
+        dashboardPanel2.add(jLabel34, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 500, 350, 70));
 
-        user.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-
-        user_table.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Title 1", "Title 2", "Title 3", "Title 4"
-            }
-        ));
-        user.setViewportView(user_table);
-
-        dashboardPanel2.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 100, 340, 520));
-
-        jLabel35.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        jLabel35.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
         jLabel35.setForeground(new java.awt.Color(102, 102, 0));
         jLabel35.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel35.setText("BLOTTER RECORD SUMMARY");
-        dashboardPanel2.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 330, 470, 30));
-
-        jLabel36.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel36.setForeground(new java.awt.Color(102, 102, 0));
-        jLabel36.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel36.setText("USER DASHBOARD");
-        dashboardPanel2.add(jLabel36, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 60, 450, 60));
+        dashboardPanel2.add(jLabel35, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 400, 800, 30));
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -304,6 +304,12 @@ public class userDashboard extends javax.swing.JFrame {
         dash2.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 dash2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                dash2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                dash2MouseExited(evt);
             }
         });
         jPanel1.add(dash2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 180, 50));
@@ -374,16 +380,33 @@ public class userDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_dash2MouseClicked
 
     private void managecitizenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseClicked
-        
+       new userPage().setVisible(true);
+       this.dispose();
     }//GEN-LAST:event_managecitizenMouseClicked
 
     private void managecitizenMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseEntered
-       
+                managecitizen.setBackground(bodycolor);
+                managecitizen.setOpaque(true);
     }//GEN-LAST:event_managecitizenMouseEntered
 
     private void managecitizenMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseExited
-      
+                managecitizen.setBackground(navcolor);
+                managecitizen.setOpaque(true);
     }//GEN-LAST:event_managecitizenMouseExited
+
+    private void dash2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dash2MouseEntered
+                dash2.setBackground(bodycolor);
+                dash2.setOpaque(true);
+    }//GEN-LAST:event_dash2MouseEntered
+
+    private void dash2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dash2MouseExited
+                dash2.setBackground(navcolor);
+                dash2.setOpaque(true);
+    }//GEN-LAST:event_dash2MouseExited
+
+    private void totalCitizensLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_totalCitizensLabelMouseClicked
+     displayTotalCitizens();
+    }//GEN-LAST:event_totalCitizensLabelMouseClicked
 
     /**
      * @param args the command line arguments
@@ -431,11 +454,9 @@ public class userDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel19;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel25;
     private javax.swing.JLabel jLabel26;
-    private javax.swing.JLabel jLabel29;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
@@ -453,7 +474,6 @@ public class userDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel settledcases;
     private javax.swing.JPanel sumBlotter;
     private javax.swing.JPanel sumCitizens;
-    private javax.swing.JScrollPane user;
-    private javax.swing.JTable user_table;
+    private javax.swing.JLabel totalCitizensLabel;
     // End of variables declaration//GEN-END:variables
 }

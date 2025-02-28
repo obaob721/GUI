@@ -1,7 +1,7 @@
+package adminPackage;
+
 
 import config.dbConnector;
-import java.awt.BorderLayout;
-import java.awt.CardLayout;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -9,9 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.table.TableModel;
 import net.proteanit.sql.DbUtils;
 
@@ -26,9 +23,7 @@ import net.proteanit.sql.DbUtils;
  * @author PATRICIA
  */
 public class adminPage extends javax.swing.JFrame {
-         private CardLayout cardLayout;
-         private JPanel mainPanel, manageUsersPanel, manageCitizensPanel;
-         private JTable userTable, citizenTable;
+         
          
     /**
      * Creates new form adminPage
@@ -37,20 +32,6 @@ public class adminPage extends javax.swing.JFrame {
         initComponents();
         displayData();
         
-        cardLayout = new CardLayout();
-        mainPanel = new JPanel(cardLayout);
-        
-        manageUsersPanel = new JPanel(new BorderLayout());
-        userTable = new JTable();
-        manageUsersPanel.add(new JScrollPane(userTable), BorderLayout.CENTER);
-        
-        manageCitizensPanel = new JPanel(new BorderLayout());
-        citizenTable = new JTable();
-        manageCitizensPanel.add(new JScrollPane(citizenTable), BorderLayout.CENTER);
-        
-        mainPanel.add(manageCitizensPanel, "ManageCitizens");
-        mainPanel.add(manageUsersPanel, "ManageUsers"); 
-
     }
     
     
@@ -58,9 +39,9 @@ public class adminPage extends javax.swing.JFrame {
     Color headcolor = new Color(0,153,153);
     Color bodycolor = new Color(0,153,153);
     
-    public void displayData(){
+   public void displayData(){
         try{
-            dbConnector dbc = new dbConnector();
+             dbConnector dbc = new dbConnector();
             ResultSet rs = dbc.getData("SELECT * FROM user_table");
             c_table.setModel(DbUtils.resultSetToTableModel(rs));
             
@@ -68,16 +49,9 @@ public class adminPage extends javax.swing.JFrame {
             System.out.println("Errors"+ex.getMessage());
         }
     }
-    private void displayCitizenData() {
-       try{
-            dbConnector dbc = new dbConnector();
-            ResultSet rs = dbc.getData("SELECT * FROM citizen_table");
-            c_table.setModel(DbUtils.resultSetToTableModel(rs));
-            
-        }catch(SQLException ex){
-            System.out.println("Errors"+ex.getMessage());
-        }
-    }
+
+
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -476,7 +450,7 @@ public class adminPage extends javax.swing.JFrame {
         fn1.setBackground(new java.awt.Color(255, 255, 255));
         fn1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         fn1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        fn1.setText("First name:");
+        fn1.setText("First Name:");
         main.add(fn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, 100, 30));
 
         enterfn.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -490,7 +464,7 @@ public class adminPage extends javax.swing.JFrame {
 
         ln.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         ln.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ln.setText("Last name:");
+        ln.setText("Last Name:");
         main.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 160, 90, 30));
 
         enterln.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -584,7 +558,7 @@ public class adminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void addbutton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseClicked
-        String firstName = enterfn.getText().trim();
+       String firstName = enterfn.getText().trim();
         String lastName = enterln.getText().trim();
         String email = enteremail.getText().trim();
         String password = new String(enterpass.getPassword());
@@ -630,7 +604,7 @@ public class adminPage extends javax.swing.JFrame {
             if (rowsInserted > 0) {
                 JOptionPane.showMessageDialog(this, "Registration Successful!");
                 this.dispose();
-                new loginform().setVisible(true);
+                
             }
 
             pstmt.close();
@@ -638,7 +612,7 @@ public class adminPage extends javax.swing.JFrame {
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-   
+    
     }//GEN-LAST:event_addbutton2MouseClicked
 
     private void addbutton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseEntered
@@ -663,8 +637,6 @@ public class adminPage extends javax.swing.JFrame {
 
         try {
             Connection conn = DriverManager.getConnection(url, user, pass);
-
-            
 
             int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this user?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
             if (confirm != JOptionPane.YES_OPTION) {
@@ -701,14 +673,14 @@ public class adminPage extends javax.swing.JFrame {
     private void dashMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseClicked
         admindashboard admin = new admindashboard();
         admin.setVisible(true);
-        this.dispose();
+       this.dispose();
 
     }//GEN-LAST:event_dashMouseClicked
 
     private void managecitizenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseClicked
-        cardLayout.show(mainPanel, "ManageCitizens");
-        citizen.setVisible(true);
-        displayCitizenData();
+        adminCitizen zen = new adminCitizen();
+        zen.setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_managecitizenMouseClicked
 
     private void managecitizenMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseEntered
@@ -797,10 +769,8 @@ public class adminPage extends javax.swing.JFrame {
             conn.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+
         }
-        
-        
-        
     }//GEN-LAST:event_editbutton1MouseClicked
 
     private void editbutton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseEntered
@@ -836,16 +806,7 @@ public class adminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_dashMouseExited
 
     private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-        int response = JOptionPane.showConfirmDialog(this, 
-        "Confirm Log Out?", 
-        "Logout Confirmation", 
-        JOptionPane.YES_NO_OPTION);
-
-        if (response == JOptionPane.YES_OPTION) {
-            new loginform().setVisible(true);
-            this.dispose();
-        } else {           
-        }       
+        
     }//GEN-LAST:event_logoutMouseClicked
 
     private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered

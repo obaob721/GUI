@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 26, 2025 at 12:23 PM
+-- Generation Time: Feb 28, 2025 at 02:25 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,33 @@ SET time_zone = "+00:00";
 --
 -- Database: `obaob_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `citizen_table`
+--
+
+CREATE TABLE `citizen_table` (
+  `c_id` int(11) NOT NULL,
+  `c_fname` varchar(50) NOT NULL,
+  `c_lname` varchar(50) NOT NULL,
+  `c_age` int(3) NOT NULL,
+  `c_address` varchar(100) NOT NULL,
+  `c_pnumber` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `citizen_table`
+--
+
+INSERT INTO `citizen_table` (`c_id`, `c_fname`, `c_lname`, `c_age`, `c_address`, `c_pnumber`) VALUES
+(1, 'Diovely', 'Campo', 22, 'Minglanilla, Cebu.', '09334178140'),
+(2, 'Karl', 'Campoy', 20, 'Minglanilla, Cebu.', '09059641855'),
+(3, 'Justin', 'Valen', 22, 'Minglanilla, Cebu.', '09992345768'),
+(5, 'Patricia', 'Obaob', 19, 'Minglanilla, Cebu.', '09223198120'),
+(6, 'Lawrence', 'Sumbi', 20, 'Minglanilla, Cebu.', '09167892345'),
+(7, 'Jaymaica', 'Narvasa', 22, 'Minglanilla, Cebu.', '09203247795');
 
 -- --------------------------------------------------------
 
@@ -45,11 +72,19 @@ CREATE TABLE `user_table` (
 INSERT INTO `user_table` (`user_id`, `firstName`, `lastName`, `email`, `password`, `confirmPassword`, `use_type`, `user_status`) VALUES
 (1, 'Lawrence', 'Sumbi', 'guian@gmail.com', '09223198120', '09223198120', 'User	', 'Pending'),
 (2, 'Patricia', 'Obaob', 'pat@gmail.com', '12345678', '12345678', 'Admin', 'Approved'),
-(4, 'sample2', 'sample2', 'sample@gmail.com', '99999999', '99999999', 'User	', 'Pending');
+(5, 'Mary', 'Largo', 'largo@gmail.com', 'uglymary', 'uglymary', 'User	', 'Pending'),
+(6, 'Risa', 'Ravina', 'risahon@gmail.com', 'mamarisa', 'mamarisa', 'User	', 'Pending'),
+(7, 'Jaymaica', 'Narvasa', 'maica@gmail.com', 'maicamaica', 'maicamaica', 'User	', 'Pending');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `citizen_table`
+--
+ALTER TABLE `citizen_table`
+  ADD PRIMARY KEY (`c_id`);
 
 --
 -- Indexes for table `user_table`
@@ -62,10 +97,16 @@ ALTER TABLE `user_table`
 --
 
 --
+-- AUTO_INCREMENT for table `citizen_table`
+--
+ALTER TABLE `citizen_table`
+  MODIFY `c_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
 -- AUTO_INCREMENT for table `user_table`
 --
 ALTER TABLE `user_table`
-  MODIFY `user_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `user_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
