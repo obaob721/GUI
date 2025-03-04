@@ -3,12 +3,11 @@ package adminPackage;
 
 import config.dbConnector;
 import java.awt.Color;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import net.proteanit.sql.DbUtils;
-
+import javax.swing.JOptionPane;
+import loginReg.loginform;
 
 
 /*
@@ -22,17 +21,25 @@ import net.proteanit.sql.DbUtils;
  * @author PATRICIA
  */
 public class admindashboard extends javax.swing.JFrame {
-        
+        private String fullname;
     /**
      * Creates new form adminPage
      */
-    public admindashboard() {
+    public admindashboard(String fullname) {
+        this.fullname = fullname;
+        
         initComponents();
+        adminprof.setText("" + fullname + "");
+        
         displayData();
         displayTotalCitizens();
         displayPendingUsers();
+  
+    }
+    
+    public admindashboard(){
+        initComponents();
         
-       
     }
     Color navcolor = new Color(0,51,51);
     Color headcolor = new Color(0,153,153);
@@ -96,7 +103,7 @@ public class admindashboard extends javax.swing.JFrame {
 
         dashboardPanel = new javax.swing.JPanel();
         nav = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        adminprof = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         dash = new javax.swing.JLabel();
         logout = new javax.swing.JLabel();
@@ -151,11 +158,16 @@ public class admindashboard extends javax.swing.JFrame {
         nav.setBackground(new java.awt.Color(0, 51, 51));
         nav.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Administrator");
-        nav.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 170, -1));
+        adminprof.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        adminprof.setForeground(new java.awt.Color(255, 255, 255));
+        adminprof.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        adminprof.setText("Administrator");
+        adminprof.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adminprofMouseClicked(evt);
+            }
+        });
+        nav.add(adminprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 180, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -270,8 +282,9 @@ public class admindashboard extends javax.swing.JFrame {
         header.setBackground(new java.awt.Color(0, 51, 51));
         header.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
 
-        jLabel17.setFont(new java.awt.Font("Bodoni MT", 1, 20)); // NOI18N
+        jLabel17.setFont(new java.awt.Font("Tahoma", 1, 20)); // NOI18N
         jLabel17.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel17.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel17.setText("BLOTTERMATE COMMUNITY SYSTEM");
 
         update.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-refresh-32.png"))); // NOI18N
@@ -286,8 +299,7 @@ public class admindashboard extends javax.swing.JFrame {
         headerLayout.setHorizontalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerLayout.createSequentialGroup()
-                .addGap(0, 22, Short.MAX_VALUE)
-                .addComponent(jLabel17, javax.swing.GroupLayout.PREFERRED_SIZE, 704, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jLabel17, javax.swing.GroupLayout.DEFAULT_SIZE, 726, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addComponent(update)
                 .addGap(18, 18, 18))
@@ -642,7 +654,7 @@ public class admindashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_dashMouseClicked
 
     private void managecitizenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseClicked
-        adminCitizen  oten = new adminCitizen();
+        adminCitizen  oten = new adminCitizen(fullname);
         oten.setVisible(true);
         this.dispose();
        
@@ -659,7 +671,7 @@ public class admindashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_managecitizenMouseExited
 
     private void manageuserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseClicked
-       adminPage min = new adminPage();
+       adminPage min = new adminPage(fullname);
        min.setVisible(true);
        this.dispose();
         
@@ -687,8 +699,20 @@ public class admindashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_dashMouseExited
 
     private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-       
-    
+      
+        int choice = JOptionPane.showConfirmDialog(this,
+        "Are you sure you want to log out?", 
+        "Logout Confirmation",               
+        JOptionPane.YES_NO_OPTION,           
+        JOptionPane.QUESTION_MESSAGE); 
+
+    if (choice == JOptionPane.YES_OPTION) {
+        this.dispose(); 
+
+        
+        loginform login = new loginform(); 
+        login.setVisible(true);
+    }
     }//GEN-LAST:event_logoutMouseClicked
 
     private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered
@@ -716,6 +740,10 @@ public class admindashboard extends javax.swing.JFrame {
     private void pendingUsersLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pendingUsersLabelMouseClicked
         displayPendingUsers();
     }//GEN-LAST:event_pendingUsersLabelMouseClicked
+
+    private void adminprofMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseClicked
+       
+    }//GEN-LAST:event_adminprofMouseClicked
 
     /**
      * @param args the command line arguments
@@ -749,16 +777,16 @@ public class admindashboard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new admindashboard().setVisible(true);
+                new admindashboard("Admin User").setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel adminprof;
     private javax.swing.JLabel dash;
     private javax.swing.JPanel dashboardPanel;
     private javax.swing.JPanel header;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
     private javax.swing.JLabel jLabel13;

@@ -1,3 +1,5 @@
+package loginReg;
+
 
 import adminPackage.admindashboard;
 import config.dbConnector;
@@ -14,6 +16,7 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import userPackage.userDashboard;
 import javax.swing.JFrame;
+ 
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -33,7 +36,7 @@ public class loginform extends JFrame {
         initComponents();
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
+        
     }
      Color hover = new Color(0, 153, 153);
      Color defbutton = new Color(204,255,204);
@@ -291,7 +294,7 @@ public class loginform extends JFrame {
 
     private void logbgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logbgMouseClicked
        String email = enterusername.getText();
-    String password = new String(enterpass.getPassword());
+       String password = new String(enterpass.getPassword());
 
     if (email.isEmpty() || password.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Please enter both email and password.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -320,15 +323,19 @@ public class loginform extends JFrame {
             }
 
             JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
+            
+            String firstName = rs.getString("firstName");
+            String lastName = rs.getString("lastName");
+            String fullname = firstName+" "+lastName;
+            
             String use_type = rs.getString("use_type");
 
             if (use_type.equals("Admin")) {
-                admindashboard admin = new admindashboard();
+                admindashboard admin = new admindashboard(fullname);
                 admin.setVisible(true);
                 System.out.println("Admin dashboard opened"); 
             } else {
-                userDashboard user = new userDashboard();
+                userDashboard user = new userDashboard(fullname);
                 user.setVisible(true);
                 System.out.println("User dashboard opened"); 
             }
@@ -385,15 +392,20 @@ public class loginform extends JFrame {
             }
 
             JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-
+            
+            
+            String firstName = rs.getString("firstName");
+            String lastName = rs.getString("lastName");
+            String fullname = firstName+" "+lastName;
+            
             String use_type = rs.getString("use_type");
 
             if (use_type.equals("Admin")) {
-                admindashboard admin = new admindashboard();
+                admindashboard admin = new admindashboard(fullname);
                 admin.setVisible(true);
                 System.out.println("Admin dashboard opened"); 
             } else {
-                userDashboard user = new userDashboard();
+                userDashboard user = new userDashboard(fullname);
                 user.setVisible(true);
                 System.out.println("User dashboard opened"); 
             }

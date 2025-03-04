@@ -1,3 +1,5 @@
+package loginReg;
+
 
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -287,6 +289,10 @@ public class registerform extends javax.swing.JFrame {
 
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid Gmail address (example@gmail.com)", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 

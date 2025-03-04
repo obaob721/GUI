@@ -5,6 +5,7 @@
  */
 package adminPackage;
 
+import loginReg.loginform;
 import config.dbConnector;
 import java.awt.Color;
 import java.sql.Connection;
@@ -16,17 +17,22 @@ import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
 import net.proteanit.sql.DbUtils;
 
+
 /**
  *
  * @author PATRICIA
  */
 public class adminCitizen extends javax.swing.JFrame {
-
+       private String fullname;
     /**
      * Creates new form adminCitizen
      */
-    public adminCitizen() {
+    public adminCitizen(String fullname) {
+        this.fullname = fullname;
+        
         initComponents();
+        adminprof.setText("" + fullname + "");
+        
         displayCitizenData();
     }
     
@@ -59,9 +65,7 @@ public class adminCitizen extends javax.swing.JFrame {
 
         main = new javax.swing.JPanel();
         header = new javax.swing.JPanel();
-        searchbutton = new javax.swing.JPanel();
-        add1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        adminprof = new javax.swing.JLabel();
         addbutton2 = new javax.swing.JPanel();
         edit = new javax.swing.JLabel();
         deletebutton = new javax.swing.JPanel();
@@ -69,16 +73,15 @@ public class adminCitizen extends javax.swing.JFrame {
         citizen = new javax.swing.JScrollPane();
         c_table = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         dash = new javax.swing.JLabel();
         logout = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         managecitizen = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         manageuser = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel5 = new javax.swing.JLabel();
         refresh = new javax.swing.JPanel();
         refresh1 = new javax.swing.JLabel();
         editbutton1 = new javax.swing.JPanel();
@@ -93,6 +96,9 @@ public class adminCitizen extends javax.swing.JFrame {
         address = new javax.swing.JTextField();
         email2 = new javax.swing.JLabel();
         number = new javax.swing.JTextField();
+        searchbutton = new javax.swing.JPanel();
+        add1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,58 +107,15 @@ public class adminCitizen extends javax.swing.JFrame {
 
         header.setBackground(new java.awt.Color(0, 153, 153));
         header.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        header.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        searchbutton.setBackground(new java.awt.Color(0, 51, 51));
-        searchbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        adminprof.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        adminprof.setForeground(new java.awt.Color(255, 255, 255));
+        adminprof.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        adminprof.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-add-user-48.png"))); // NOI18N
+        header.add(adminprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 0, 170, 50));
 
-        add1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        add1.setForeground(new java.awt.Color(255, 255, 255));
-        add1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        add1.setText("SEARCH");
-
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout searchbuttonLayout = new javax.swing.GroupLayout(searchbutton);
-        searchbutton.setLayout(searchbuttonLayout);
-        searchbuttonLayout.setHorizontalGroup(
-            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        searchbuttonLayout.setVerticalGroup(
-            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
-
-        javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
-        header.setLayout(headerLayout);
-        headerLayout.setHorizontalGroup(
-            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addContainerGap(502, Short.MAX_VALUE)
-                .addComponent(searchbutton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38))
-        );
-        headerLayout.setVerticalGroup(
-            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(searchbutton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 40));
+        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 50));
 
         addbutton2.setBackground(new java.awt.Color(0, 51, 51));
         addbutton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -251,12 +214,6 @@ public class adminCitizen extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Administrator");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 170, -1));
-
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -302,14 +259,6 @@ public class adminCitizen extends javax.swing.JFrame {
             }
         });
         jPanel1.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 180, 50));
-
-        jLabel2.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Welcome!");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 100, -1));
-
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-admin-64.png"))); // NOI18N
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 60, -1));
 
         managecitizen.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         managecitizen.setForeground(new java.awt.Color(255, 255, 255));
@@ -364,6 +313,16 @@ public class adminCitizen extends javax.swing.JFrame {
         jLabel4.setText("         Settings");
         jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 50));
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/150.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 180, 120));
+
+        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("BLOTTERMATE COMMUNITY");
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 180, 30));
 
         main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 640));
 
@@ -509,6 +468,42 @@ public class adminCitizen extends javax.swing.JFrame {
             }
         });
         main.add(number, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 200, 260, 30));
+
+        searchbutton.setBackground(new java.awt.Color(0, 51, 51));
+        searchbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+
+        add1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        add1.setForeground(new java.awt.Color(255, 255, 255));
+        add1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        add1.setText("SEARCH");
+
+        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout searchbuttonLayout = new javax.swing.GroupLayout(searchbutton);
+        searchbutton.setLayout(searchbuttonLayout);
+        searchbuttonLayout.setHorizontalGroup(
+            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        searchbuttonLayout.setVerticalGroup(
+            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        main.add(searchbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 70, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -657,7 +652,7 @@ number.setText(model.getValueAt(i,5) != null ? model.getValueAt(i,5).toString() 
     }//GEN-LAST:event_c_tableMouseClicked
 
     private void dashMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseClicked
-       admindashboard admin = new admindashboard();
+       admindashboard admin = new admindashboard(fullname);
        admin.setVisible(true);
        this.dispose();
     }//GEN-LAST:event_dashMouseClicked
@@ -673,7 +668,22 @@ number.setText(model.getValueAt(i,5) != null ? model.getValueAt(i,5).toString() 
     }//GEN-LAST:event_dashMouseExited
 
     private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-       
+        int choice = JOptionPane.showConfirmDialog(this,
+        "Are you sure you want to log out?", 
+        "Logout Confirmation",               
+        JOptionPane.YES_NO_OPTION,           
+        JOptionPane.QUESTION_MESSAGE); 
+
+    if (choice == JOptionPane.YES_OPTION) {
+        this.dispose(); 
+
+        
+        new loginform().setVisible(true);
+    }
+        
+        
+        
+        
     }//GEN-LAST:event_logoutMouseClicked
 
     private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered
@@ -701,7 +711,7 @@ number.setText(model.getValueAt(i,5) != null ? model.getValueAt(i,5).toString() 
     }//GEN-LAST:event_managecitizenMouseExited
 
     private void manageuserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseClicked
-        adminPage pag = new adminPage();
+        adminPage pag = new adminPage(fullname);
         pag.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_manageuserMouseClicked
@@ -848,7 +858,7 @@ String sql = "UPDATE citizen_table SET c_fname = ?, c_lname = ?,  c_age = ?, c_a
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new adminCitizen().setVisible(true);
+                new adminCitizen("Admin User").setVisible(true);
             }
         });
     }
@@ -858,6 +868,7 @@ String sql = "UPDATE citizen_table SET c_fname = ?, c_lname = ?,  c_age = ?, c_a
     private javax.swing.JLabel add1;
     private javax.swing.JPanel addbutton2;
     private javax.swing.JTextField address;
+    private javax.swing.JLabel adminprof;
     private javax.swing.JTextField age;
     private javax.swing.JTable c_table;
     private javax.swing.JScrollPane citizen;
@@ -874,10 +885,9 @@ String sql = "UPDATE citizen_table SET c_fname = ?, c_lname = ?,  c_age = ?, c_a
     private javax.swing.JLabel fn1;
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;

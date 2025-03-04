@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
+import loginReg.loginform;
 import net.proteanit.sql.DbUtils;
 
 /*
@@ -25,12 +26,16 @@ import net.proteanit.sql.DbUtils;
  * @author Admin
  */
 public class userPage extends javax.swing.JFrame {
-         
+     private String fullname;
     /**
      * Creates new form userPage
      */
-    public userPage() {
+    public userPage(String fullname) {
+        this.fullname = fullname;
+                
         initComponents();
+        userprof.setText("" + fullname + "");
+        
         displayCitizenData();
 
     }
@@ -59,18 +64,15 @@ public class userPage extends javax.swing.JFrame {
 
         main = new javax.swing.JPanel();
         header = new javax.swing.JPanel();
-        searchbutton = new javax.swing.JPanel();
-        add1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        userprof = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         dash = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        logout = new javax.swing.JLabel();
         managecitizen = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
         addbutton2 = new javax.swing.JPanel();
         edit = new javax.swing.JLabel();
         deletebutton = new javax.swing.JPanel();
@@ -91,6 +93,9 @@ public class userPage extends javax.swing.JFrame {
         address = new javax.swing.JTextField();
         email2 = new javax.swing.JLabel();
         number = new javax.swing.JTextField();
+        searchbutton = new javax.swing.JPanel();
+        add1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -99,67 +104,18 @@ public class userPage extends javax.swing.JFrame {
 
         header.setBackground(new java.awt.Color(0, 153, 153));
         header.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        header.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        searchbutton.setBackground(new java.awt.Color(0, 51, 51));
-        searchbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        userprof.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        userprof.setForeground(new java.awt.Color(255, 255, 255));
+        userprof.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        userprof.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-add-user-48.png"))); // NOI18N
+        header.add(userprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 0, 170, -1));
 
-        add1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        add1.setForeground(new java.awt.Color(255, 255, 255));
-        add1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        add1.setText("SEARCH");
-
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout searchbuttonLayout = new javax.swing.GroupLayout(searchbutton);
-        searchbutton.setLayout(searchbuttonLayout);
-        searchbuttonLayout.setHorizontalGroup(
-            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        searchbuttonLayout.setVerticalGroup(
-            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
-
-        javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
-        header.setLayout(headerLayout);
-        headerLayout.setHorizontalGroup(
-            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addContainerGap(502, Short.MAX_VALUE)
-                .addComponent(searchbutton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38))
-        );
-        headerLayout.setVerticalGroup(
-            headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(searchbutton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 40));
+        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 50));
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("User");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 170, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -188,21 +144,24 @@ public class userPage extends javax.swing.JFrame {
         });
         jPanel1.add(dash, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 190, 180, 50));
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel5.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-logout-50.png"))); // NOI18N
-        jLabel5.setText("      Logout");
-        jLabel5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 50));
-
-        jLabel2.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Welcome!");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 100, -1));
-
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-user-50.png"))); // NOI18N
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 60, -1));
+        logout.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        logout.setForeground(new java.awt.Color(255, 255, 255));
+        logout.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        logout.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-logout-50.png"))); // NOI18N
+        logout.setText("      Logout");
+        logout.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        logout.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logoutMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logoutMouseExited(evt);
+            }
+        });
+        jPanel1.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 50));
 
         managecitizen.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         managecitizen.setForeground(new java.awt.Color(255, 255, 255));
@@ -230,6 +189,16 @@ public class userPage extends javax.swing.JFrame {
         jLabel9.setText("         Blotter");
         jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 180, 50));
+
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/150.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 180, 120));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("BLOTTERMATE COMMUNITY");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 180, 30));
 
         main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 640));
 
@@ -470,6 +439,42 @@ public class userPage extends javax.swing.JFrame {
         });
         main.add(number, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 200, 260, 30));
 
+        searchbutton.setBackground(new java.awt.Color(0, 51, 51));
+        searchbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+
+        add1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        add1.setForeground(new java.awt.Color(255, 255, 255));
+        add1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        add1.setText("SEARCH");
+
+        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout searchbuttonLayout = new javax.swing.GroupLayout(searchbutton);
+        searchbutton.setLayout(searchbuttonLayout);
+        searchbuttonLayout.setHorizontalGroup(
+            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        searchbuttonLayout.setVerticalGroup(
+            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        main.add(searchbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 70, -1, -1));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -514,7 +519,7 @@ public class userPage extends javax.swing.JFrame {
     }//GEN-LAST:event_dashMouseEntered
 
     private void dashMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseClicked
-        new userDashboard().setVisible(true);
+        new userDashboard(fullname).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_dashMouseClicked
 
@@ -735,6 +740,32 @@ public class userPage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_numberActionPerformed
 
+    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
+        int choice = JOptionPane.showConfirmDialog(this,
+        "Are you sure you want to log out?", 
+        "Logout Confirmation",               
+        JOptionPane.YES_NO_OPTION,           
+        JOptionPane.QUESTION_MESSAGE); 
+
+    if (choice == JOptionPane.YES_OPTION) {
+        this.dispose(); 
+
+        
+        new loginform().setVisible(true);
+    }
+
+    }//GEN-LAST:event_logoutMouseClicked
+
+    private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered
+        logout.setBackground(bodycolor);
+        logout.setOpaque(true);
+    }//GEN-LAST:event_logoutMouseEntered
+
+    private void logoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseExited
+        logout.setBackground(navcolor);
+        logout.setOpaque(true);
+    }//GEN-LAST:event_logoutMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -765,7 +796,7 @@ public class userPage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new userPage().setVisible(true);
+                new userPage("Regular User").setVisible(true);
             }
         });
     }
@@ -793,17 +824,17 @@ public class userPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel ln;
+    private javax.swing.JLabel logout;
     private javax.swing.JPanel main;
     private javax.swing.JLabel managecitizen;
     private javax.swing.JTextField number;
     private javax.swing.JPanel refresh;
     private javax.swing.JLabel refresh1;
     private javax.swing.JPanel searchbutton;
+    private javax.swing.JLabel userprof;
     // End of variables declaration//GEN-END:variables
 }

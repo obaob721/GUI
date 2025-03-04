@@ -1,6 +1,6 @@
 package adminPackage;
 
-
+import loginReg.loginform;
 import config.dbConnector;
 import java.awt.Color;
 import java.sql.Connection;
@@ -17,41 +17,43 @@ import net.proteanit.sql.DbUtils;
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 /**
  *
  * @author PATRICIA
  */
 public class adminPage extends javax.swing.JFrame {
-         
-         
+       private String fullname;
+   
+
     /**
      * Creates new form adminPage
      */
-    public adminPage() {
+    public adminPage(String fullname) {
+        this.fullname = fullname;
+
         initComponents();
+        adminprof.setText("" + fullname + "");
+
+
         displayData();
-        
+
     }
-    
-    
-    Color navcolor = new Color(0,51,51);
-    Color headcolor = new Color(0,153,153);
-    Color bodycolor = new Color(0,153,153);
-    
-   public void displayData(){
-        try{
-             dbConnector dbc = new dbConnector();
-            ResultSet rs = dbc.getData("SELECT * FROM user_table");
+
+    Color navcolor = new Color(0, 51, 51);
+    Color headcolor = new Color(0, 153, 153);
+    Color bodycolor = new Color(0, 153, 153);
+
+    public void displayData() {
+        try {
+            dbConnector dbc = new dbConnector();
+            ResultSet rs = dbc.getData("SELECT CONCAT(firstName, ' ', lastName) AS Full_Name, email, use_type, user_status "
+                    + "FROM user_table");
             c_table.setModel(DbUtils.resultSetToTableModel(rs));
-            
-        }catch(SQLException ex){
-            System.out.println("Errors"+ex.getMessage());
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
         }
     }
 
-
-    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -63,26 +65,23 @@ public class adminPage extends javax.swing.JFrame {
 
         main = new javax.swing.JPanel();
         header = new javax.swing.JPanel();
-        searchbutton = new javax.swing.JPanel();
-        add1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        addbutton2 = new javax.swing.JPanel();
-        edit = new javax.swing.JLabel();
-        deletebutton = new javax.swing.JPanel();
-        add = new javax.swing.JLabel();
+        adminprof = new javax.swing.JLabel();
         citizen = new javax.swing.JScrollPane();
         c_table = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         dash = new javax.swing.JLabel();
         logout = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
         managecitizen = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         manageuser = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        addbutton2 = new javax.swing.JPanel();
+        edit = new javax.swing.JLabel();
+        deletebutton = new javax.swing.JPanel();
+        add = new javax.swing.JLabel();
         refresh = new javax.swing.JPanel();
         refresh1 = new javax.swing.JLabel();
         editbutton1 = new javax.swing.JPanel();
@@ -101,6 +100,9 @@ public class adminPage extends javax.swing.JFrame {
         user = new javax.swing.JComboBox<>();
         userStatusComboBox = new javax.swing.JComboBox<>();
         confirm1 = new javax.swing.JLabel();
+        searchbutton = new javax.swing.JPanel();
+        add1 = new javax.swing.JLabel();
+        jTextField1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -110,129 +112,27 @@ public class adminPage extends javax.swing.JFrame {
         header.setBackground(new java.awt.Color(0, 153, 153));
         header.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
 
-        searchbutton.setBackground(new java.awt.Color(0, 51, 51));
-        searchbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-
-        add1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        add1.setForeground(new java.awt.Color(255, 255, 255));
-        add1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        add1.setText("SEARCH");
-
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout searchbuttonLayout = new javax.swing.GroupLayout(searchbutton);
-        searchbutton.setLayout(searchbuttonLayout);
-        searchbuttonLayout.setHorizontalGroup(
-            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        searchbuttonLayout.setVerticalGroup(
-            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
+        adminprof.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        adminprof.setForeground(new java.awt.Color(255, 255, 255));
+        adminprof.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        adminprof.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-add-user-48.png"))); // NOI18N
 
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
         headerLayout.setHorizontalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addContainerGap(502, Short.MAX_VALUE)
-                .addComponent(searchbutton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(38, 38, 38))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerLayout.createSequentialGroup()
+                .addGap(0, 629, Short.MAX_VALUE)
+                .addComponent(adminprof, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(headerLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(searchbutton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(adminprof, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 40));
-
-        addbutton2.setBackground(new java.awt.Color(0, 51, 51));
-        addbutton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        addbutton2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                addbutton2MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                addbutton2MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                addbutton2MouseExited(evt);
-            }
-        });
-
-        edit.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        edit.setForeground(new java.awt.Color(255, 255, 255));
-        edit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        edit.setText("ADD");
-
-        javax.swing.GroupLayout addbutton2Layout = new javax.swing.GroupLayout(addbutton2);
-        addbutton2.setLayout(addbutton2Layout);
-        addbutton2Layout.setHorizontalGroup(
-            addbutton2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addbutton2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(edit, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        addbutton2Layout.setVerticalGroup(
-            addbutton2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addbutton2Layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(edit, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        main.add(addbutton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 70, 80, 30));
-
-        deletebutton.setBackground(new java.awt.Color(0, 51, 51));
-        deletebutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        deletebutton.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                deletebuttonMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                deletebuttonMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                deletebuttonMouseExited(evt);
-            }
-        });
-
-        add.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        add.setForeground(new java.awt.Color(255, 255, 255));
-        add.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        add.setText("DELETE");
-
-        javax.swing.GroupLayout deletebuttonLayout = new javax.swing.GroupLayout(deletebutton);
-        deletebutton.setLayout(deletebuttonLayout);
-        deletebuttonLayout.setHorizontalGroup(
-            deletebuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, deletebuttonLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(add, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        deletebuttonLayout.setVerticalGroup(
-            deletebuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, deletebuttonLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(add, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-
-        main.add(deletebutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 70, 80, 30));
+        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 60));
 
         citizen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
@@ -258,12 +158,6 @@ public class adminPage extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        jLabel1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("Administrator");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 170, -1));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel3.setForeground(new java.awt.Color(255, 255, 255));
@@ -310,14 +204,6 @@ public class adminPage extends javax.swing.JFrame {
             }
         });
         jPanel1.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 530, 180, 50));
-
-        jLabel2.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setText("Welcome!");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 100, -1));
-
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-admin-64.png"))); // NOI18N
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 60, -1));
 
         managecitizen.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         managecitizen.setForeground(new java.awt.Color(255, 255, 255));
@@ -373,7 +259,89 @@ public class adminPage extends javax.swing.JFrame {
         jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 50));
 
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/150.png"))); // NOI18N
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 180, 120));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("BLOTTERMATE COMMUNITY");
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 180, 30));
+
         main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 640));
+
+        addbutton2.setBackground(new java.awt.Color(0, 51, 51));
+        addbutton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        addbutton2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                addbutton2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                addbutton2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                addbutton2MouseExited(evt);
+            }
+        });
+
+        edit.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        edit.setForeground(new java.awt.Color(255, 255, 255));
+        edit.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        edit.setText("ADD");
+
+        javax.swing.GroupLayout addbutton2Layout = new javax.swing.GroupLayout(addbutton2);
+        addbutton2.setLayout(addbutton2Layout);
+        addbutton2Layout.setHorizontalGroup(
+            addbutton2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addbutton2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(edit, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        addbutton2Layout.setVerticalGroup(
+            addbutton2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, addbutton2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(edit, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        main.add(addbutton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 90, 80, 30));
+
+        deletebutton.setBackground(new java.awt.Color(0, 51, 51));
+        deletebutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        deletebutton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                deletebuttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                deletebuttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                deletebuttonMouseExited(evt);
+            }
+        });
+
+        add.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        add.setForeground(new java.awt.Color(255, 255, 255));
+        add.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        add.setText("DELETE");
+
+        javax.swing.GroupLayout deletebuttonLayout = new javax.swing.GroupLayout(deletebutton);
+        deletebutton.setLayout(deletebuttonLayout);
+        deletebuttonLayout.setHorizontalGroup(
+            deletebuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, deletebuttonLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(add, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        deletebuttonLayout.setVerticalGroup(
+            deletebuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, deletebuttonLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(add, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        main.add(deletebutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 90, 80, 30));
 
         refresh.setBackground(new java.awt.Color(0, 51, 51));
         refresh.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -409,7 +377,7 @@ public class adminPage extends javax.swing.JFrame {
                 .addComponent(refresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        main.add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 70, -1, -1));
+        main.add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 90, -1, -1));
 
         editbutton1.setBackground(new java.awt.Color(0, 51, 51));
         editbutton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -445,13 +413,13 @@ public class adminPage extends javax.swing.JFrame {
                 .addComponent(edit1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        main.add(editbutton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 70, 80, 30));
+        main.add(editbutton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 90, 80, 30));
 
         fn1.setBackground(new java.awt.Color(255, 255, 255));
         fn1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         fn1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         fn1.setText("First Name:");
-        main.add(fn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, 100, 30));
+        main.add(fn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 140, 100, 30));
 
         enterfn.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         enterfn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -460,12 +428,12 @@ public class adminPage extends javax.swing.JFrame {
                 enterfnActionPerformed(evt);
             }
         });
-        main.add(enterfn, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 120, 260, 30));
+        main.add(enterfn, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 260, 30));
 
         ln.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         ln.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ln.setText("Last Name:");
-        main.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 160, 90, 30));
+        main.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 180, 90, 30));
 
         enterln.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         enterln.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -474,12 +442,12 @@ public class adminPage extends javax.swing.JFrame {
                 enterlnActionPerformed(evt);
             }
         });
-        main.add(enterln, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 160, 260, 30));
+        main.add(enterln, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 180, 260, 30));
 
         email.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         email.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         email.setText("Email:");
-        main.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 200, 90, 30));
+        main.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 220, 90, 30));
 
         enteremail.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         enteremail.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -488,12 +456,12 @@ public class adminPage extends javax.swing.JFrame {
                 enteremailActionPerformed(evt);
             }
         });
-        main.add(enteremail, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 200, 260, 30));
+        main.add(enteremail, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 220, 260, 30));
 
         pass.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         pass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pass.setText("Password:");
-        main.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 120, 90, 30));
+        main.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 140, 90, 30));
 
         enterpass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         enterpass.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -502,26 +470,26 @@ public class adminPage extends javax.swing.JFrame {
                 enterpassKeyPressed(evt);
             }
         });
-        main.add(enterpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 120, 260, 30));
+        main.add(enterpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 140, 260, 30));
 
         confirm2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         confirm2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         confirm2.setText("C-Password:");
-        main.add(confirm2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 160, 90, 30));
+        main.add(confirm2, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 180, 90, 30));
 
         enterconfirm.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         enterconfirm.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        main.add(enterconfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 160, 260, 30));
+        main.add(enterconfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 180, 260, 30));
 
         confirm.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         confirm.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         confirm.setText("User Status:");
-        main.add(confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 250, 90, 30));
+        main.add(confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 270, 90, 30));
 
         user.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         user.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User\t", "Admin" }));
         user.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        main.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 200, 260, 30));
+        main.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 220, 260, 30));
 
         userStatusComboBox.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         userStatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Approved" }));
@@ -531,12 +499,48 @@ public class adminPage extends javax.swing.JFrame {
                 userStatusComboBoxActionPerformed(evt);
             }
         });
-        main.add(userStatusComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 250, 220, 30));
+        main.add(userStatusComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 270, 220, 30));
 
         confirm1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         confirm1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         confirm1.setText("User Type:");
-        main.add(confirm1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 200, 90, 30));
+        main.add(confirm1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 220, 90, 30));
+
+        searchbutton.setBackground(new java.awt.Color(0, 51, 51));
+        searchbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+
+        add1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        add1.setForeground(new java.awt.Color(255, 255, 255));
+        add1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        add1.setText("SEARCH");
+
+        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jTextField1ActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout searchbuttonLayout = new javax.swing.GroupLayout(searchbutton);
+        searchbutton.setLayout(searchbuttonLayout);
+        searchbuttonLayout.setHorizontalGroup(
+            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        searchbuttonLayout.setVerticalGroup(
+            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+        );
+
+        main.add(searchbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 90, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -558,7 +562,7 @@ public class adminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void addbutton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseClicked
-       String firstName = enterfn.getText().trim();
+        String firstName = enterfn.getText().trim();
         String lastName = enterln.getText().trim();
         String email = enteremail.getText().trim();
         String password = new String(enterpass.getPassword());
@@ -568,6 +572,10 @@ public class adminPage extends javax.swing.JFrame {
 
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
             JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+         if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid Gmail address (example@gmail.com)", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -587,7 +595,7 @@ public class adminPage extends javax.swing.JFrame {
 
         try {
 
-            Connection conn = DriverManager.getConnection(url, user, pass);            
+            Connection conn = DriverManager.getConnection(url, user, pass);
 
             String sql = "INSERT INTO user_table (firstName, lastName, email, password, confirmPassword, use_type, user_status) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -599,20 +607,18 @@ public class adminPage extends javax.swing.JFrame {
             pstmt.setString(5, confirmPassword);
             pstmt.setString(6, use_type);
             pstmt.setString(7, user_status);
-            
+
             int rowsInserted = pstmt.executeUpdate();
             if (rowsInserted > 0) {
                 JOptionPane.showMessageDialog(this, "Registration Successful!");
                 this.dispose();
-                
+
             }
 
-            pstmt.close();
-            conn.close();
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    
+
     }//GEN-LAST:event_addbutton2MouseClicked
 
     private void addbutton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseEntered
@@ -671,14 +677,14 @@ public class adminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_deletebuttonMouseExited
 
     private void dashMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseClicked
-        admindashboard admin = new admindashboard();
+        admindashboard admin = new admindashboard(fullname);
         admin.setVisible(true);
-       this.dispose();
+        this.dispose();
 
     }//GEN-LAST:event_dashMouseClicked
 
     private void managecitizenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseClicked
-        adminCitizen zen = new adminCitizen();
+        adminCitizen zen = new adminCitizen(fullname);
         zen.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_managecitizenMouseClicked
@@ -695,14 +701,14 @@ public class adminPage extends javax.swing.JFrame {
 
     private void refreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshMouseClicked
         displayData();
-        enterfn.setText("");  
-        enterln.setText("");  
-        enteremail.setText("");  
-        enterpass.setText("");  
+        enterfn.setText("");
+        enterln.setText("");
+        enteremail.setText("");
+        enterpass.setText("");
         enterconfirm.setText("");
         user.setSelectedIndex(-1);
         userStatusComboBox.setSelectedIndex(-1);
-  
+
     }//GEN-LAST:event_refreshMouseClicked
 
     private void refreshMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshMouseEntered
@@ -714,63 +720,70 @@ public class adminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshMouseExited
 
     private void editbutton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseClicked
+      String firstName = enterfn.getText().trim();
+    String lastName = enterln.getText().trim();
+    String email = enteremail.getText().trim();
+    String password = new String(enterpass.getPassword());
+    String confirmPassword = new String(enterconfirm.getPassword());
+    String use_type = user.getSelectedItem().toString();
+    String user_status = userStatusComboBox.getSelectedItem().toString();
+
+    if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+        if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+            JOptionPane.showMessageDialog(this, "Please enter a valid Gmail address (example@gmail.com)", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+    if (password.length() < 8) {
+        JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    if (confirmPassword.length() < 8) {
+        JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    String url = "jdbc:mysql://localhost:3306/obaob_db";
+    String user = "root";
+    String pass = "";
+
+    try {
+        Connection conn = DriverManager.getConnection(url, user, pass);
         
-        String firstName = enterfn.getText().trim();
-        String lastName = enterln.getText().trim();
-        String email = enteremail.getText().trim();
-        String password = new String(enterpass.getPassword());
-        String confirmPassword = new String(enterconfirm.getPassword());
-        String use_type = user.getSelectedItem().toString();
-        String user_status = userStatusComboBox.getSelectedItem().toString();
-
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+        // Update user status if it's "Pending"
+        if (user_status.equals("Approved")) {
+            user_status = "Active";
+        } else if (user_status.equals("Pending")) {
+            user_status = "Deactivated";
         }
 
-        if (password.length() < 8) {
-            JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+        String sql = "UPDATE user_table SET firstName = ?, lastName = ?, password = ?, confirmPassword = ?, use_type = ?, user_status = ? WHERE email = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+
+        pstmt.setString(1, firstName);
+        pstmt.setString(2, lastName);
+        pstmt.setString(3, password);
+        pstmt.setString(4, confirmPassword);
+        pstmt.setString(5, use_type);
+        pstmt.setString(6, user_status);
+        pstmt.setString(7, email);
+
+        int rowsUpdated = pstmt.executeUpdate();
+        if (rowsUpdated > 0) {
+            JOptionPane.showMessageDialog(this, "User information updated successfully!");
+            displayData(); 
+        } else {
+            JOptionPane.showMessageDialog(this, "Update failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
 
-        if (confirmPassword.length() < 8) {
-            JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        String url = "jdbc:mysql://localhost:3306/obaob_db";
-        String user = "root";
-        String pass = "";
-
-        try {
-
-            Connection conn = DriverManager.getConnection(url, user, pass);
-            
-
-            String sql = "UPDATE user_table SET firstName = ?, lastName = ?,  password = ?, confirmPassword = ?, use_type = ?, user_status = ? WHERE email = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-
-            pstmt.setString(1, firstName);
-            pstmt.setString(2, lastName);
-            pstmt.setString(3, password);
-            pstmt.setString(4, confirmPassword);
-            pstmt.setString(5, use_type);
-            pstmt.setString(6, user_status);
-            pstmt.setString(7, email);
-
-            int rowsUpdated = pstmt.executeUpdate();
-            if (rowsUpdated > 0) {
-                JOptionPane.showMessageDialog(this, "User information updated successfully!");
-            } else {
-                JOptionPane.showMessageDialog(this, "Update failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-            pstmt.close();
-            conn.close();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-
-        }
+        pstmt.close();
+        conn.close();
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_editbutton1MouseClicked
 
     private void editbutton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseEntered
@@ -782,7 +795,7 @@ public class adminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_editbutton1MouseExited
 
     private void manageuserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseClicked
-        displayData();     
+        displayData();
     }//GEN-LAST:event_manageuserMouseClicked
 
     private void manageuserMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseEntered
@@ -791,8 +804,8 @@ public class adminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_manageuserMouseEntered
 
     private void manageuserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseExited
-         manageuser.setBackground(navcolor);
-         manageuser.setOpaque(true);
+        manageuser.setBackground(navcolor);
+        manageuser.setOpaque(true);
     }//GEN-LAST:event_manageuserMouseExited
 
     private void dashMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseEntered
@@ -801,22 +814,37 @@ public class adminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_dashMouseEntered
 
     private void dashMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseExited
-         dash.setBackground(navcolor);
-         dash.setOpaque(true);
+        dash.setBackground(navcolor);
+        dash.setOpaque(true);
     }//GEN-LAST:event_dashMouseExited
 
     private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
+         int choice = JOptionPane.showConfirmDialog(this,
+        "Are you sure you want to log out?", 
+        "Logout Confirmation",               
+        JOptionPane.YES_NO_OPTION,           
+        JOptionPane.QUESTION_MESSAGE); 
+
+    if (choice == JOptionPane.YES_OPTION) {
+        this.dispose(); 
+
+        
+        new loginform().setVisible(true);
+    }
+        
+        
+        
         
     }//GEN-LAST:event_logoutMouseClicked
 
     private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered
-       logout.setBackground(bodycolor);
-       logout.setOpaque(true);
+        logout.setBackground(bodycolor);
+        logout.setOpaque(true);
     }//GEN-LAST:event_logoutMouseEntered
 
     private void logoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseExited
-       logout.setBackground(navcolor);
-       logout.setOpaque(true);
+        logout.setBackground(navcolor);
+        logout.setOpaque(true);
     }//GEN-LAST:event_logoutMouseExited
 
     private void enterfnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterfnActionPerformed
@@ -831,27 +859,35 @@ public class adminPage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_enteremailActionPerformed
 
-    private void enterpassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_enterpassKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_enterpassKeyPressed
-
     private void userStatusComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userStatusComboBoxActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_userStatusComboBoxActionPerformed
 
     private void c_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_tableMouseClicked
-        int i = c_table.getSelectedRow();
+        int i = c_table.getSelectedRow(); // Get selected row index
         TableModel model = c_table.getModel();
-        enterfn.setText(model.getValueAt(i,1).toString());
-        enterln.setText(model.getValueAt(i,2).toString());
-        enteremail.setText(model.getValueAt(i,3).toString());
-        enterpass.setText(model.getValueAt(i,4).toString());
-        enterconfirm.setText(model.getValueAt(i,5).toString());
-        String type = model.getValueAt(i, 6).toString();
-        user.setSelectedItem(type);
-        String status = model.getValueAt(i, 7).toString();
-        userStatusComboBox.setSelectedItem(status);
+
+        String fullName = model.getValueAt(i, 0).toString(); // Full_Name column
+        String[] nameParts = fullName.split(" ", 2); // Split into first and last name
+
+        String firstName = (nameParts.length > 0) ? nameParts[0] : "";
+        String lastName = (nameParts.length > 1) ? nameParts[1] : "";
+
+        enterfn.setText(firstName);  // First name field
+        enterln.setText(lastName);   // Last name field
+        enteremail.setText(model.getValueAt(i, 1).toString());  // Email
+        enterpass.setText("********");
+        enterconfirm.setText("********");
+        String type = model.getValueAt(i, 2).toString();
+        user.setSelectedItem(type);  // User Type
+        String status = model.getValueAt(i, 3).toString();
+        userStatusComboBox.setSelectedItem(status); // Status dropdown
+
     }//GEN-LAST:event_c_tableMouseClicked
+
+    private void enterpassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_enterpassKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterpassKeyPressed
 
     /**
      * @param args the command line arguments
@@ -883,7 +919,7 @@ public class adminPage extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new adminPage().setVisible(true);
+                new adminPage("Admin User").setVisible(true);
             }
         });
     }
@@ -892,6 +928,7 @@ public class adminPage extends javax.swing.JFrame {
     private javax.swing.JLabel add;
     private javax.swing.JLabel add1;
     private javax.swing.JPanel addbutton2;
+    private javax.swing.JLabel adminprof;
     private javax.swing.JTable c_table;
     private javax.swing.JScrollPane citizen;
     private javax.swing.JLabel confirm;
@@ -914,7 +951,6 @@ public class adminPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
