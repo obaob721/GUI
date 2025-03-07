@@ -46,7 +46,7 @@ public class adminCitizen extends javax.swing.JFrame {
     private void displayCitizenData() {
        try{
             dbConnector dbc = new dbConnector();
-            ResultSet rs = dbc.getData("SELECT * FROM citizen_table");
+            ResultSet rs = dbc.getData("SELECT c_fname, c_lname, c_age, c_address, c_pnumber FROM citizen_table");
             c_table.setModel(DbUtils.resultSetToTableModel(rs));
             
         }catch(SQLException ex){
@@ -65,7 +65,6 @@ public class adminCitizen extends javax.swing.JFrame {
 
         main = new javax.swing.JPanel();
         header = new javax.swing.JPanel();
-        adminprof = new javax.swing.JLabel();
         addbutton2 = new javax.swing.JPanel();
         edit = new javax.swing.JLabel();
         deletebutton = new javax.swing.JPanel();
@@ -73,15 +72,16 @@ public class adminCitizen extends javax.swing.JFrame {
         citizen = new javax.swing.JScrollPane();
         c_table = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        reports = new javax.swing.JLabel();
         dash = new javax.swing.JLabel();
         logout = new javax.swing.JLabel();
         managecitizen = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        blotter = new javax.swing.JLabel();
         manageuser = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        adminprof = new javax.swing.JLabel();
         refresh = new javax.swing.JPanel();
         refresh1 = new javax.swing.JLabel();
         editbutton1 = new javax.swing.JPanel();
@@ -108,14 +108,7 @@ public class adminCitizen extends javax.swing.JFrame {
         header.setBackground(new java.awt.Color(0, 153, 153));
         header.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         header.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        adminprof.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        adminprof.setForeground(new java.awt.Color(255, 255, 255));
-        adminprof.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        adminprof.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-add-user-48.png"))); // NOI18N
-        header.add(adminprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 0, 170, 50));
-
-        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 50));
+        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 40));
 
         addbutton2.setBackground(new java.awt.Color(0, 51, 51));
         addbutton2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -214,13 +207,24 @@ public class adminCitizen extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-reports-50.png"))); // NOI18N
-        jLabel3.setText("         Reports");
-        jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 180, 50));
+        reports.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        reports.setForeground(new java.awt.Color(255, 255, 255));
+        reports.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        reports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-reports-50.png"))); // NOI18N
+        reports.setText("         Reports");
+        reports.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        reports.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportsMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                reportsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                reportsMouseExited(evt);
+            }
+        });
+        jPanel1.add(reports, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 180, 50));
 
         dash.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         dash.setForeground(new java.awt.Color(255, 255, 255));
@@ -279,13 +283,24 @@ public class adminCitizen extends javax.swing.JFrame {
         });
         jPanel1.add(managecitizen, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 180, 50));
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-strike-50.png"))); // NOI18N
-        jLabel9.setText("         Blotter");
-        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 180, 50));
+        blotter.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        blotter.setForeground(new java.awt.Color(255, 255, 255));
+        blotter.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        blotter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-strike-50.png"))); // NOI18N
+        blotter.setText("         Blotter");
+        blotter.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        blotter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                blotterMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                blotterMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                blotterMouseExited(evt);
+            }
+        });
+        jPanel1.add(blotter, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 180, 50));
 
         manageuser.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         manageuser.setForeground(new java.awt.Color(255, 255, 255));
@@ -314,15 +329,20 @@ public class adminCitizen extends javax.swing.JFrame {
         jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 50));
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/150.png"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 180, 120));
-
-        jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel5.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("BLOTTERMATE COMMUNITY");
+        jLabel5.setText("Admin");
         jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 180, 30));
+
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-admin-64.png"))); // NOI18N
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 60, -1));
+
+        adminprof.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        adminprof.setForeground(new java.awt.Color(255, 255, 255));
+        adminprof.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        adminprof.setText("Halooo");
+        jPanel1.add(adminprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 180, 50));
 
         main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 640));
 
@@ -826,6 +846,36 @@ String sql = "UPDATE citizen_table SET c_fname = ?, c_lname = ?,  c_age = ?, c_a
         // TODO add your handling code here:
     }//GEN-LAST:event_numberActionPerformed
 
+    private void blotterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseClicked
+         new adminBlotter(fullname).setVisible(true);
+         this.dispose();
+    }//GEN-LAST:event_blotterMouseClicked
+
+    private void blotterMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseEntered
+       blotter.setBackground(bodycolor);
+        blotter.setOpaque(true);
+    }//GEN-LAST:event_blotterMouseEntered
+
+    private void blotterMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseExited
+       blotter.setBackground(navcolor);
+       blotter.setOpaque(true);
+    }//GEN-LAST:event_blotterMouseExited
+
+    private void reportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportsMouseClicked
+       new adminReport(fullname).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_reportsMouseClicked
+
+    private void reportsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportsMouseEntered
+       reports.setBackground(bodycolor);
+         reports.setOpaque(true);
+    }//GEN-LAST:event_reportsMouseEntered
+
+    private void reportsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportsMouseExited
+       reports.setBackground(navcolor);
+         reports.setOpaque(true);
+    }//GEN-LAST:event_reportsMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -870,6 +920,7 @@ String sql = "UPDATE citizen_table SET c_fname = ?, c_lname = ?,  c_age = ?, c_a
     private javax.swing.JTextField address;
     private javax.swing.JLabel adminprof;
     private javax.swing.JTextField age;
+    private javax.swing.JLabel blotter;
     private javax.swing.JTable c_table;
     private javax.swing.JScrollPane citizen;
     private javax.swing.JLabel dash;
@@ -884,11 +935,9 @@ String sql = "UPDATE citizen_table SET c_fname = ?, c_lname = ?,  c_age = ?, c_a
     private javax.swing.JTextField enterln;
     private javax.swing.JLabel fn1;
     private javax.swing.JPanel header;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel ln;
@@ -899,6 +948,7 @@ String sql = "UPDATE citizen_table SET c_fname = ?, c_lname = ?,  c_age = ?, c_a
     private javax.swing.JTextField number;
     private javax.swing.JPanel refresh;
     private javax.swing.JLabel refresh1;
+    private javax.swing.JLabel reports;
     private javax.swing.JPanel searchbutton;
     // End of variables declaration//GEN-END:variables
 }

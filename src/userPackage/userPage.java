@@ -64,15 +64,15 @@ public class userPage extends javax.swing.JFrame {
 
         main = new javax.swing.JPanel();
         header = new javax.swing.JPanel();
-        userprof = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         dash = new javax.swing.JLabel();
         logout = new javax.swing.JLabel();
         managecitizen = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel10 = new javax.swing.JLabel();
+        changeuser = new javax.swing.JLabel();
+        userprof = new javax.swing.JLabel();
         addbutton2 = new javax.swing.JPanel();
         edit = new javax.swing.JLabel();
         deletebutton = new javax.swing.JPanel();
@@ -105,14 +105,7 @@ public class userPage extends javax.swing.JFrame {
         header.setBackground(new java.awt.Color(0, 153, 153));
         header.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
         header.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        userprof.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        userprof.setForeground(new java.awt.Color(255, 255, 255));
-        userprof.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        userprof.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-add-user-48.png"))); // NOI18N
-        header.add(userprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 0, 170, -1));
-
-        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 50));
+        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 40));
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -190,15 +183,21 @@ public class userPage extends javax.swing.JFrame {
         jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 180, 50));
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/150.png"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 180, 120));
+        jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-user-50.png"))); // NOI18N
+        jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 50, 180, -1));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("BLOTTERMATE COMMUNITY");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 180, 30));
+        changeuser.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        changeuser.setForeground(new java.awt.Color(255, 255, 255));
+        changeuser.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        changeuser.setText("User");
+        jPanel1.add(changeuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 180, -1));
+
+        userprof.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        userprof.setForeground(new java.awt.Color(255, 255, 255));
+        userprof.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        userprof.setText("Regular User");
+        jPanel1.add(userprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 180, 50));
 
         main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 640));
 
@@ -808,6 +807,7 @@ public class userPage extends javax.swing.JFrame {
     private javax.swing.JTextField address;
     private javax.swing.JTextField age;
     private javax.swing.JTable c_table;
+    private javax.swing.JLabel changeuser;
     private javax.swing.JScrollPane citizen;
     private javax.swing.JLabel dash;
     private javax.swing.JPanel deletebutton;
@@ -821,8 +821,7 @@ public class userPage extends javax.swing.JFrame {
     private javax.swing.JTextField enterln;
     private javax.swing.JLabel fn1;
     private javax.swing.JPanel header;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;

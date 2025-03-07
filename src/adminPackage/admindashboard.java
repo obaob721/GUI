@@ -104,13 +104,13 @@ public class admindashboard extends javax.swing.JFrame {
         dashboardPanel = new javax.swing.JPanel();
         nav = new javax.swing.JPanel();
         adminprof = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
+        reports = new javax.swing.JLabel();
         dash = new javax.swing.JLabel();
         logout = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         managecitizen = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        blotter = new javax.swing.JLabel();
         manageuser = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
         header = new javax.swing.JPanel();
@@ -169,13 +169,24 @@ public class admindashboard extends javax.swing.JFrame {
         });
         nav.add(adminprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 180, -1));
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-reports-50.png"))); // NOI18N
-        jLabel3.setText("         Reports");
-        jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        nav.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 180, 50));
+        reports.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        reports.setForeground(new java.awt.Color(255, 255, 255));
+        reports.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        reports.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-reports-50.png"))); // NOI18N
+        reports.setText("         Reports");
+        reports.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        reports.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportsMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                reportsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                reportsMouseExited(evt);
+            }
+        });
+        nav.add(reports, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 180, 50));
 
         dash.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         dash.setForeground(new java.awt.Color(255, 255, 255));
@@ -242,13 +253,24 @@ public class admindashboard extends javax.swing.JFrame {
         });
         nav.add(managecitizen, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 180, 50));
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-strike-50.png"))); // NOI18N
-        jLabel9.setText("         Blotter");
-        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        nav.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 180, 50));
+        blotter.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        blotter.setForeground(new java.awt.Color(255, 255, 255));
+        blotter.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        blotter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-strike-50.png"))); // NOI18N
+        blotter.setText("         Blotter");
+        blotter.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        blotter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                blotterMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                blotterMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                blotterMouseExited(evt);
+            }
+        });
+        nav.add(blotter, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 180, 50));
 
         manageuser.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         manageuser.setForeground(new java.awt.Color(255, 255, 255));
@@ -745,6 +767,36 @@ public class admindashboard extends javax.swing.JFrame {
        
     }//GEN-LAST:event_adminprofMouseClicked
 
+    private void blotterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseClicked
+        new adminBlotter(fullname).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_blotterMouseClicked
+
+    private void blotterMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseEntered
+        blotter.setBackground(bodycolor);
+        blotter.setOpaque(true);
+    }//GEN-LAST:event_blotterMouseEntered
+
+    private void blotterMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseExited
+        blotter.setBackground(navcolor);
+        blotter.setOpaque(true);
+    }//GEN-LAST:event_blotterMouseExited
+
+    private void reportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportsMouseClicked
+        new adminReport(fullname).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_reportsMouseClicked
+
+    private void reportsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportsMouseEntered
+       reports.setBackground(bodycolor);
+         reports.setOpaque(true);
+    }//GEN-LAST:event_reportsMouseEntered
+
+    private void reportsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportsMouseExited
+        reports.setBackground(navcolor);
+         reports.setOpaque(true);
+    }//GEN-LAST:event_reportsMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -784,6 +836,7 @@ public class admindashboard extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel adminprof;
+    private javax.swing.JLabel blotter;
     private javax.swing.JLabel dash;
     private javax.swing.JPanel dashboardPanel;
     private javax.swing.JPanel header;
@@ -804,7 +857,6 @@ public class admindashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel30;
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
@@ -813,7 +865,6 @@ public class admindashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JLabel logout;
     private javax.swing.JLabel managecitizen;
     private javax.swing.JLabel manageuser;
@@ -821,6 +872,7 @@ public class admindashboard extends javax.swing.JFrame {
     private javax.swing.JLabel pendingUsersLabel;
     private javax.swing.JPanel pendingcases;
     private javax.swing.JPanel pendingusers;
+    private javax.swing.JLabel reports;
     private javax.swing.JPanel settledcases;
     private javax.swing.JPanel sumBlotter;
     private javax.swing.JPanel sumCitizens;

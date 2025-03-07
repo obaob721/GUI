@@ -65,7 +65,6 @@ public class adminPage extends javax.swing.JFrame {
 
         main = new javax.swing.JPanel();
         header = new javax.swing.JPanel();
-        adminprof = new javax.swing.JLabel();
         citizen = new javax.swing.JScrollPane();
         c_table = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
@@ -73,11 +72,13 @@ public class adminPage extends javax.swing.JFrame {
         dash = new javax.swing.JLabel();
         logout = new javax.swing.JLabel();
         managecitizen = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        blotter = new javax.swing.JLabel();
         manageuser = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jLabel1 = new javax.swing.JLabel();
-        jLabel2 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        adminprof = new javax.swing.JLabel();
+        fn2 = new javax.swing.JLabel();
+        confirm1 = new javax.swing.JLabel();
         addbutton2 = new javax.swing.JPanel();
         edit = new javax.swing.JLabel();
         deletebutton = new javax.swing.JPanel();
@@ -99,10 +100,10 @@ public class adminPage extends javax.swing.JFrame {
         confirm = new javax.swing.JLabel();
         user = new javax.swing.JComboBox<>();
         userStatusComboBox = new javax.swing.JComboBox<>();
-        confirm1 = new javax.swing.JLabel();
         searchbutton = new javax.swing.JPanel();
         add1 = new javax.swing.JLabel();
         jTextField1 = new javax.swing.JTextField();
+        confirm3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -112,27 +113,18 @@ public class adminPage extends javax.swing.JFrame {
         header.setBackground(new java.awt.Color(0, 153, 153));
         header.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
 
-        adminprof.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        adminprof.setForeground(new java.awt.Color(255, 255, 255));
-        adminprof.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        adminprof.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-add-user-48.png"))); // NOI18N
-
         javax.swing.GroupLayout headerLayout = new javax.swing.GroupLayout(header);
         header.setLayout(headerLayout);
         headerLayout.setHorizontalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, headerLayout.createSequentialGroup()
-                .addGap(0, 629, Short.MAX_VALUE)
-                .addComponent(adminprof, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE))
+            .addGap(0, 794, Short.MAX_VALUE)
         );
         headerLayout.setVerticalGroup(
             headerLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(headerLayout.createSequentialGroup()
-                .addComponent(adminprof, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGap(0, 34, Short.MAX_VALUE)
         );
 
-        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 60));
+        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(180, 0, 800, 40));
 
         citizen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
@@ -154,7 +146,7 @@ public class adminPage extends javax.swing.JFrame {
         });
         citizen.setViewportView(c_table);
 
-        main.add(citizen, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 310, 780, 310));
+        main.add(citizen, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 290, 780, 330));
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -224,13 +216,24 @@ public class adminPage extends javax.swing.JFrame {
         });
         jPanel1.add(managecitizen, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 180, 50));
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-strike-50.png"))); // NOI18N
-        jLabel9.setText("         Blotter");
-        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 180, 50));
+        blotter.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        blotter.setForeground(new java.awt.Color(255, 255, 255));
+        blotter.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        blotter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-strike-50.png"))); // NOI18N
+        blotter.setText("         Blotter");
+        blotter.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        blotter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                blotterMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                blotterMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                blotterMouseExited(evt);
+            }
+        });
+        jPanel1.add(blotter, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 180, 50));
 
         manageuser.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         manageuser.setForeground(new java.awt.Color(255, 255, 255));
@@ -259,15 +262,26 @@ public class adminPage extends javax.swing.JFrame {
         jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 50));
 
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/150.png"))); // NOI18N
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 10, 180, 120));
+        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-admin-64.png"))); // NOI18N
+        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 60, -1));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        jLabel2.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("BLOTTERMATE COMMUNITY");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 180, 30));
+        adminprof.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        adminprof.setForeground(new java.awt.Color(255, 255, 255));
+        adminprof.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        adminprof.setText("hallo");
+        jPanel1.add(adminprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 180, 30));
+
+        fn2.setBackground(new java.awt.Color(255, 255, 255));
+        fn2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        fn2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        fn2.setText("First Name:");
+        jPanel1.add(fn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 140, 100, 30));
+
+        confirm1.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        confirm1.setForeground(new java.awt.Color(255, 255, 255));
+        confirm1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        confirm1.setText("Admin");
+        jPanel1.add(confirm1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 180, 30));
 
         main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 640));
 
@@ -305,7 +319,7 @@ public class adminPage extends javax.swing.JFrame {
                 .addComponent(edit, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        main.add(addbutton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 90, 80, 30));
+        main.add(addbutton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 60, 80, 30));
 
         deletebutton.setBackground(new java.awt.Color(0, 51, 51));
         deletebutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -341,7 +355,7 @@ public class adminPage extends javax.swing.JFrame {
                 .addComponent(add, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        main.add(deletebutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 90, 80, 30));
+        main.add(deletebutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 60, 80, 30));
 
         refresh.setBackground(new java.awt.Color(0, 51, 51));
         refresh.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -377,7 +391,7 @@ public class adminPage extends javax.swing.JFrame {
                 .addComponent(refresh1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        main.add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 90, -1, -1));
+        main.add(refresh, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 60, -1, -1));
 
         editbutton1.setBackground(new java.awt.Color(0, 51, 51));
         editbutton1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -413,13 +427,13 @@ public class adminPage extends javax.swing.JFrame {
                 .addComponent(edit1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
-        main.add(editbutton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 90, 80, 30));
+        main.add(editbutton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, 80, 30));
 
         fn1.setBackground(new java.awt.Color(255, 255, 255));
         fn1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         fn1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         fn1.setText("First Name:");
-        main.add(fn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 140, 100, 30));
+        main.add(fn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 110, 100, 30));
 
         enterfn.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         enterfn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -428,12 +442,12 @@ public class adminPage extends javax.swing.JFrame {
                 enterfnActionPerformed(evt);
             }
         });
-        main.add(enterfn, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 140, 260, 30));
+        main.add(enterfn, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 110, 260, 30));
 
         ln.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         ln.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ln.setText("Last Name:");
-        main.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 180, 90, 30));
+        main.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 150, 90, 30));
 
         enterln.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         enterln.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -442,12 +456,12 @@ public class adminPage extends javax.swing.JFrame {
                 enterlnActionPerformed(evt);
             }
         });
-        main.add(enterln, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 180, 260, 30));
+        main.add(enterln, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 150, 260, 30));
 
         email.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         email.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         email.setText("Email:");
-        main.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 220, 90, 30));
+        main.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 90, 30));
 
         enteremail.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         enteremail.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -456,12 +470,12 @@ public class adminPage extends javax.swing.JFrame {
                 enteremailActionPerformed(evt);
             }
         });
-        main.add(enteremail, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 220, 260, 30));
+        main.add(enteremail, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 190, 260, 30));
 
         pass.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         pass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pass.setText("Password:");
-        main.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 140, 90, 30));
+        main.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 110, 90, 30));
 
         enterpass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         enterpass.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -470,26 +484,26 @@ public class adminPage extends javax.swing.JFrame {
                 enterpassKeyPressed(evt);
             }
         });
-        main.add(enterpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 140, 260, 30));
+        main.add(enterpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 110, 260, 30));
 
         confirm2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         confirm2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         confirm2.setText("C-Password:");
-        main.add(confirm2, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 180, 90, 30));
+        main.add(confirm2, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 150, 90, 30));
 
         enterconfirm.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         enterconfirm.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        main.add(enterconfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 180, 260, 30));
+        main.add(enterconfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 150, 260, 30));
 
         confirm.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         confirm.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         confirm.setText("User Status:");
-        main.add(confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 270, 90, 30));
+        main.add(confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 240, 90, 30));
 
         user.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         user.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User\t", "Admin" }));
         user.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        main.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 220, 260, 30));
+        main.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 190, 260, 30));
 
         userStatusComboBox.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         userStatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Approved" }));
@@ -499,12 +513,7 @@ public class adminPage extends javax.swing.JFrame {
                 userStatusComboBoxActionPerformed(evt);
             }
         });
-        main.add(userStatusComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 270, 220, 30));
-
-        confirm1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        confirm1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        confirm1.setText("User Type:");
-        main.add(confirm1, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 220, 90, 30));
+        main.add(userStatusComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 240, 220, 30));
 
         searchbutton.setBackground(new java.awt.Color(0, 51, 51));
         searchbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -540,7 +549,12 @@ public class adminPage extends javax.swing.JFrame {
                     .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        main.add(searchbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 90, -1, -1));
+        main.add(searchbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 60, -1, -1));
+
+        confirm3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        confirm3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        confirm3.setText("User Type:");
+        main.add(confirm3, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 190, 90, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -676,29 +690,6 @@ public class adminPage extends javax.swing.JFrame {
         deletebutton.setBackground(navcolor);
     }//GEN-LAST:event_deletebuttonMouseExited
 
-    private void dashMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseClicked
-        admindashboard admin = new admindashboard(fullname);
-        admin.setVisible(true);
-        this.dispose();
-
-    }//GEN-LAST:event_dashMouseClicked
-
-    private void managecitizenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseClicked
-        adminCitizen zen = new adminCitizen(fullname);
-        zen.setVisible(true);
-        this.dispose();
-    }//GEN-LAST:event_managecitizenMouseClicked
-
-    private void managecitizenMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseEntered
-        managecitizen.setBackground(bodycolor);
-        managecitizen.setOpaque(true);
-    }//GEN-LAST:event_managecitizenMouseEntered
-
-    private void managecitizenMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseExited
-        managecitizen.setBackground(navcolor);
-        managecitizen.setOpaque(true);
-    }//GEN-LAST:event_managecitizenMouseExited
-
     private void refreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshMouseClicked
         displayData();
         enterfn.setText("");
@@ -794,59 +785,6 @@ public class adminPage extends javax.swing.JFrame {
         editbutton1.setBackground(navcolor);
     }//GEN-LAST:event_editbutton1MouseExited
 
-    private void manageuserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseClicked
-        displayData();
-    }//GEN-LAST:event_manageuserMouseClicked
-
-    private void manageuserMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseEntered
-        manageuser.setBackground(bodycolor);
-        manageuser.setOpaque(true);
-    }//GEN-LAST:event_manageuserMouseEntered
-
-    private void manageuserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseExited
-        manageuser.setBackground(navcolor);
-        manageuser.setOpaque(true);
-    }//GEN-LAST:event_manageuserMouseExited
-
-    private void dashMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseEntered
-        dash.setBackground(bodycolor);
-        dash.setOpaque(true);
-    }//GEN-LAST:event_dashMouseEntered
-
-    private void dashMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseExited
-        dash.setBackground(navcolor);
-        dash.setOpaque(true);
-    }//GEN-LAST:event_dashMouseExited
-
-    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-         int choice = JOptionPane.showConfirmDialog(this,
-        "Are you sure you want to log out?", 
-        "Logout Confirmation",               
-        JOptionPane.YES_NO_OPTION,           
-        JOptionPane.QUESTION_MESSAGE); 
-
-    if (choice == JOptionPane.YES_OPTION) {
-        this.dispose(); 
-
-        
-        new loginform().setVisible(true);
-    }
-        
-        
-        
-        
-    }//GEN-LAST:event_logoutMouseClicked
-
-    private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered
-        logout.setBackground(bodycolor);
-        logout.setOpaque(true);
-    }//GEN-LAST:event_logoutMouseEntered
-
-    private void logoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseExited
-        logout.setBackground(navcolor);
-        logout.setOpaque(true);
-    }//GEN-LAST:event_logoutMouseExited
-
     private void enterfnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterfnActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_enterfnActionPerformed
@@ -889,6 +827,92 @@ public class adminPage extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_enterpassKeyPressed
 
+    private void manageuserMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseExited
+        manageuser.setBackground(navcolor);
+        manageuser.setOpaque(true);
+    }//GEN-LAST:event_manageuserMouseExited
+
+    private void manageuserMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseEntered
+        manageuser.setBackground(bodycolor);
+        manageuser.setOpaque(true);
+    }//GEN-LAST:event_manageuserMouseEntered
+
+    private void manageuserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseClicked
+        displayData();
+    }//GEN-LAST:event_manageuserMouseClicked
+
+    private void managecitizenMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseExited
+        managecitizen.setBackground(navcolor);
+        managecitizen.setOpaque(true);
+    }//GEN-LAST:event_managecitizenMouseExited
+
+    private void managecitizenMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseEntered
+        managecitizen.setBackground(bodycolor);
+        managecitizen.setOpaque(true);
+    }//GEN-LAST:event_managecitizenMouseEntered
+
+    private void managecitizenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseClicked
+        adminCitizen zen = new adminCitizen(fullname);
+        zen.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_managecitizenMouseClicked
+
+    private void logoutMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseExited
+        logout.setBackground(navcolor);
+        logout.setOpaque(true);
+    }//GEN-LAST:event_logoutMouseExited
+
+    private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered
+        logout.setBackground(bodycolor);
+        logout.setOpaque(true);
+    }//GEN-LAST:event_logoutMouseEntered
+
+    private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
+        int choice = JOptionPane.showConfirmDialog(this,
+            "Are you sure you want to log out?",
+            "Logout Confirmation",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+
+        if (choice == JOptionPane.YES_OPTION) {
+            this.dispose();
+
+            new loginform().setVisible(true);
+        }
+
+    }//GEN-LAST:event_logoutMouseClicked
+
+    private void dashMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseExited
+        dash.setBackground(navcolor);
+        dash.setOpaque(true);
+    }//GEN-LAST:event_dashMouseExited
+
+    private void dashMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseEntered
+        dash.setBackground(bodycolor);
+        dash.setOpaque(true);
+    }//GEN-LAST:event_dashMouseEntered
+
+    private void dashMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseClicked
+        admindashboard admin = new admindashboard(fullname);
+        admin.setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_dashMouseClicked
+
+    private void blotterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseClicked
+         new adminBlotter(fullname).setVisible(true);
+         this.dispose();
+    }//GEN-LAST:event_blotterMouseClicked
+
+    private void blotterMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseEntered
+        blotter.setBackground(bodycolor);
+        blotter.setOpaque(true);
+    }//GEN-LAST:event_blotterMouseEntered
+
+    private void blotterMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseExited
+        blotter.setBackground(navcolor);
+        blotter.setOpaque(true);
+    }//GEN-LAST:event_blotterMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -929,11 +953,13 @@ public class adminPage extends javax.swing.JFrame {
     private javax.swing.JLabel add1;
     private javax.swing.JPanel addbutton2;
     private javax.swing.JLabel adminprof;
+    private javax.swing.JLabel blotter;
     private javax.swing.JTable c_table;
     private javax.swing.JScrollPane citizen;
     private javax.swing.JLabel confirm;
     private javax.swing.JLabel confirm1;
     private javax.swing.JLabel confirm2;
+    private javax.swing.JLabel confirm3;
     private javax.swing.JLabel dash;
     private javax.swing.JPanel deletebutton;
     private javax.swing.JLabel edit;
@@ -946,12 +972,11 @@ public class adminPage extends javax.swing.JFrame {
     private javax.swing.JTextField enterln;
     private javax.swing.JPasswordField enterpass;
     private javax.swing.JLabel fn1;
+    private javax.swing.JLabel fn2;
     private javax.swing.JPanel header;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel ln;
