@@ -16,6 +16,8 @@ public class adminSettings extends javax.swing.JFrame {
      */
     public adminSettings() {
         initComponents();
+        setSize(970, 590);
+        setResizable(false);
     }
 
     /**
@@ -27,21 +29,249 @@ public class adminSettings extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        main = new javax.swing.JPanel();
+        header = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        back = new javax.swing.JLabel();
+        profile1 = new javax.swing.JLabel();
+        ln = new javax.swing.JLabel();
+        profile2 = new javax.swing.JPanel();
+        email = new javax.swing.JLabel();
+        profile3 = new javax.swing.JLabel();
+        fn1 = new javax.swing.JLabel();
+        email4 = new javax.swing.JLabel();
+        pass = new javax.swing.JLabel();
+        enterfn1 = new javax.swing.JTextField();
+        enterfn2 = new javax.swing.JTextField();
+        enterfn3 = new javax.swing.JTextField();
+        changepass = new javax.swing.JPanel();
+        email1 = new javax.swing.JLabel();
+        changepass1 = new javax.swing.JPanel();
+        email2 = new javax.swing.JLabel();
+        ln5 = new javax.swing.JLabel();
+        profile4 = new javax.swing.JLabel();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        main.setBackground(new java.awt.Color(0, 51, 51));
+        main.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        header.setBackground(new java.awt.Color(0, 153, 153));
+        header.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 3));
+        header.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        jLabel1.setForeground(new java.awt.Color(255, 255, 255));
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("ACCOUNT SETTINGS");
+        header.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 4, 900, 50));
+
+        back.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        back.setForeground(new java.awt.Color(255, 255, 255));
+        back.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-left-50.png"))); // NOI18N
+        back.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                backMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                backMouseExited(evt);
+            }
+        });
+        header.add(back, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 100, 40));
+
+        main.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 980, 60));
+
+        profile1.setBackground(new java.awt.Color(255, 255, 255));
+        profile1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        profile1.setForeground(new java.awt.Color(255, 255, 255));
+        profile1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        profile1.setText("Looker user Gravatar for profile picture.");
+        main.add(profile1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 190, 250, 40));
+
+        ln.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        ln.setForeground(new java.awt.Color(255, 255, 255));
+        ln.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ln.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-male-user-100.png"))); // NOI18N
+        main.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 140, 190, 100));
+
+        profile2.setBackground(new java.awt.Color(204, 255, 204));
+
+        email.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        email.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        email.setText("Change Profile Picture");
+
+        javax.swing.GroupLayout profile2Layout = new javax.swing.GroupLayout(profile2);
+        profile2.setLayout(profile2Layout);
+        profile2Layout.setHorizontalGroup(
+            profile2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(email, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        profile2Layout.setVerticalGroup(
+            profile2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(profile2Layout.createSequentialGroup()
+                .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        main.add(profile2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 150, 160, 30));
+
+        profile3.setBackground(new java.awt.Color(255, 255, 255));
+        profile3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        profile3.setForeground(new java.awt.Color(255, 255, 255));
+        profile3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        profile3.setText("Personal Information");
+        main.add(profile3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 260, 40));
+
+        fn1.setBackground(new java.awt.Color(255, 255, 255));
+        fn1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        fn1.setForeground(new java.awt.Color(255, 255, 255));
+        fn1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        fn1.setText("First Name:");
+        main.add(fn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 330, 110, 40));
+
+        email4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        email4.setForeground(new java.awt.Color(255, 255, 255));
+        email4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        email4.setText("Email:");
+        main.add(email4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 270, 100, 40));
+
+        pass.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        pass.setForeground(new java.awt.Color(255, 255, 255));
+        pass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pass.setText("Password:");
+        main.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 400, 100, 30));
+
+        enterfn1.setBackground(new java.awt.Color(204, 204, 204));
+        enterfn1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enterfn1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        enterfn1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterfn1ActionPerformed(evt);
+            }
+        });
+        main.add(enterfn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 330, 200, 40));
+
+        enterfn2.setBackground(new java.awt.Color(204, 204, 204));
+        enterfn2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enterfn2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        enterfn2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterfn2ActionPerformed(evt);
+            }
+        });
+        main.add(enterfn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 330, 180, 40));
+
+        enterfn3.setBackground(new java.awt.Color(204, 204, 204));
+        enterfn3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enterfn3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        enterfn3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterfn3ActionPerformed(evt);
+            }
+        });
+        main.add(enterfn3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 270, 480, 40));
+
+        changepass.setBackground(new java.awt.Color(204, 255, 204));
+
+        email1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        email1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        email1.setText("Change Password");
+
+        javax.swing.GroupLayout changepassLayout = new javax.swing.GroupLayout(changepass);
+        changepass.setLayout(changepassLayout);
+        changepassLayout.setHorizontalGroup(
+            changepassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, changepassLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(email1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        changepassLayout.setVerticalGroup(
+            changepassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, changepassLayout.createSequentialGroup()
+                .addComponent(email1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        main.add(changepass, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 400, 160, 30));
+
+        changepass1.setBackground(new java.awt.Color(204, 255, 204));
+
+        email2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        email2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        email2.setText("Logout");
+
+        javax.swing.GroupLayout changepass1Layout = new javax.swing.GroupLayout(changepass1);
+        changepass1.setLayout(changepass1Layout);
+        changepass1Layout.setHorizontalGroup(
+            changepass1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(email2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+        changepass1Layout.setVerticalGroup(
+            changepass1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, changepass1Layout.createSequentialGroup()
+                .addComponent(email2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+
+        main.add(changepass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 470, 160, 30));
+
+        ln5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        ln5.setForeground(new java.awt.Color(255, 255, 255));
+        ln5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ln5.setText("Last Name:");
+        main.add(ln5, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 330, 100, 40));
+
+        profile4.setBackground(new java.awt.Color(255, 255, 255));
+        profile4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        profile4.setForeground(new java.awt.Color(255, 255, 255));
+        profile4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        profile4.setText("Profile Picture:");
+        main.add(profile4, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, 130, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void enterfn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterfn1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterfn1ActionPerformed
+
+    private void enterfn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterfn2ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterfn2ActionPerformed
+
+    private void enterfn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterfn3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterfn3ActionPerformed
+
+    private void backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseClicked
+       new admindashboard().setVisible(true);
+       this.dispose();  
+    }//GEN-LAST:event_backMouseClicked
+
+    private void backMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseEntered
+      
+    }//GEN-LAST:event_backMouseEntered
+
+    private void backMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseExited
+        
+    }//GEN-LAST:event_backMouseExited
 
     /**
      * @param args the command line arguments
@@ -79,5 +309,26 @@ public class adminSettings extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel back;
+    private javax.swing.JPanel changepass;
+    private javax.swing.JPanel changepass1;
+    private javax.swing.JLabel email;
+    private javax.swing.JLabel email1;
+    private javax.swing.JLabel email2;
+    private javax.swing.JLabel email4;
+    private javax.swing.JTextField enterfn1;
+    private javax.swing.JTextField enterfn2;
+    private javax.swing.JTextField enterfn3;
+    private javax.swing.JLabel fn1;
+    private javax.swing.JPanel header;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel ln;
+    private javax.swing.JLabel ln5;
+    private javax.swing.JPanel main;
+    private javax.swing.JLabel pass;
+    private javax.swing.JLabel profile1;
+    private javax.swing.JPanel profile2;
+    private javax.swing.JLabel profile3;
+    private javax.swing.JLabel profile4;
     // End of variables declaration//GEN-END:variables
 }
