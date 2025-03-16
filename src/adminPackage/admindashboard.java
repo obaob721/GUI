@@ -775,7 +775,8 @@ public class admindashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_pendingUsersLabelMouseClicked
 
     private void adminprofMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseClicked
-       
+       new adminSettings(fullname).setVisible(true);
+       this.dispose();       
     }//GEN-LAST:event_adminprofMouseClicked
 
     private void blotterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseClicked
@@ -809,7 +810,7 @@ public class admindashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_reportsMouseExited
 
     private void settingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseClicked
-        new adminSettings().setVisible(true);
+        new adminSettings(fullname).setVisible(true);
         this.dispose();
     
     }//GEN-LAST:event_settingsMouseClicked

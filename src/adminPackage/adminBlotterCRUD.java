@@ -6,6 +6,12 @@
 package adminPackage;
 
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,15 +23,61 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
      * Creates new form adminBlotterCRUD
      */
     public adminBlotterCRUD(String fullname) {
-         this.fullname = fullname;
+        this.fullname = fullname;
         initComponents();
         setSize(970, 540);
         setResizable(false);
         
     }
+    
+   public adminBlotterCRUD(int c_id, String b_fname, String b_incident,String b_location, String b_status, String b_date, String b_witness1,String b_witness2) {
+        initComponents(); 
+        
+        
+    txtc_id.setText(String.valueOf(c_id));   
+    txtComplainant.setText(b_fname);
+    txtincident.setText(b_incident);
+    txtlocation.setText(b_location);
+    cmbstatus.setSelectedItem(b_status);
+    txtdate.setText(b_date); 
+    txtdate.setEnabled(false); 
+    txtwitness1.setText(b_witness1);
+    txtwitness2.setText(b_witness2);
+    
+    
+    showCitizenDetails(c_id);
+    }
     Color navcolor = new Color(204,255,204);
     Color headcolor = new Color(0,51,51);
     Color bodycolor = new Color(0,153,153);
+    
+    private void showCitizenDetails(int citizenId) {
+    String url = "jdbc:mysql://localhost:3306/obaob_db";
+    String user = "root";
+    String pass = "";
+
+    try (Connection conn = DriverManager.getConnection(url, user, pass)) {
+        String query = "SELECT citizen_table.c_fname, citizen_table.c_lname FROM blotter_table "
+                     + "JOIN citizen_table ON blotter_table.c_id = citizen_table.c_id "
+                     + "WHERE blotter_table.b_id = ?";
+        
+        PreparedStatement ps = conn.prepareStatement(query);
+        ps.setInt(1, citizenId);
+        ResultSet rs = ps.executeQuery();
+        
+        if (rs.next()) {
+            txtc_fname.setText(rs.getString("c_fname"));
+            txtc_fname.setEditable(false);  
+            txtc_lname.setText(rs.getString("c_lname"));
+            txtc_lname.setEditable(false);  
+        } else {
+            JOptionPane.showMessageDialog(null, "No complainant found for this blotter ID.");
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error loading complainant details: " + ex.getMessage());
+    }
+}
+
 
     
 
@@ -51,22 +103,25 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
         edit1 = new javax.swing.JLabel();
         fn1 = new javax.swing.JLabel();
         email = new javax.swing.JLabel();
-        enterfn = new javax.swing.JTextField();
-        age = new javax.swing.JTextField();
+        txtComplainant = new javax.swing.JTextField();
+        txtincident = new javax.swing.JTextField();
         email2 = new javax.swing.JLabel();
-        number = new javax.swing.JTextField();
+        txtdate = new javax.swing.JTextField();
         ln = new javax.swing.JLabel();
         email1 = new javax.swing.JLabel();
-        enterln = new javax.swing.JTextField();
-        address = new javax.swing.JTextField();
+        txtc_lname = new javax.swing.JTextField();
+        txtlocation = new javax.swing.JTextField();
         email3 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<>();
+        cmbstatus = new javax.swing.JComboBox<>();
         ln1 = new javax.swing.JLabel();
-        enterln1 = new javax.swing.JTextField();
+        txtwitness1 = new javax.swing.JTextField();
         ln2 = new javax.swing.JLabel();
-        enterln2 = new javax.swing.JTextField();
+        txtwitness2 = new javax.swing.JTextField();
         back = new javax.swing.JPanel();
         edit2 = new javax.swing.JLabel();
+        txtc_fname = new javax.swing.JTextField();
+        ln3 = new javax.swing.JLabel();
+        txtc_id = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -238,68 +293,68 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
         email.setText("Incident Type:");
         main.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 130, 30));
 
-        enterfn.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        enterfn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        enterfn.addActionListener(new java.awt.event.ActionListener() {
+        txtComplainant.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtComplainant.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtComplainant.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enterfnActionPerformed(evt);
+                txtComplainantActionPerformed(evt);
             }
         });
-        main.add(enterfn, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, 260, 40));
+        main.add(txtComplainant, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, 260, 40));
 
-        age.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        age.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        age.addActionListener(new java.awt.event.ActionListener() {
+        txtincident.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtincident.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtincident.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                ageActionPerformed(evt);
+                txtincidentActionPerformed(evt);
             }
         });
-        main.add(age, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 260, 70));
+        main.add(txtincident, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 240, 260, 40));
 
         email2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         email2.setForeground(new java.awt.Color(255, 255, 255));
         email2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         email2.setText("Date Reported:");
-        main.add(email2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 340, 120, 30));
+        main.add(email2, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, 120, 30));
 
-        number.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        number.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        number.addActionListener(new java.awt.event.ActionListener() {
+        txtdate.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtdate.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                numberActionPerformed(evt);
+                txtdateActionPerformed(evt);
             }
         });
-        main.add(number, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 340, 260, 40));
+        main.add(txtdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 310, 260, 40));
 
         ln.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         ln.setForeground(new java.awt.Color(255, 255, 255));
         ln.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ln.setText("Suspect Name:");
-        main.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 160, 120, 40));
+        main.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 200, 120, 30));
 
         email1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         email1.setForeground(new java.awt.Color(255, 255, 255));
         email1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         email1.setText("Status:");
-        main.add(email1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 390, 120, 40));
+        main.add(email1, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 360, 120, 40));
 
-        enterln.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        enterln.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        enterln.addActionListener(new java.awt.event.ActionListener() {
+        txtc_lname.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtc_lname.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtc_lname.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enterlnActionPerformed(evt);
+                txtc_lnameActionPerformed(evt);
             }
         });
-        main.add(enterln, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 160, 260, 40));
+        main.add(txtc_lname, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 200, 120, 30));
 
-        address.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        address.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        address.addActionListener(new java.awt.event.ActionListener() {
+        txtlocation.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtlocation.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtlocation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                addressActionPerformed(evt);
+                txtlocationActionPerformed(evt);
             }
         });
-        main.add(address, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 240, 260, 70));
+        main.add(txtlocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 240, 260, 40));
 
         email3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         email3.setForeground(new java.awt.Color(255, 255, 255));
@@ -307,39 +362,39 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
         email3.setText("Location:");
         main.add(email3, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 240, 110, 30));
 
-        jComboBox1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Ongoing", "Settled" }));
-        main.add(jComboBox1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 390, 260, 40));
+        cmbstatus.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        cmbstatus.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Ongoing", "Settled" }));
+        main.add(cmbstatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 360, 260, 40));
 
         ln1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         ln1.setForeground(new java.awt.Color(255, 255, 255));
         ln1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ln1.setText("Witness 1:");
-        main.add(ln1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 340, 120, 30));
+        main.add(ln1, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 310, 120, 30));
 
-        enterln1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        enterln1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        enterln1.addActionListener(new java.awt.event.ActionListener() {
+        txtwitness1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtwitness1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtwitness1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enterln1ActionPerformed(evt);
+                txtwitness1ActionPerformed(evt);
             }
         });
-        main.add(enterln1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 340, 260, 40));
+        main.add(txtwitness1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 310, 260, 40));
 
         ln2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         ln2.setForeground(new java.awt.Color(255, 255, 255));
         ln2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ln2.setText("Witness 2:");
-        main.add(ln2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 390, 120, 40));
+        main.add(ln2, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 360, 120, 40));
 
-        enterln2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        enterln2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        enterln2.addActionListener(new java.awt.event.ActionListener() {
+        txtwitness2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtwitness2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtwitness2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enterln2ActionPerformed(evt);
+                txtwitness2ActionPerformed(evt);
             }
         });
-        main.add(enterln2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 390, 260, 40));
+        main.add(txtwitness2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 360, 260, 40));
 
         back.setBackground(new java.awt.Color(204, 255, 204));
         back.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -376,6 +431,30 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
 
         main.add(back, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 90, 80, 30));
 
+        txtc_fname.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtc_fname.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtc_fname.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtc_fnameActionPerformed(evt);
+            }
+        });
+        main.add(txtc_fname, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 200, 120, 30));
+
+        ln3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        ln3.setForeground(new java.awt.Color(255, 255, 255));
+        ln3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ln3.setText("Enter Citizen (id):");
+        main.add(ln3, new org.netbeans.lib.awtextra.AbsoluteConstraints(480, 160, 120, 30));
+
+        txtc_id.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtc_id.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtc_id.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtc_idActionPerformed(evt);
+            }
+        });
+        main.add(txtc_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 160, 120, 30));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -384,7 +463,7 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(main, javax.swing.GroupLayout.DEFAULT_SIZE, 481, Short.MAX_VALUE)
         );
 
         pack();
@@ -392,14 +471,7 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addbutton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseClicked
-        
-        
-        
-        
-        
-        
-        
-        
+       
     }//GEN-LAST:event_addbutton2MouseClicked
 
     private void addbutton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseEntered
@@ -436,6 +508,9 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
 
     private void editbutton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseClicked
 
+        
+        
+        
     }//GEN-LAST:event_editbutton1MouseClicked
 
     private void editbutton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseEntered
@@ -446,33 +521,33 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
         editbutton1.setBackground(navcolor);
     }//GEN-LAST:event_editbutton1MouseExited
 
-    private void enterfnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterfnActionPerformed
+    private void txtComplainantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtComplainantActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_enterfnActionPerformed
+    }//GEN-LAST:event_txtComplainantActionPerformed
 
-    private void ageActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_ageActionPerformed
+    private void txtincidentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtincidentActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_ageActionPerformed
+    }//GEN-LAST:event_txtincidentActionPerformed
 
-    private void numberActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numberActionPerformed
+    private void txtdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtdateActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_numberActionPerformed
+    }//GEN-LAST:event_txtdateActionPerformed
 
-    private void enterlnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterlnActionPerformed
+    private void txtc_lnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtc_lnameActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_enterlnActionPerformed
+    }//GEN-LAST:event_txtc_lnameActionPerformed
 
-    private void addressActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addressActionPerformed
+    private void txtlocationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtlocationActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_addressActionPerformed
+    }//GEN-LAST:event_txtlocationActionPerformed
 
-    private void enterln1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterln1ActionPerformed
+    private void txtwitness1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtwitness1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_enterln1ActionPerformed
+    }//GEN-LAST:event_txtwitness1ActionPerformed
 
-    private void enterln2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterln2ActionPerformed
+    private void txtwitness2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtwitness2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_enterln2ActionPerformed
+    }//GEN-LAST:event_txtwitness2ActionPerformed
 
     private void backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseClicked
             new adminBlotter(fullname).setVisible(true);
@@ -486,6 +561,14 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
     private void backMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseExited
         back.setBackground(navcolor);
     }//GEN-LAST:event_backMouseExited
+
+    private void txtc_fnameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtc_fnameActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtc_fnameActionPerformed
+
+    private void txtc_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtc_idActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtc_idActionPerformed
 
     /**
      * @param args the command line arguments
@@ -525,9 +608,8 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel add;
     private javax.swing.JPanel addbutton2;
-    private javax.swing.JTextField address;
-    private javax.swing.JTextField age;
     private javax.swing.JPanel back;
+    private javax.swing.JComboBox<String> cmbstatus;
     private javax.swing.JPanel deletebutton;
     private javax.swing.JLabel edit;
     private javax.swing.JLabel edit1;
@@ -537,20 +619,24 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
     private javax.swing.JLabel email1;
     private javax.swing.JLabel email2;
     private javax.swing.JLabel email3;
-    private javax.swing.JTextField enterfn;
-    private javax.swing.JTextField enterln;
-    private javax.swing.JTextField enterln1;
-    private javax.swing.JTextField enterln2;
     private javax.swing.JLabel fn1;
     private javax.swing.JPanel header;
-    private javax.swing.JComboBox<String> jComboBox1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel ln;
     private javax.swing.JLabel ln1;
     private javax.swing.JLabel ln2;
+    private javax.swing.JLabel ln3;
     private javax.swing.JPanel main;
-    private javax.swing.JTextField number;
     private javax.swing.JPanel refresh;
     private javax.swing.JLabel refresh1;
+    private javax.swing.JTextField txtComplainant;
+    private javax.swing.JTextField txtc_fname;
+    private javax.swing.JTextField txtc_id;
+    private javax.swing.JTextField txtc_lname;
+    private javax.swing.JTextField txtdate;
+    private javax.swing.JTextField txtincident;
+    private javax.swing.JTextField txtlocation;
+    private javax.swing.JTextField txtwitness1;
+    private javax.swing.JTextField txtwitness2;
     // End of variables declaration//GEN-END:variables
 }

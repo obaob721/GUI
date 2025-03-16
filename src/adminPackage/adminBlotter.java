@@ -5,9 +5,13 @@
  */
 package adminPackage;
 
+import config.dbConnector;
 import java.awt.Color;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import loginReg.loginform;
+import net.proteanit.sql.DbUtils;
 
 
 /**
@@ -24,6 +28,8 @@ public class adminBlotter extends javax.swing.JFrame {
     
         initComponents();
         adminprof.setText("" + fullname + "");
+        
+        displayBlotterData();
     }
     
     Color navcolor = new Color(0,51,51);
@@ -31,6 +37,16 @@ public class adminBlotter extends javax.swing.JFrame {
     Color bodycolor = new Color(0,153,153);
 
     
+    private void displayBlotterData() {
+    try {
+        dbConnector dbc = new dbConnector();
+        ResultSet rs = dbc.getData("SELECT c_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2 FROM blotter_table");
+        c_table.setModel(DbUtils.resultSetToTableModel(rs));
+    } catch (SQLException ex) {
+        System.out.println("Error: " + ex.getMessage());
+    }
+}
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -56,7 +72,7 @@ public class adminBlotter extends javax.swing.JFrame {
         managecitizen = new javax.swing.JLabel();
         blotter = new javax.swing.JLabel();
         manageuser = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        settings = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         adminprof = new javax.swing.JLabel();
@@ -289,13 +305,24 @@ public class adminBlotter extends javax.swing.JFrame {
         });
         jPanel1.add(manageuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 180, 50));
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-settings-50.png"))); // NOI18N
-        jLabel4.setText("         Settings");
-        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 50));
+        settings.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        settings.setForeground(new java.awt.Color(255, 255, 255));
+        settings.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        settings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-settings-50.png"))); // NOI18N
+        settings.setText("         Settings");
+        settings.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        settings.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                settingsMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                settingsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                settingsMouseExited(evt);
+            }
+        });
+        jPanel1.add(settings, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 50));
 
         jLabel5.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
@@ -310,6 +337,11 @@ public class adminBlotter extends javax.swing.JFrame {
         adminprof.setForeground(new java.awt.Color(255, 255, 255));
         adminprof.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         adminprof.setText("Halooo");
+        adminprof.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adminprofMouseClicked(evt);
+            }
+        });
         jPanel1.add(adminprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 180, 50));
 
         main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 640));
@@ -464,7 +496,25 @@ public class adminBlotter extends javax.swing.JFrame {
     }//GEN-LAST:event_deletebuttonMouseExited
 
     private void c_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_tableMouseClicked
-        
+    int selectedRow = c_table.getSelectedRow();
+     
+    if (selectedRow != -1) {
+       
+    int c_id = Integer.parseInt(c_table.getValueAt(selectedRow, 0).toString());
+    String b_fname = c_table.getValueAt(selectedRow, 1).toString();
+    String b_incident = c_table.getValueAt(selectedRow, 2).toString();
+    String b_location = c_table.getValueAt(selectedRow, 3).toString();
+    String b_status = c_table.getValueAt(selectedRow, 4).toString();
+    String b_date = c_table.getValueAt(selectedRow, 5).toString();  // Timestamp (not editable)
+    String b_witness1 = c_table.getValueAt(selectedRow, 6).toString();
+    String b_witness2 = c_table.getValueAt(selectedRow, 7).toString();
+
+    
+    adminBlotterCRUD editForm = new adminBlotterCRUD(c_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2);
+    editForm.setVisible(true);
+    this.dispose();
+    }
+
     }//GEN-LAST:event_c_tableMouseClicked
 
     private void dashMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseClicked
@@ -573,12 +623,8 @@ public class adminBlotter extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField1ActionPerformed
 
     private void blotterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseClicked
-     
-        
-        
-        
-        
-        
+   
+         displayBlotterData();
         
     }//GEN-LAST:event_blotterMouseClicked
 
@@ -606,6 +652,26 @@ public class adminBlotter extends javax.swing.JFrame {
          reports.setBackground(navcolor);
          reports.setOpaque(true);
     }//GEN-LAST:event_reportsMouseExited
+
+    private void settingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseClicked
+        new adminSettings(fullname).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_settingsMouseClicked
+
+    private void settingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseEntered
+         settings.setBackground(bodycolor);
+         settings.setOpaque(true);
+    }//GEN-LAST:event_settingsMouseEntered
+
+    private void settingsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseExited
+         settings.setBackground(navcolor);
+         settings.setOpaque(true);
+    }//GEN-LAST:event_settingsMouseExited
+
+    private void adminprofMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseClicked
+        new adminSettings(fullname).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_adminprofMouseClicked
 
     /**
      * @param args the command line arguments
@@ -656,7 +722,6 @@ public class adminBlotter extends javax.swing.JFrame {
     private javax.swing.JLabel edit1;
     private javax.swing.JPanel editbutton1;
     private javax.swing.JPanel header;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
@@ -669,5 +734,6 @@ public class adminBlotter extends javax.swing.JFrame {
     private javax.swing.JLabel refresh1;
     private javax.swing.JLabel reports;
     private javax.swing.JPanel searchbutton;
+    private javax.swing.JLabel settings;
     // End of variables declaration//GEN-END:variables
 }

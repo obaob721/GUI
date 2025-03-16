@@ -74,7 +74,7 @@ public class adminPage extends javax.swing.JFrame {
         managecitizen = new javax.swing.JLabel();
         blotter = new javax.swing.JLabel();
         manageuser = new javax.swing.JLabel();
-        jLabel4 = new javax.swing.JLabel();
+        settings = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         adminprof = new javax.swing.JLabel();
         fn2 = new javax.swing.JLabel();
@@ -254,13 +254,24 @@ public class adminPage extends javax.swing.JFrame {
         });
         jPanel1.add(manageuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 180, 50));
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel4.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-settings-50.png"))); // NOI18N
-        jLabel4.setText("         Settings");
-        jLabel4.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 50));
+        settings.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        settings.setForeground(new java.awt.Color(255, 255, 255));
+        settings.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        settings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-settings-50.png"))); // NOI18N
+        settings.setText("         Settings");
+        settings.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        settings.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                settingsMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                settingsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                settingsMouseExited(evt);
+            }
+        });
+        jPanel1.add(settings, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 50));
 
         jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-admin-64.png"))); // NOI18N
         jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 60, -1));
@@ -269,6 +280,11 @@ public class adminPage extends javax.swing.JFrame {
         adminprof.setForeground(new java.awt.Color(255, 255, 255));
         adminprof.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         adminprof.setText("hallo");
+        adminprof.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adminprofMouseClicked(evt);
+            }
+        });
         jPanel1.add(adminprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 180, 30));
 
         fn2.setBackground(new java.awt.Color(255, 255, 255));
@@ -580,11 +596,10 @@ public class adminPage extends javax.swing.JFrame {
         String lastName = enterln.getText().trim();
         String email = enteremail.getText().trim();
         String password = new String(enterpass.getPassword());
-        String confirmPassword = new String(enterconfirm.getPassword());
-        String use_type = user.getSelectedItem().toString();
+       String use_type = user.getSelectedItem().toString();
         String user_status = "Pending";
 
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -598,10 +613,6 @@ public class adminPage extends javax.swing.JFrame {
             return;
         }
 
-        if (confirmPassword.length() < 8) {
-            JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
 
         String url = "jdbc:mysql://localhost:3306/obaob_db";
         String user = "root";
@@ -611,16 +622,15 @@ public class adminPage extends javax.swing.JFrame {
 
             Connection conn = DriverManager.getConnection(url, user, pass);
 
-            String sql = "INSERT INTO user_table (firstName, lastName, email, password, confirmPassword, use_type, user_status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO user_table (firstName, lastName, email, password, use_type, user_status) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, firstName);
             pstmt.setString(2, lastName);
             pstmt.setString(3, email);
             pstmt.setString(4, password);
-            pstmt.setString(5, confirmPassword);
-            pstmt.setString(6, use_type);
-            pstmt.setString(7, user_status);
+            pstmt.setString(5, use_type);
+            pstmt.setString(6, user_status);
 
             int rowsInserted = pstmt.executeUpdate();
             if (rowsInserted > 0) {
@@ -711,15 +721,14 @@ public class adminPage extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshMouseExited
 
     private void editbutton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseClicked
-      String firstName = enterfn.getText().trim();
+     String firstName = enterfn.getText().trim();
     String lastName = enterln.getText().trim();
     String email = enteremail.getText().trim();
     String password = new String(enterpass.getPassword());
-    String confirmPassword = new String(enterconfirm.getPassword());
     String use_type = user.getSelectedItem().toString();
     String user_status = userStatusComboBox.getSelectedItem().toString();
 
-    if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+    if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
         JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
@@ -728,11 +737,6 @@ public class adminPage extends javax.swing.JFrame {
             return;
         }
     if (password.length() < 8) {
-        JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    if (confirmPassword.length() < 8) {
         JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
@@ -751,16 +755,15 @@ public class adminPage extends javax.swing.JFrame {
             user_status = "Deactivated";
         }
 
-        String sql = "UPDATE user_table SET firstName = ?, lastName = ?, password = ?, confirmPassword = ?, use_type = ?, user_status = ? WHERE email = ?";
+        String sql = "UPDATE user_table SET firstName = ?, lastName = ?, password = ?, use_type = ?, user_status = ? WHERE email = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
         pstmt.setString(1, firstName);
         pstmt.setString(2, lastName);
         pstmt.setString(3, password);
-        pstmt.setString(4, confirmPassword);
-        pstmt.setString(5, use_type);
-        pstmt.setString(6, user_status);
-        pstmt.setString(7, email);
+        pstmt.setString(4, use_type);
+        pstmt.setString(5, user_status);
+        pstmt.setString(6, email);
 
         int rowsUpdated = pstmt.executeUpdate();
         if (rowsUpdated > 0) {
@@ -815,7 +818,6 @@ public class adminPage extends javax.swing.JFrame {
         enterln.setText(lastName);   // Last name field
         enteremail.setText(model.getValueAt(i, 1).toString());  // Email
         enterpass.setText("********");
-        enterconfirm.setText("********");
         String type = model.getValueAt(i, 2).toString();
         user.setSelectedItem(type);  // User Type
         String status = model.getValueAt(i, 3).toString();
@@ -913,6 +915,26 @@ public class adminPage extends javax.swing.JFrame {
         blotter.setOpaque(true);
     }//GEN-LAST:event_blotterMouseExited
 
+    private void settingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseClicked
+       new adminSettings(fullname).setVisible(true);
+       this.dispose();
+    }//GEN-LAST:event_settingsMouseClicked
+
+    private void settingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseEntered
+         settings.setBackground(bodycolor);
+         settings.setOpaque(true);
+    }//GEN-LAST:event_settingsMouseEntered
+
+    private void settingsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseExited
+         settings.setBackground(navcolor);
+         settings.setOpaque(true);
+    }//GEN-LAST:event_settingsMouseExited
+
+    private void adminprofMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseClicked
+       new adminSettings(fullname).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_adminprofMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -975,7 +997,6 @@ public class adminPage extends javax.swing.JFrame {
     private javax.swing.JLabel fn2;
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
@@ -988,6 +1009,7 @@ public class adminPage extends javax.swing.JFrame {
     private javax.swing.JPanel refresh;
     private javax.swing.JLabel refresh1;
     private javax.swing.JPanel searchbutton;
+    private javax.swing.JLabel settings;
     private javax.swing.JComboBox<String> user;
     private javax.swing.JComboBox<String> userStatusComboBox;
     // End of variables declaration//GEN-END:variables

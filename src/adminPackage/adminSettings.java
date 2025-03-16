@@ -5,20 +5,68 @@
  */
 package adminPackage;
 
+import config.dbConnector;
+import java.awt.Color;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javax.swing.JOptionPane;
+import loginReg.loginform;
+
 /**
  *
  * @author PATRICIA
  */
 public class adminSettings extends javax.swing.JFrame {
-
+     private String fullname;
     /**
      * Creates new form adminSettings
      */
-    public adminSettings() {
+    public adminSettings(String fullname) {
         initComponents();
         setSize(970, 590);
         setResizable(false);
+        
+        this.fullname = fullname;
+        displayData();
     }
+    
+    Color navcolor = new Color(204,255,204);
+    Color headcolor = new Color(0,51,51);
+    Color bodycolor = new Color(0,153,153);
+
+   public void displayData() {
+   try {
+            dbConnector dbc = new dbConnector();
+            Connection conn = dbc.getConnection(); 
+
+            String query = "SELECT * FROM user_table WHERE CONCAT(firstName, ' ', lastName) = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, fullname);
+
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                enteremail.setText(rs.getString("email"));
+                enterfn.setText(rs.getString("firstName"));
+                enterln.setText(rs.getString("lastName"));
+                enterpass.setText("********"); 
+        } else {
+            System.out.println("No user data found.");
+        }
+
+        rs.close();
+        pstmt.close();
+    } catch (SQLException ex) {
+        ex.printStackTrace();
+    }
+}
+
+
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -41,15 +89,16 @@ public class adminSettings extends javax.swing.JFrame {
         fn1 = new javax.swing.JLabel();
         email4 = new javax.swing.JLabel();
         pass = new javax.swing.JLabel();
-        enterfn1 = new javax.swing.JTextField();
-        enterfn2 = new javax.swing.JTextField();
-        enterfn3 = new javax.swing.JTextField();
+        enterpass = new javax.swing.JTextField();
+        enterln = new javax.swing.JTextField();
+        enteremail = new javax.swing.JTextField();
         changepass = new javax.swing.JPanel();
         email1 = new javax.swing.JLabel();
-        changepass1 = new javax.swing.JPanel();
+        logoutbutton = new javax.swing.JPanel();
         email2 = new javax.swing.JLabel();
         ln5 = new javax.swing.JLabel();
         profile4 = new javax.swing.JLabel();
+        enterfn = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -90,13 +139,13 @@ public class adminSettings extends javax.swing.JFrame {
         profile1.setForeground(new java.awt.Color(255, 255, 255));
         profile1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         profile1.setText("Looker user Gravatar for profile picture.");
-        main.add(profile1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 190, 250, 40));
+        main.add(profile1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 190, 250, 40));
 
         ln.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         ln.setForeground(new java.awt.Color(255, 255, 255));
         ln.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ln.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-male-user-100.png"))); // NOI18N
-        main.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 140, 190, 100));
+        main.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, 190, 100));
 
         profile2.setBackground(new java.awt.Color(204, 255, 204));
 
@@ -117,67 +166,96 @@ public class adminSettings extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        main.add(profile2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 150, 160, 30));
+        main.add(profile2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 150, 160, 30));
 
         profile3.setBackground(new java.awt.Color(255, 255, 255));
         profile3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
         profile3.setForeground(new java.awt.Color(255, 255, 255));
         profile3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         profile3.setText("Personal Information");
-        main.add(profile3, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 80, 260, 40));
+        main.add(profile3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 260, 40));
 
         fn1.setBackground(new java.awt.Color(255, 255, 255));
         fn1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         fn1.setForeground(new java.awt.Color(255, 255, 255));
         fn1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         fn1.setText("First Name:");
-        main.add(fn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(220, 330, 110, 40));
+        main.add(fn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 330, 110, 40));
 
         email4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         email4.setForeground(new java.awt.Color(255, 255, 255));
         email4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         email4.setText("Email:");
-        main.add(email4, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 270, 100, 40));
+        main.add(email4, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 270, 100, 40));
 
         pass.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         pass.setForeground(new java.awt.Color(255, 255, 255));
         pass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         pass.setText("Password:");
-        main.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 400, 100, 30));
+        main.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 390, 100, 30));
 
-        enterfn1.setBackground(new java.awt.Color(204, 204, 204));
-        enterfn1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        enterfn1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        enterfn1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enterfn1ActionPerformed(evt);
+        enterpass.setBackground(new java.awt.Color(204, 204, 204));
+        enterpass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enterpass.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        enterpass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                enterpassMouseClicked(evt);
             }
         });
-        main.add(enterfn1, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 330, 200, 40));
-
-        enterfn2.setBackground(new java.awt.Color(204, 204, 204));
-        enterfn2.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        enterfn2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        enterfn2.addActionListener(new java.awt.event.ActionListener() {
+        enterpass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enterfn2ActionPerformed(evt);
+                enterpassActionPerformed(evt);
             }
         });
-        main.add(enterfn2, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 330, 180, 40));
+        main.add(enterpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 390, 200, 30));
 
-        enterfn3.setBackground(new java.awt.Color(204, 204, 204));
-        enterfn3.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        enterfn3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        enterfn3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                enterfn3ActionPerformed(evt);
+        enterln.setBackground(new java.awt.Color(204, 204, 204));
+        enterln.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enterln.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        enterln.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                enterlnMouseClicked(evt);
             }
         });
-        main.add(enterfn3, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 270, 480, 40));
+        enterln.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterlnActionPerformed(evt);
+            }
+        });
+        main.add(enterln, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 330, 180, 40));
+
+        enteremail.setBackground(new java.awt.Color(204, 204, 204));
+        enteremail.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enteremail.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        enteremail.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                enteremailMouseClicked(evt);
+            }
+        });
+        enteremail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enteremailActionPerformed(evt);
+            }
+        });
+        main.add(enteremail, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 270, 480, 40));
 
         changepass.setBackground(new java.awt.Color(204, 255, 204));
+        changepass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                changepassMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                changepassMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                changepassMouseExited(evt);
+            }
+            public void mousePressed(java.awt.event.MouseEvent evt) {
+                changepassMousePressed(evt);
+            }
+        });
 
-        email1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        email1.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         email1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         email1.setText("Change Password");
 
@@ -185,10 +263,7 @@ public class adminSettings extends javax.swing.JFrame {
         changepass.setLayout(changepassLayout);
         changepassLayout.setHorizontalGroup(
             changepassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, changepassLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(email1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+            .addComponent(email1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
         );
         changepassLayout.setVerticalGroup(
             changepassLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -197,41 +272,67 @@ public class adminSettings extends javax.swing.JFrame {
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        main.add(changepass, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 400, 160, 30));
+        main.add(changepass, new org.netbeans.lib.awtextra.AbsoluteConstraints(490, 390, 120, 30));
 
-        changepass1.setBackground(new java.awt.Color(204, 255, 204));
+        logoutbutton.setBackground(new java.awt.Color(204, 255, 204));
+        logoutbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                logoutbuttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                logoutbuttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                logoutbuttonMouseExited(evt);
+            }
+        });
 
         email2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         email2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         email2.setText("Logout");
 
-        javax.swing.GroupLayout changepass1Layout = new javax.swing.GroupLayout(changepass1);
-        changepass1.setLayout(changepass1Layout);
-        changepass1Layout.setHorizontalGroup(
-            changepass1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout logoutbuttonLayout = new javax.swing.GroupLayout(logoutbutton);
+        logoutbutton.setLayout(logoutbuttonLayout);
+        logoutbuttonLayout.setHorizontalGroup(
+            logoutbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(email2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
-        changepass1Layout.setVerticalGroup(
-            changepass1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, changepass1Layout.createSequentialGroup()
+        logoutbuttonLayout.setVerticalGroup(
+            logoutbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, logoutbuttonLayout.createSequentialGroup()
                 .addComponent(email2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
 
-        main.add(changepass1, new org.netbeans.lib.awtextra.AbsoluteConstraints(660, 470, 160, 30));
+        main.add(logoutbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 470, 160, 30));
 
         ln5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         ln5.setForeground(new java.awt.Color(255, 255, 255));
         ln5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         ln5.setText("Last Name:");
-        main.add(ln5, new org.netbeans.lib.awtextra.AbsoluteConstraints(530, 330, 100, 40));
+        main.add(ln5, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 330, 100, 40));
 
         profile4.setBackground(new java.awt.Color(255, 255, 255));
         profile4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         profile4.setForeground(new java.awt.Color(255, 255, 255));
         profile4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         profile4.setText("Profile Picture:");
-        main.add(profile4, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 120, 130, 40));
+        main.add(profile4, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 120, 130, 40));
+
+        enterfn.setBackground(new java.awt.Color(204, 204, 204));
+        enterfn.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        enterfn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        enterfn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                enterfnMouseClicked(evt);
+            }
+        });
+        enterfn.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                enterfnActionPerformed(evt);
+            }
+        });
+        main.add(enterfn, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 330, 200, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -248,20 +349,20 @@ public class adminSettings extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void enterfn1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterfn1ActionPerformed
+    private void enterpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterpassActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_enterfn1ActionPerformed
+    }//GEN-LAST:event_enterpassActionPerformed
 
-    private void enterfn2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterfn2ActionPerformed
+    private void enterlnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterlnActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_enterfn2ActionPerformed
+    }//GEN-LAST:event_enterlnActionPerformed
 
-    private void enterfn3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterfn3ActionPerformed
+    private void enteremailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enteremailActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_enterfn3ActionPerformed
+    }//GEN-LAST:event_enteremailActionPerformed
 
     private void backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseClicked
-       new admindashboard().setVisible(true);
+       new admindashboard(fullname).setVisible(true);
        this.dispose();  
     }//GEN-LAST:event_backMouseClicked
 
@@ -272,6 +373,96 @@ public class adminSettings extends javax.swing.JFrame {
     private void backMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseExited
         
     }//GEN-LAST:event_backMouseExited
+
+    private void enterfnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterfnActionPerformed
+       
+    }//GEN-LAST:event_enterfnActionPerformed
+
+    private void enterfnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_enterfnMouseClicked
+       
+    }//GEN-LAST:event_enterfnMouseClicked
+
+    private void enteremailMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_enteremailMouseClicked
+     
+    }//GEN-LAST:event_enteremailMouseClicked
+
+    private void enterlnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_enterlnMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterlnMouseClicked
+
+    private void enterpassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_enterpassMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_enterpassMouseClicked
+
+    private void changepassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changepassMouseClicked
+       String email = enteremail.getText().trim(); 
+       String password = new String(enterpass.getText()).trim();
+   
+    if (password.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Password cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    try {
+        Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/obaob_db", "root", "");
+        
+        String sql = "UPDATE user_table SET password = ? WHERE email = ?";
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        pstmt.setString(1, password);
+        pstmt.setString(2, email);
+
+        int rowsUpdated = pstmt.executeUpdate();
+        if (rowsUpdated > 0) {
+            JOptionPane.showMessageDialog(this, "Password updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            enterpass.setText("********"); 
+        } else {
+            JOptionPane.showMessageDialog(this, "Error: User not found!", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        pstmt.close();
+        con.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Database error!", "Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }//GEN-LAST:event_changepassMouseClicked
+
+    private void logoutbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutbuttonMouseClicked
+         int choice = JOptionPane.showConfirmDialog(this,
+            "Are you sure you want to log out?",
+            "Logout Confirmation",
+            JOptionPane.YES_NO_OPTION,
+            JOptionPane.QUESTION_MESSAGE);
+
+        if (choice == JOptionPane.YES_OPTION) {
+            this.dispose();
+
+            new loginform().setVisible(true);
+        }
+        
+        
+        
+    }//GEN-LAST:event_logoutbuttonMouseClicked
+
+    private void logoutbuttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutbuttonMouseEntered
+       logoutbutton.setBackground(bodycolor);
+    }//GEN-LAST:event_logoutbuttonMouseEntered
+
+    private void logoutbuttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutbuttonMouseExited
+       logoutbutton.setBackground(navcolor);
+    }//GEN-LAST:event_logoutbuttonMouseExited
+
+    private void changepassMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changepassMouseEntered
+        changepass.setBackground(bodycolor);
+    }//GEN-LAST:event_changepassMouseEntered
+
+    private void changepassMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changepassMousePressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_changepassMousePressed
+
+    private void changepassMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changepassMouseExited
+        changepass.setBackground(navcolor);
+    }//GEN-LAST:event_changepassMouseExited
 
     /**
      * @param args the command line arguments
@@ -303,7 +494,7 @@ public class adminSettings extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new adminSettings().setVisible(true);
+                new adminSettings("Admin Settings").setVisible(true);
             }
         });
     }
@@ -311,19 +502,20 @@ public class adminSettings extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel back;
     private javax.swing.JPanel changepass;
-    private javax.swing.JPanel changepass1;
     private javax.swing.JLabel email;
     private javax.swing.JLabel email1;
     private javax.swing.JLabel email2;
     private javax.swing.JLabel email4;
-    private javax.swing.JTextField enterfn1;
-    private javax.swing.JTextField enterfn2;
-    private javax.swing.JTextField enterfn3;
+    private javax.swing.JTextField enteremail;
+    private javax.swing.JTextField enterfn;
+    private javax.swing.JTextField enterln;
+    private javax.swing.JTextField enterpass;
     private javax.swing.JLabel fn1;
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel ln;
     private javax.swing.JLabel ln5;
+    private javax.swing.JPanel logoutbutton;
     private javax.swing.JPanel main;
     private javax.swing.JLabel pass;
     private javax.swing.JLabel profile1;

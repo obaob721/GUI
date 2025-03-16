@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 28, 2025 at 02:25 AM
+-- Generation Time: Mar 16, 2025 at 02:46 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -20,6 +20,31 @@ SET time_zone = "+00:00";
 --
 -- Database: `obaob_db`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `blotter_table`
+--
+
+CREATE TABLE `blotter_table` (
+  `b_id` int(11) NOT NULL,
+  `c_id` int(11) NOT NULL,
+  `b_fname` varchar(50) NOT NULL,
+  `b_incident` varchar(50) NOT NULL,
+  `b_location` varchar(50) NOT NULL,
+  `b_status` varchar(50) NOT NULL,
+  `b_date` datetime NOT NULL DEFAULT current_timestamp(),
+  `b_witness1` varchar(50) NOT NULL,
+  `b_witness2` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `blotter_table`
+--
+
+INSERT INTO `blotter_table` (`b_id`, `c_id`, `b_fname`, `b_incident`, `b_location`, `b_status`, `b_date`, `b_witness1`, `b_witness2`) VALUES
+(2, 2, 'Paticia Obaob', 'Scam', 'St. Cecilia\'s College, Minglanilla, Cebu.', 'Pending', '2025-03-14 21:22:20', 'Lawrence Sumbi', 'Jaymaica Narvasa');
 
 -- --------------------------------------------------------
 
@@ -60,7 +85,6 @@ CREATE TABLE `user_table` (
   `lastName` varchar(50) NOT NULL,
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
-  `confirmPassword` varchar(50) NOT NULL,
   `use_type` varchar(50) NOT NULL,
   `user_status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -69,16 +93,23 @@ CREATE TABLE `user_table` (
 -- Dumping data for table `user_table`
 --
 
-INSERT INTO `user_table` (`user_id`, `firstName`, `lastName`, `email`, `password`, `confirmPassword`, `use_type`, `user_status`) VALUES
-(1, 'Lawrence', 'Sumbi', 'guian@gmail.com', '09223198120', '09223198120', 'User	', 'Pending'),
-(2, 'Patricia', 'Obaob', 'pat@gmail.com', '12345678', '12345678', 'Admin', 'Approved'),
-(5, 'Mary', 'Largo', 'largo@gmail.com', 'uglymary', 'uglymary', 'User	', 'Pending'),
-(6, 'Risa', 'Ravina', 'risahon@gmail.com', 'mamarisa', 'mamarisa', 'User	', 'Pending'),
-(7, 'Jaymaica', 'Narvasa', 'maica@gmail.com', 'maicamaica', 'maicamaica', 'User	', 'Pending');
+INSERT INTO `user_table` (`user_id`, `firstName`, `lastName`, `email`, `password`, `use_type`, `user_status`) VALUES
+(1, 'Lawrence', 'Sumbi', 'guian@gmail.com', '09223198120', 'User	', 'Deactivated'),
+(2, 'Patricia', 'Obaob', 'pat@gmail.com', '12345678', 'Admin', 'Approved'),
+(5, 'Mary', 'Largo', 'largo@gmail.com', 'uglymary', 'User	', 'Pending'),
+(6, 'Risa', 'Ravina', 'risahon@gmail.com', 'mamarisa', 'User	', 'Pending'),
+(7, 'Jaymaica', 'Narvasa', 'maica@gmail.com', 'maicamaica', 'User	', 'Pending');
 
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `blotter_table`
+--
+ALTER TABLE `blotter_table`
+  ADD PRIMARY KEY (`b_id`),
+  ADD KEY `c_id` (`c_id`);
 
 --
 -- Indexes for table `citizen_table`
@@ -97,6 +128,12 @@ ALTER TABLE `user_table`
 --
 
 --
+-- AUTO_INCREMENT for table `blotter_table`
+--
+ALTER TABLE `blotter_table`
+  MODIFY `b_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+
+--
 -- AUTO_INCREMENT for table `citizen_table`
 --
 ALTER TABLE `citizen_table`
@@ -106,7 +143,17 @@ ALTER TABLE `citizen_table`
 -- AUTO_INCREMENT for table `user_table`
 --
 ALTER TABLE `user_table`
-  MODIFY `user_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `user_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `blotter_table`
+--
+ALTER TABLE `blotter_table`
+  ADD CONSTRAINT `blotter_table_c_id_fr` FOREIGN KEY (`c_id`) REFERENCES `citizen_table` (`c_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
