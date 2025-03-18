@@ -16,7 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.border.Border;
 import userPackage.userDashboard;
 import javax.swing.JFrame;
- 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -69,7 +70,23 @@ public class loginform extends JFrame {
         }
         return true;
      }
-    
+     
+     public static String passwordHash(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA"); // Use SHA-256
+            md.update(password.getBytes());
+            byte[] rbt = md.digest();
+            StringBuilder sb = new StringBuilder();
+
+            for (byte b : rbt) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace(); // Log the error properly
+            return null;
+        }
+    }
     
     
 
@@ -301,6 +318,7 @@ public class loginform extends JFrame {
         return;
     }
 
+    String hashedPassword = passwordHash(password);
   String sql = "SELECT * FROM user_table WHERE email = ? AND password = ?";
 
 
@@ -310,7 +328,7 @@ public class loginform extends JFrame {
          PreparedStatement pst = conn.prepareStatement(sql)) {
 
         pst.setString(1, email);
-        pst.setString(2, password);
+        pst.setString(2, hashedPassword);
         ResultSet rs = pst.executeQuery();
         
         if(rs.next()){
@@ -370,7 +388,7 @@ public class loginform extends JFrame {
             JOptionPane.showMessageDialog(this, "Please enter both email and password.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        String hashedPassword = passwordHash(password);
         String sql = "SELECT * FROM user_table WHERE email = ? AND password = ?";
 
         dbConnector db = new dbConnector(); 
@@ -379,7 +397,7 @@ public class loginform extends JFrame {
             PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, email);
-            pst.setString(2, password);
+            pst.setString(2, hashedPassword);
             ResultSet rs = pst.executeQuery();
 
             if(rs.next()){

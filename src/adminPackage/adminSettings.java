@@ -7,6 +7,8 @@ package adminPackage;
 
 import config.dbConnector;
 import java.awt.Color;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -64,7 +66,22 @@ public class adminSettings extends javax.swing.JFrame {
     }
 }
 
+      public static String passwordHash(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA"); // Use SHA-256
+            md.update(password.getBytes());
+            byte[] rbt = md.digest();
+            StringBuilder sb = new StringBuilder();
 
+            for (byte b : rbt) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace(); // Log the error properly
+            return null;
+        }
+    }
 
 
 
@@ -396,7 +413,7 @@ public class adminSettings extends javax.swing.JFrame {
 
     private void changepassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_changepassMouseClicked
        String email = enteremail.getText().trim(); 
-       String password = new String(enterpass.getText()).trim();
+       String password = passwordHash(enterpass.getText()).trim();
    
     if (password.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Password cannot be empty!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -406,9 +423,11 @@ public class adminSettings extends javax.swing.JFrame {
     try {
         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/obaob_db", "root", "");
         
+         String hashedPassword = passwordHash(password);
+        
         String sql = "UPDATE user_table SET password = ? WHERE email = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);
-        pstmt.setString(1, password);
+        pstmt.setString(1, hashedPassword);
         pstmt.setString(2, email);
 
         int rowsUpdated = pstmt.executeUpdate();

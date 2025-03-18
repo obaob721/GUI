@@ -12,8 +12,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
-import java.util.HashSet;
-
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -28,8 +28,7 @@ import java.util.HashSet;
 public class registerform extends javax.swing.JFrame {
 
     // Simulated database for email and username uniqueness check
-    private static HashSet<String> registeredEmails = new HashSet<>();
-    private static HashSet<String> registeredUsernames = new HashSet<>();
+   
 
     public registerform() {
         initComponents();
@@ -51,6 +50,23 @@ public class registerform extends javax.swing.JFrame {
     void buttonDefaultColor(JPanel panel) {
         panel.setBackground(defbutton);
         panel.setBorder(empty);
+    }
+    
+    public static String passwordHash(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA"); // Use SHA-256
+            md.update(password.getBytes());
+            byte[] rbt = md.digest();
+            StringBuilder sb = new StringBuilder();
+
+            for (byte b : rbt) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace(); // Log the error properly
+            return null;
+        }
     }
     
     /**
@@ -282,12 +298,11 @@ public class registerform extends javax.swing.JFrame {
         String firstName = enterfn.getText().trim();
         String lastName = enterln.getText().trim();
         String email = enteremail.getText().trim();
-        String password = new String(enterpass.getPassword());
-        String confirmPassword = new String(enterconfirm.getPassword());
+        String password = passwordHash(enterpass.getText());
         String use_type = user.getSelectedItem().toString();
         String user_status = "Pending";
 
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()) {
+        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -301,11 +316,7 @@ public class registerform extends javax.swing.JFrame {
             return;
         }
 
-        if (confirmPassword.length() < 8) {
-            JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
+       
         String url = "jdbc:mysql://localhost:3306/obaob_db";
         String user = "root";
         String pass = "";
@@ -319,16 +330,15 @@ public class registerform extends javax.swing.JFrame {
                 return;
             }
 
-            String sql = "INSERT INTO user_table (firstName, lastName, email, password, confirmPassword, use_type, user_status) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO user_table (firstName, lastName, email, password, use_type, user_status) VALUES (?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, firstName);
             pstmt.setString(2, lastName);
             pstmt.setString(3, email);
             pstmt.setString(4, password);
-            pstmt.setString(5, confirmPassword);
-            pstmt.setString(6, use_type);
-            pstmt.setString(7, user_status);
+            pstmt.setString(5, use_type);
+            pstmt.setString(6, user_status);
             
             int rowsInserted = pstmt.executeUpdate();
             if (rowsInserted > 0) {

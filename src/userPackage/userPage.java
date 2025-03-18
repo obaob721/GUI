@@ -65,11 +65,11 @@ public class userPage extends javax.swing.JFrame {
         main = new javax.swing.JPanel();
         header = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
-        jLabel3 = new javax.swing.JLabel();
+        settings = new javax.swing.JLabel();
         dash = new javax.swing.JLabel();
         logout = new javax.swing.JLabel();
         managecitizen = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        blotter = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         changeuser = new javax.swing.JLabel();
         userprof = new javax.swing.JLabel();
@@ -110,13 +110,24 @@ public class userPage extends javax.swing.JFrame {
         jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel3.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel3.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-settings-50.png"))); // NOI18N
-        jLabel3.setText("         Settings");
-        jLabel3.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 180, 50));
+        settings.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        settings.setForeground(new java.awt.Color(255, 255, 255));
+        settings.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        settings.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-settings-50.png"))); // NOI18N
+        settings.setText("         Settings");
+        settings.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        settings.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                settingsMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                settingsMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                settingsMouseExited(evt);
+            }
+        });
+        jPanel1.add(settings, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 340, 180, 50));
 
         dash.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         dash.setForeground(new java.awt.Color(255, 255, 255));
@@ -175,13 +186,24 @@ public class userPage extends javax.swing.JFrame {
         });
         jPanel1.add(managecitizen, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 240, 180, 50));
 
-        jLabel9.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel9.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-strike-50.png"))); // NOI18N
-        jLabel9.setText("         Blotter");
-        jLabel9.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 180, 50));
+        blotter.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        blotter.setForeground(new java.awt.Color(255, 255, 255));
+        blotter.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        blotter.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-strike-50.png"))); // NOI18N
+        blotter.setText("         Blotter");
+        blotter.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
+        blotter.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                blotterMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                blotterMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                blotterMouseExited(evt);
+            }
+        });
+        jPanel1.add(blotter, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 180, 50));
 
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-user-50.png"))); // NOI18N
@@ -765,6 +787,35 @@ public class userPage extends javax.swing.JFrame {
         logout.setOpaque(true);
     }//GEN-LAST:event_logoutMouseExited
 
+    private void blotterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseClicked
+        new userBlotter(fullname).setVisible(true);
+    }//GEN-LAST:event_blotterMouseClicked
+
+    private void blotterMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseEntered
+       blotter.setBackground(bodycolor);
+        blotter.setOpaque(true);
+    }//GEN-LAST:event_blotterMouseEntered
+
+    private void blotterMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseExited
+        blotter.setBackground(navcolor);
+        blotter.setOpaque(true);
+    }//GEN-LAST:event_blotterMouseExited
+
+    private void settingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseClicked
+        new userSettings(fullname).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_settingsMouseClicked
+
+    private void settingsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseEntered
+        settings.setBackground(bodycolor);
+        settings.setOpaque(true);
+    }//GEN-LAST:event_settingsMouseEntered
+
+    private void settingsMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseExited
+       settings.setBackground(navcolor);
+        settings.setOpaque(true);
+    }//GEN-LAST:event_settingsMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -806,6 +857,7 @@ public class userPage extends javax.swing.JFrame {
     private javax.swing.JPanel addbutton2;
     private javax.swing.JTextField address;
     private javax.swing.JTextField age;
+    private javax.swing.JLabel blotter;
     private javax.swing.JTable c_table;
     private javax.swing.JLabel changeuser;
     private javax.swing.JScrollPane citizen;
@@ -822,8 +874,6 @@ public class userPage extends javax.swing.JFrame {
     private javax.swing.JLabel fn1;
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel10;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel ln;
@@ -834,6 +884,7 @@ public class userPage extends javax.swing.JFrame {
     private javax.swing.JPanel refresh;
     private javax.swing.JLabel refresh1;
     private javax.swing.JPanel searchbutton;
+    private javax.swing.JLabel settings;
     private javax.swing.JLabel userprof;
     // End of variables declaration//GEN-END:variables
 }

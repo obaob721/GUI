@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 16, 2025 at 02:46 PM
+-- Generation Time: Mar 18, 2025 at 02:32 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -98,7 +98,8 @@ INSERT INTO `user_table` (`user_id`, `firstName`, `lastName`, `email`, `password
 (2, 'Patricia', 'Obaob', 'pat@gmail.com', '12345678', 'Admin', 'Approved'),
 (5, 'Mary', 'Largo', 'largo@gmail.com', 'uglymary', 'User	', 'Pending'),
 (6, 'Risa', 'Ravina', 'risahon@gmail.com', 'mamarisa', 'User	', 'Pending'),
-(7, 'Jaymaica', 'Narvasa', 'maica@gmail.com', 'maicamaica', 'User	', 'Pending');
+(7, 'Jaymaica', 'Narvasa', 'maica@gmail.com', 'maicamaica', 'User	', 'Pending'),
+(11, 'sample', 'sample', 'sample@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Pending');
 
 --
 -- Indexes for dumped tables
@@ -143,7 +144,7 @@ ALTER TABLE `citizen_table`
 -- AUTO_INCREMENT for table `user_table`
 --
 ALTER TABLE `user_table`
-  MODIFY `user_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `user_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- Constraints for dumped tables
