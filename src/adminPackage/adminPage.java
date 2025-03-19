@@ -3,6 +3,8 @@ package adminPackage;
 import loginReg.loginform;
 import config.dbConnector;
 import java.awt.Color;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -10,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.TableModel;
+import static loginReg.loginform.passwordHash;
 import net.proteanit.sql.DbUtils;
 
 /*
@@ -53,7 +56,54 @@ public class adminPage extends javax.swing.JFrame {
             System.out.println("Error: " + ex.getMessage());
         }
     }
+     public static String passwordHash(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA"); // Use SHA-256
+            md.update(password.getBytes());
+            byte[] rbt = md.digest();
+            StringBuilder sb = new StringBuilder();
 
+            for (byte b : rbt) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace(); // Log the error properly
+            return null;
+        }
+    }
+    private void highlightRow() {
+        String searchText = searchuser.getText().trim().toLowerCase();
+
+        if (searchText.isEmpty()) {
+            return;
+        }
+
+        c_table.clearSelection();
+
+        boolean matchFound = false;
+
+        for (int i = 0; c_table.getRowCount() >= i; i++) {
+            for (int j = 1; j <= 6; j++) {
+                Object cellValue = c_table.getValueAt(i, j);
+
+                if (cellValue != null) {
+                    String cellText = cellValue.toString().trim().toLowerCase();
+
+                    if (cellText.contains(searchText)) {
+                        c_table.addRowSelectionInterval(i, i);
+                        c_table.scrollRectToVisible(c_table.getCellRect(i, 0, true));
+                        matchFound = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (!matchFound) {
+            JOptionPane.showMessageDialog(null, "No matching record found!", "Search", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -95,14 +145,12 @@ public class adminPage extends javax.swing.JFrame {
         enteremail = new javax.swing.JTextField();
         pass = new javax.swing.JLabel();
         enterpass = new javax.swing.JPasswordField();
-        confirm2 = new javax.swing.JLabel();
-        enterconfirm = new javax.swing.JPasswordField();
         confirm = new javax.swing.JLabel();
         user = new javax.swing.JComboBox<>();
         userStatusComboBox = new javax.swing.JComboBox<>();
         searchbutton = new javax.swing.JPanel();
         add1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        searchuser = new javax.swing.JTextField();
         confirm3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -502,24 +550,15 @@ public class adminPage extends javax.swing.JFrame {
         });
         main.add(enterpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 110, 260, 30));
 
-        confirm2.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        confirm2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        confirm2.setText("C-Password:");
-        main.add(confirm2, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 150, 90, 30));
-
-        enterconfirm.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        enterconfirm.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        main.add(enterconfirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 150, 260, 30));
-
         confirm.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         confirm.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         confirm.setText("User Status:");
-        main.add(confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 240, 90, 30));
+        main.add(confirm, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 190, 90, 30));
 
         user.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         user.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "User\t", "Admin" }));
         user.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        main.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 190, 260, 30));
+        main.add(user, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 150, 260, 30));
 
         userStatusComboBox.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         userStatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Pending", "Approved" }));
@@ -529,20 +568,35 @@ public class adminPage extends javax.swing.JFrame {
                 userStatusComboBoxActionPerformed(evt);
             }
         });
-        main.add(userStatusComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 240, 220, 30));
+        main.add(userStatusComboBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 190, 260, 30));
 
         searchbutton.setBackground(new java.awt.Color(0, 51, 51));
         searchbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        searchbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchbuttonMouseClicked(evt);
+            }
+        });
 
         add1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         add1.setForeground(new java.awt.Color(255, 255, 255));
         add1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         add1.setText("SEARCH");
+        add1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                add1MouseClicked(evt);
+            }
+        });
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        searchuser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        searchuser.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchuserMouseClicked(evt);
+            }
+        });
+        searchuser.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                searchuserActionPerformed(evt);
             }
         });
 
@@ -552,7 +606,7 @@ public class adminPage extends javax.swing.JFrame {
             searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(searchuser, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -561,8 +615,8 @@ public class adminPage extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchuser, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         main.add(searchbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 60, -1, -1));
@@ -570,7 +624,7 @@ public class adminPage extends javax.swing.JFrame {
         confirm3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         confirm3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         confirm3.setText("User Type:");
-        main.add(confirm3, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 190, 90, 30));
+        main.add(confirm3, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 150, 90, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -587,9 +641,9 @@ public class adminPage extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void searchuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchuserActionPerformed
 
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_searchuserActionPerformed
 
     private void addbutton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseClicked
         String firstName = enterfn.getText().trim();
@@ -621,14 +675,16 @@ public class adminPage extends javax.swing.JFrame {
         try {
 
             Connection conn = DriverManager.getConnection(url, user, pass);
-
+            
+            String hashedPassword = passwordHash(password);
+            
             String sql = "INSERT INTO user_table (firstName, lastName, email, password, use_type, user_status) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement pstmt = conn.prepareStatement(sql);
 
             pstmt.setString(1, firstName);
             pstmt.setString(2, lastName);
             pstmt.setString(3, email);
-            pstmt.setString(4, password);
+            pstmt.setString(4, hashedPassword);
             pstmt.setString(5, use_type);
             pstmt.setString(6, user_status);
 
@@ -673,7 +729,7 @@ public class adminPage extends javax.swing.JFrame {
                 conn.close();
                 return;
             }
-
+            
             String sql = "DELETE FROM user_table WHERE email = ?";
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, user_email);
@@ -706,7 +762,6 @@ public class adminPage extends javax.swing.JFrame {
         enterln.setText("");
         enteremail.setText("");
         enterpass.setText("");
-        enterconfirm.setText("");
         user.setSelectedIndex(-1);
         userStatusComboBox.setSelectedIndex(-1);
 
@@ -754,13 +809,14 @@ public class adminPage extends javax.swing.JFrame {
         } else if (user_status.equals("Pending")) {
             user_status = "Deactivated";
         }
-
+        
+        String hashedPassword = passwordHash(password);
         String sql = "UPDATE user_table SET firstName = ?, lastName = ?, password = ?, use_type = ?, user_status = ? WHERE email = ?";
         PreparedStatement pstmt = conn.prepareStatement(sql);
 
         pstmt.setString(1, firstName);
         pstmt.setString(2, lastName);
-        pstmt.setString(3, password);
+        pstmt.setString(3, hashedPassword);
         pstmt.setString(4, use_type);
         pstmt.setString(5, user_status);
         pstmt.setString(6, email);
@@ -935,6 +991,20 @@ public class adminPage extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_adminprofMouseClicked
 
+    private void searchuserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchuserMouseClicked
+      
+    }//GEN-LAST:event_searchuserMouseClicked
+
+    private void add1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add1MouseClicked
+     
+        
+        
+    }//GEN-LAST:event_add1MouseClicked
+
+    private void searchbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchbuttonMouseClicked
+       highlightRow();
+    }//GEN-LAST:event_searchbuttonMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -980,7 +1050,6 @@ public class adminPage extends javax.swing.JFrame {
     private javax.swing.JScrollPane citizen;
     private javax.swing.JLabel confirm;
     private javax.swing.JLabel confirm1;
-    private javax.swing.JLabel confirm2;
     private javax.swing.JLabel confirm3;
     private javax.swing.JLabel dash;
     private javax.swing.JPanel deletebutton;
@@ -988,7 +1057,6 @@ public class adminPage extends javax.swing.JFrame {
     private javax.swing.JLabel edit1;
     private javax.swing.JPanel editbutton1;
     private javax.swing.JLabel email;
-    private javax.swing.JPasswordField enterconfirm;
     private javax.swing.JTextField enteremail;
     private javax.swing.JTextField enterfn;
     private javax.swing.JTextField enterln;
@@ -999,7 +1067,6 @@ public class adminPage extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel ln;
     private javax.swing.JLabel logout;
     private javax.swing.JPanel main;
@@ -1009,6 +1076,7 @@ public class adminPage extends javax.swing.JFrame {
     private javax.swing.JPanel refresh;
     private javax.swing.JLabel refresh1;
     private javax.swing.JPanel searchbutton;
+    private javax.swing.JTextField searchuser;
     private javax.swing.JLabel settings;
     private javax.swing.JComboBox<String> user;
     private javax.swing.JComboBox<String> userStatusComboBox;

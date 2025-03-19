@@ -423,7 +423,7 @@ public class adminSettings extends javax.swing.JFrame {
     try {
         Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/obaob_db", "root", "");
         
-         String hashedPassword = passwordHash(password);
+        String hashedPassword = passwordHash(password);
         
         String sql = "UPDATE user_table SET password = ? WHERE email = ?";
         PreparedStatement pstmt = con.prepareStatement(sql);

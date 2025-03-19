@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 18, 2025 at 02:32 PM
+-- Generation Time: Mar 19, 2025 at 10:39 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -94,12 +94,14 @@ CREATE TABLE `user_table` (
 --
 
 INSERT INTO `user_table` (`user_id`, `firstName`, `lastName`, `email`, `password`, `use_type`, `user_status`) VALUES
-(1, 'Lawrence', 'Sumbi', 'guian@gmail.com', '09223198120', 'User	', 'Deactivated'),
-(2, 'Patricia', 'Obaob', 'pat@gmail.com', '12345678', 'Admin', 'Approved'),
+(1, 'Lawrence', 'Sumbi', 'guian@gmail.com', 'c4033bff94b567a190e33faa551f411caef444f2', 'User	', 'Active'),
+(2, 'Patricia', 'Obaob', 'pat@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'Admin', 'Deactivated'),
 (5, 'Mary', 'Largo', 'largo@gmail.com', 'uglymary', 'User	', 'Pending'),
 (6, 'Risa', 'Ravina', 'risahon@gmail.com', 'mamarisa', 'User	', 'Pending'),
 (7, 'Jaymaica', 'Narvasa', 'maica@gmail.com', 'maicamaica', 'User	', 'Pending'),
-(11, 'sample', 'sample', 'sample@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Pending');
+(11, 'sample', 'sample', 'sample@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Pending'),
+(12, 'sample2', 'sample2', 'sample2@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Pending'),
+(14, 'Ann', 'Obaob', 'obaob@gmail.com', 'ba5df9e16a645ea16661db81f5792d7d95453b26', 'Admin', 'Active');
 
 --
 -- Indexes for dumped tables
@@ -144,7 +146,7 @@ ALTER TABLE `citizen_table`
 -- AUTO_INCREMENT for table `user_table`
 --
 ALTER TABLE `user_table`
-  MODIFY `user_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `user_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- Constraints for dumped tables
