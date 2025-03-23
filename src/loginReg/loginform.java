@@ -18,6 +18,7 @@ import userPackage.userDashboard;
 import javax.swing.JFrame;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -113,6 +114,7 @@ public class loginform extends JFrame {
         login = new javax.swing.JLabel();
         canbg = new javax.swing.JPanel();
         cancel = new javax.swing.JLabel();
+        forgotpass = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -141,17 +143,17 @@ public class loginform extends JFrame {
                 enterusernameActionPerformed(evt);
             }
         });
-        main2.add(enterusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 99, 227, 32));
+        main2.add(enterusername, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 90, 227, 32));
 
         username.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         username.setForeground(new java.awt.Color(255, 255, 255));
         username.setText("Username:");
-        main2.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 76, -1, -1));
+        main2.add(username, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 70, -1, -1));
 
         pass.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         pass.setForeground(new java.awt.Color(255, 255, 255));
         pass.setText("Password:");
-        main2.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 137, -1, -1));
+        main2.add(pass, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 130, -1, -1));
 
         enterpass.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         enterpass.addActionListener(new java.awt.event.ActionListener() {
@@ -164,7 +166,7 @@ public class loginform extends JFrame {
                 enterpassKeyPressed(evt);
             }
         });
-        main2.add(enterpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 160, 227, 34));
+        main2.add(enterpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 150, 227, 34));
 
         click.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         click.setForeground(new java.awt.Color(255, 255, 255));
@@ -181,7 +183,7 @@ public class loginform extends JFrame {
                 clickMouseExited(evt);
             }
         });
-        main2.add(click, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 300, 227, -1));
+        main2.add(click, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 280, 227, -1));
 
         logbg.setBackground(new java.awt.Color(204, 255, 204));
         logbg.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -212,7 +214,7 @@ public class loginform extends JFrame {
             .addComponent(login, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
         );
 
-        main2.add(logbg, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 217, 227, -1));
+        main2.add(logbg, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 200, 227, -1));
 
         canbg.setBackground(new java.awt.Color(204, 255, 204));
         canbg.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
@@ -236,14 +238,31 @@ public class loginform extends JFrame {
         canbg.setLayout(canbgLayout);
         canbgLayout.setHorizontalGroup(
             canbgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(cancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 227, Short.MAX_VALUE)
+            .addComponent(cancel, javax.swing.GroupLayout.DEFAULT_SIZE, 226, Short.MAX_VALUE)
         );
         canbgLayout.setVerticalGroup(
             canbgLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(cancel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
         );
 
-        main2.add(canbg, new org.netbeans.lib.awtextra.AbsoluteConstraints(67, 256, -1, -1));
+        main2.add(canbg, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 240, 230, -1));
+
+        forgotpass.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        forgotpass.setForeground(new java.awt.Color(255, 255, 255));
+        forgotpass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        forgotpass.setText("Forgotten password?");
+        forgotpass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                forgotpassMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                forgotpassMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                forgotpassMouseExited(evt);
+            }
+        });
+        main2.add(forgotpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(70, 310, 230, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -440,6 +459,19 @@ public class loginform extends JFrame {
         }
     }//GEN-LAST:event_enterpassKeyPressed
 
+    private void forgotpassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotpassMouseClicked
+        new forgotPassword().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_forgotpassMouseClicked
+
+    private void forgotpassMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotpassMouseEntered
+        forgotpass.setForeground(java.awt.Color.GREEN);
+    }//GEN-LAST:event_forgotpassMouseEntered
+
+    private void forgotpassMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotpassMouseExited
+       forgotpass.setForeground(java.awt.Color.WHITE);
+    }//GEN-LAST:event_forgotpassMouseExited
+
     
     /**
      * @param args the command line arguments
@@ -477,6 +509,7 @@ public class loginform extends JFrame {
     private javax.swing.JLabel click;
     private javax.swing.JPasswordField enterpass;
     private javax.swing.JTextField enterusername;
+    private javax.swing.JLabel forgotpass;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
