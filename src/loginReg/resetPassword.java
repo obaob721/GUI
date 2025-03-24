@@ -5,9 +5,17 @@
  */
 package loginReg;
 
+import config.dbConnector;
+import static config.passwordHasher.hashPassword;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import javax.swing.BorderFactory;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
 
@@ -16,20 +24,127 @@ import javax.swing.border.Border;
  * @author PATRICIA
  */
 public class resetPassword extends javax.swing.JFrame {
-
+    private String userEmail;
+    
     /**
      * Creates new form resetPassword
      */
     public resetPassword() {
         initComponents();
+        
+    }
+   
+
+    public resetPassword(String email) {
+        this.userEmail = email;  
+        initComponents();
+        verifyOldPassword();
+        resetUserPassword();
     }
     
+ private void verifyOldPassword() {
+    dbConnector dbc = new dbConnector();
+    Connection con = dbc.getConnection();
+
+    try {
+        String query = "SELECT password FROM user_table WHERE email = ?";
+        PreparedStatement pst = con.prepareStatement(query);
+        pst.setString(1, userEmail);
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            String storedHashedPassword = rs.getString("password");
+
+            
+            String enteredPassword = JOptionPane.showInputDialog(this, "Enter your old password:");
+
+            if (enteredPassword != null) { 
+                oldpass.setText(enteredPassword); 
+                
+                
+                String hashedEnteredPassword = passwordHash(enteredPassword);
+
+                if (storedHashedPassword.equals(hashedEnteredPassword)) {
+                    JOptionPane.showMessageDialog(this, "Old password verified!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    JOptionPane.showMessageDialog(this, "Incorrect old password.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Email not found.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        con.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+    
+    public static String passwordHash(String password) {
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA"); // Use SHA-256
+            md.update(password.getBytes());
+            byte[] rbt = md.digest();
+            StringBuilder sb = new StringBuilder();
+
+            for (byte b : rbt) {
+                sb.append(String.format("%02x", b));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace(); // Log the error properly
+            return null;
+        }
+    }
+    
+    
+    private void resetUserPassword() {
+    String oldPass = new String(oldpass.getPassword());
+    String newPass = new String(newpass.getPassword());
+
+
+    if (oldPass.equals(newPass)) {
+        JOptionPane.showMessageDialog(this, "New password must be different from the old password.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    dbConnector dbc = new dbConnector();
+    Connection con = dbc.getConnection();
+
+    try {
+      
+        String hashedNewPass = passwordHash(newPass);
+
+        String query = "UPDATE user_table SET password = ? WHERE email = ?";
+        PreparedStatement pst = con.prepareStatement(query);
+        pst.setString(1, hashedNewPass); 
+        pst.setString(2, userEmail);
+        int updated = pst.executeUpdate();
+
+        if (updated > 0) {
+            JOptionPane.showMessageDialog(this, "Password successfully reset.", "Success", JOptionPane.INFORMATION_MESSAGE);
+            this.dispose();
+            new loginform().setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Failed to reset password.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        con.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
+
+
     
     
      Color hover = new Color(0, 153, 153);
     Color defbutton = new Color(204,255,204);
 
     Border empty = BorderFactory.createEmptyBorder();
+
+  
 
     void buttonBorderAnimation(JPanel panel) {
         panel.setBackground(hover);
@@ -109,25 +224,27 @@ public class resetPassword extends javax.swing.JFrame {
                 sendMouseExited(evt);
             }
         });
+        send.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel12.setText("Reset password");
+        jLabel12.setText("Reset Password");
+        send.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 130, 40));
 
-        javax.swing.GroupLayout sendLayout = new javax.swing.GroupLayout(send);
-        send.setLayout(sendLayout);
-        sendLayout.setHorizontalGroup(
-            sendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 116, Short.MAX_VALUE)
-        );
-        sendLayout.setVerticalGroup(
-            sendLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, 36, Short.MAX_VALUE)
-        );
+        jPanel1.add(send, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 510, 130, 40));
 
-        jPanel1.add(send, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 510, 120, 40));
+        oldpass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                oldpassMouseClicked(evt);
+            }
+        });
         jPanel1.add(oldpass, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, 360, 40));
 
+        newpass.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                newpassMouseClicked(evt);
+            }
+        });
         newpass.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newpassActionPerformed(evt);
@@ -174,7 +291,7 @@ public class resetPassword extends javax.swing.JFrame {
     }//GEN-LAST:event_backMouseExited
 
     private void sendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sendMouseClicked
-        
+          resetUserPassword();
 
     }//GEN-LAST:event_sendMouseClicked
 
@@ -189,6 +306,15 @@ public class resetPassword extends javax.swing.JFrame {
     private void newpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newpassActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_newpassActionPerformed
+
+    private void oldpassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_oldpassMouseClicked
+      verifyOldPassword(); 
+    }//GEN-LAST:event_oldpassMouseClicked
+
+    private void newpassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_newpassMouseClicked
+       
+        
+    }//GEN-LAST:event_newpassMouseClicked
 
     /**
      * @param args the command line arguments

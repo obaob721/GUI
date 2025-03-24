@@ -5,8 +5,10 @@
  */
 package loginReg;
 
+import config.dbConnector;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -18,6 +20,7 @@ import javax.swing.border.Border;
  */
 public class verification extends javax.swing.JFrame {
     private int correctPin;
+    private String userEmail;
     /**
      * Creates new form verification
      */
@@ -25,10 +28,15 @@ public class verification extends javax.swing.JFrame {
         initComponents();
     }
 
-   public verification(int generatedPin) {
-        this.correctPin = generatedPin; 
-        initComponents(); 
-    }
+   public verification(String email, int generatedPin) {
+    this.userEmail = email;  // Store email without displaying
+    this.correctPin = generatedPin;
+    initComponents();
+}
+    public void setCorrectPin(int newPin) {
+    this.correctPin = newPin;
+}
+
     
      private void verifyPin() {
         try {
@@ -36,7 +44,7 @@ public class verification extends javax.swing.JFrame {
             if (enteredPin == correctPin) {
                 JOptionPane.showMessageDialog(this, "PIN Verified. You may reset your password.", "Success", JOptionPane.INFORMATION_MESSAGE);
                 this.dispose();
-                new resetPassword().setVisible(true);
+                new resetPassword(userEmail).setVisible(true);
             } else {
                 JOptionPane.showMessageDialog(this, "Incorrect PIN. Try again.", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -111,6 +119,17 @@ public class verification extends javax.swing.JFrame {
         resend.setForeground(new java.awt.Color(255, 255, 255));
         resend.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         resend.setText("Didn't received code? Resend");
+        resend.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                resendMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                resendMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                resendMouseExited(evt);
+            }
+        });
         jPanel4.add(resend, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 420, 350, 20));
 
         jLabel17.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -126,6 +145,11 @@ public class verification extends javax.swing.JFrame {
         enterpin.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 enterpinActionPerformed(evt);
+            }
+        });
+        enterpin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                enterpinKeyPressed(evt);
             }
         });
         jPanel4.add(enterpin, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 370, 360, 40));
@@ -223,6 +247,29 @@ public class verification extends javax.swing.JFrame {
     private void sendMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sendMouseExited
         buttonDefaultColor(send);
     }//GEN-LAST:event_sendMouseExited
+
+    private void enterpinKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_enterpinKeyPressed
+      
+    }//GEN-LAST:event_enterpinKeyPressed
+
+    private void resendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resendMouseClicked
+  int newPin = 100000 + new Random().nextInt(900000); 
+    System.out.println("Admin Notification: New reset PIN for " + userEmail + " is " + newPin);
+
+    JOptionPane.showMessageDialog(this, "A new PIN has been sent to your email.", 
+                                  "PIN Resent", JOptionPane.INFORMATION_MESSAGE);
+
+    
+    setCorrectPin(newPin); 
+    }//GEN-LAST:event_resendMouseClicked
+
+    private void resendMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resendMouseEntered
+         resend.setForeground(java.awt.Color.GREEN);
+    }//GEN-LAST:event_resendMouseEntered
+
+    private void resendMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_resendMouseExited
+        resend.setForeground(java.awt.Color.WHITE);
+    }//GEN-LAST:event_resendMouseExited
 
     /**
      * @param args the command line arguments

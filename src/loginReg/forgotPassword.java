@@ -5,8 +5,12 @@
  */
 package loginReg;
 
+import config.dbConnector;
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.util.Random;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;
@@ -28,22 +32,44 @@ public class forgotPassword extends javax.swing.JFrame {
     }
     
     private void sendPin() {
+    dbConnector dbc = new dbConnector();
+    Connection con = dbc.getConnection();
+
     String email = enteremail.getText();
     if (email.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Please enter your email.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
+    if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+        JOptionPane.showMessageDialog(this, "Invalid email format. Only @gmail.com is allowed.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+   
 
-    generatedPin = 100000 + new Random().nextInt(900000);
-    System.out.println("Admin Notification: Reset PIN for " + email + " is " + generatedPin);
+    try {
+        String query = "SELECT email FROM user_table WHERE email = ?";
+        PreparedStatement pst = con.prepareStatement(query);
+        pst.setString(1, email);
+        ResultSet rs = pst.executeQuery();
 
-    JOptionPane.showMessageDialog(this, "A PIN has been sent to your email. Please check your inbox.", 
-                                  "PIN Sent", JOptionPane.INFORMATION_MESSAGE);
+        if (rs.next()) {
+            generatedPin = 100000 + new Random().nextInt(900000);
+            System.out.println("Admin Notification: Reset PIN for " + email + " is " + generatedPin);
 
-    this.setVisible(false);
-    new verification(generatedPin).setVisible(true);
+            JOptionPane.showMessageDialog(this, "A PIN has been sent to your email. Please check your inbox.", 
+                                          "PIN Sent", JOptionPane.INFORMATION_MESSAGE);
+
+            this.setVisible(false);
+           new verification(email, generatedPin).setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "Email not found in database.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        con.close();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
 }
-
     
     Color hover = new Color(0, 153, 153);
     Color defbutton = new Color(204,255,204);
@@ -129,6 +155,11 @@ public class forgotPassword extends javax.swing.JFrame {
                 enteremailActionPerformed(evt);
             }
         });
+        enteremail.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                enteremailKeyPressed(evt);
+            }
+        });
         jPanel1.add(enteremail, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 380, 360, 40));
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
@@ -147,6 +178,11 @@ public class forgotPassword extends javax.swing.JFrame {
             }
             public void mouseExited(java.awt.event.MouseEvent evt) {
                 sendMouseExited(evt);
+            }
+        });
+        send.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                sendKeyPressed(evt);
             }
         });
 
@@ -213,6 +249,14 @@ public class forgotPassword extends javax.swing.JFrame {
     private void sendMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_sendMouseExited
         buttonDefaultColor(send);
     }//GEN-LAST:event_sendMouseExited
+
+    private void sendKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_sendKeyPressed
+   
+
+    }//GEN-LAST:event_sendKeyPressed
+
+    private void enteremailKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_enteremailKeyPressed
+    }//GEN-LAST:event_enteremailKeyPressed
 
     
     

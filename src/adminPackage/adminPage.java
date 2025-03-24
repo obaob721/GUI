@@ -149,9 +149,9 @@ public class adminPage extends javax.swing.JFrame {
         user = new javax.swing.JComboBox<>();
         userStatusComboBox = new javax.swing.JComboBox<>();
         searchbutton = new javax.swing.JPanel();
-        add1 = new javax.swing.JLabel();
-        searchuser = new javax.swing.JTextField();
+        search = new javax.swing.JLabel();
         confirm3 = new javax.swing.JLabel();
+        searchuser = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -578,15 +578,37 @@ public class adminPage extends javax.swing.JFrame {
             }
         });
 
-        add1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        add1.setForeground(new java.awt.Color(255, 255, 255));
-        add1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        add1.setText("SEARCH");
-        add1.addMouseListener(new java.awt.event.MouseAdapter() {
+        search.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        search.setForeground(new java.awt.Color(255, 255, 255));
+        search.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        search.setText("SEARCH");
+        search.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                add1MouseClicked(evt);
+                searchMouseClicked(evt);
             }
         });
+
+        javax.swing.GroupLayout searchbuttonLayout = new javax.swing.GroupLayout(searchbutton);
+        searchbutton.setLayout(searchbuttonLayout);
+        searchbuttonLayout.setHorizontalGroup(
+            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+        searchbuttonLayout.setVerticalGroup(
+            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        main.add(searchbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(884, 60, 80, -1));
+
+        confirm3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        confirm3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        confirm3.setText("User Type:");
+        main.add(confirm3, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 150, 90, 30));
 
         searchuser.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         searchuser.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -599,32 +621,7 @@ public class adminPage extends javax.swing.JFrame {
                 searchuserActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout searchbuttonLayout = new javax.swing.GroupLayout(searchbutton);
-        searchbutton.setLayout(searchbuttonLayout);
-        searchbuttonLayout.setHorizontalGroup(
-            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(searchuser, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        searchbuttonLayout.setVerticalGroup(
-            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(searchuser, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-        );
-
-        main.add(searchbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 60, -1, -1));
-
-        confirm3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        confirm3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        confirm3.setText("User Type:");
-        main.add(confirm3, new org.netbeans.lib.awtextra.AbsoluteConstraints(610, 150, 90, 30));
+        main.add(searchuser, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 60, 170, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -995,11 +992,11 @@ public class adminPage extends javax.swing.JFrame {
       
     }//GEN-LAST:event_searchuserMouseClicked
 
-    private void add1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_add1MouseClicked
-     
+    private void searchMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchMouseClicked
+     highlightRow();
         
         
-    }//GEN-LAST:event_add1MouseClicked
+    }//GEN-LAST:event_searchMouseClicked
 
     private void searchbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchbuttonMouseClicked
        highlightRow();
@@ -1042,7 +1039,6 @@ public class adminPage extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel add;
-    private javax.swing.JLabel add1;
     private javax.swing.JPanel addbutton2;
     private javax.swing.JLabel adminprof;
     private javax.swing.JLabel blotter;
@@ -1075,6 +1071,7 @@ public class adminPage extends javax.swing.JFrame {
     private javax.swing.JLabel pass;
     private javax.swing.JPanel refresh;
     private javax.swing.JLabel refresh1;
+    private javax.swing.JLabel search;
     private javax.swing.JPanel searchbutton;
     private javax.swing.JTextField searchuser;
     private javax.swing.JLabel settings;

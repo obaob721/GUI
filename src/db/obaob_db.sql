@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 19, 2025 at 10:39 AM
+-- Generation Time: Mar 24, 2025 at 04:58 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -94,7 +94,7 @@ CREATE TABLE `user_table` (
 --
 
 INSERT INTO `user_table` (`user_id`, `firstName`, `lastName`, `email`, `password`, `use_type`, `user_status`) VALUES
-(1, 'Lawrence', 'Sumbi', 'guian@gmail.com', 'c4033bff94b567a190e33faa551f411caef444f2', 'User	', 'Active'),
+(1, 'Lawrence', 'Sumbi', 'guian@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Deactivated'),
 (2, 'Patricia', 'Obaob', 'pat@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'Admin', 'Deactivated'),
 (5, 'Mary', 'Largo', 'largo@gmail.com', 'uglymary', 'User	', 'Pending'),
 (6, 'Risa', 'Ravina', 'risahon@gmail.com', 'mamarisa', 'User	', 'Pending'),
