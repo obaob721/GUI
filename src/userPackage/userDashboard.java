@@ -359,6 +359,11 @@ public class userDashboard extends javax.swing.JFrame {
         jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 100, -1));
 
         jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-user-50.png"))); // NOI18N
+        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel9MouseClicked(evt);
+            }
+        });
         jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 60, -1));
 
         managecitizen.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
@@ -507,6 +512,10 @@ public class userDashboard extends javax.swing.JFrame {
                 blotter.setBackground(navcolor);
                 blotter.setOpaque(true);
     }//GEN-LAST:event_blotterMouseExited
+
+    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
+        new userSettings(fullname).setVisible(true);
+    }//GEN-LAST:event_jLabel9MouseClicked
 
     /**
      * @param args the command line arguments

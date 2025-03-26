@@ -28,17 +28,18 @@ public class verification extends javax.swing.JFrame {
         initComponents();
     }
 
-   public verification(String email, int generatedPin) {
-    this.userEmail = email;  // Store email without displaying
-    this.correctPin = generatedPin;
-    initComponents();
-}
+    public verification(String email, int generatedPin) {
+        this.userEmail = email;  // Store email without displaying
+        this.correctPin = generatedPin;
+        initComponents();
+    }
+    
     public void setCorrectPin(int newPin) {
-    this.correctPin = newPin;
-}
+        this.correctPin = newPin;
+    }
 
     
-     private void verifyPin() {
+    private void verifyPin() {
         try {
             int enteredPin = Integer.parseInt(enterpin.getText());
             if (enteredPin == correctPin) {
