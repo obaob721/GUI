@@ -6,6 +6,14 @@
 package adminPackage;
 
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import loginReg.loginform;
 
@@ -15,21 +23,71 @@ import loginReg.loginform;
  */
 public class adminReport extends javax.swing.JFrame {
     private String fullname;
+     private static String userImagePath = null;
     /**
      * Creates new form adminReport
      */
-    public adminReport(String fullname) {
+    public adminReport(String fullname, String imgPath) {
         this.fullname = fullname;
         
         initComponents();
         
         adminprof.setText("" + fullname + "");
+        
+        setLocationRelativeTo(null);
+        
+        userImagePath = imgPath;
+        displayImage();
     }
     
     Color navcolor = new Color(0, 51, 51);
     Color headcolor = new Color(0, 153, 153);
     Color bodycolor = new Color(0, 153, 153);
+    
+     private void displayImage() {
+        if (userImagePath != null && !userImagePath.isEmpty()) {
+            updateProfilePicture(userImagePath);
+        }
+    }
 
+    public void updateProfilePicture(String imgPath) {
+        File imgFile = new File(imgPath);
+        if (imgFile.exists()) {
+            try {
+                BufferedImage img = ImageIO.read(imgFile);
+                ImageIcon circularImg = new ImageIcon(getRoundedImage(img, profile.getWidth(), profile.getHeight()));
+                profile.setIcon(circularImg);
+                profile.setText("");
+            } catch (Exception e) {
+                System.out.println("Error loading image: " + e.getMessage());
+            }
+        } else {
+            profile.setText("Image Not Found");
+        }
+    }
+
+private Image getRoundedImage(BufferedImage img, int width, int height) {
+    BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = output.createGraphics();
+    
+    // Enable anti-aliasing for smooth edges
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    
+    // Create a circular clipping mask
+    g2.setClip(new Ellipse2D.Float(0, 0, width, height));
+    
+    // Draw the image inside the circular area
+    g2.drawImage(img, 0, 0, width, height, null);
+    g2.dispose();
+    
+    return output;
+}
+
+    
+    
+    
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -52,7 +110,7 @@ public class adminReport extends javax.swing.JFrame {
         manageuser = new javax.swing.JLabel();
         settings = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        profile = new javax.swing.JLabel();
         adminprof = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -229,21 +287,33 @@ public class adminReport extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Admin");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 180, 30));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 180, 30));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-admin-64.png"))); // NOI18N
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 60, -1));
+        profile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-admin-64.png"))); // NOI18N
+        profile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                profileMouseClicked(evt);
+            }
+        });
+        jPanel1.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 110, 100));
 
-        adminprof.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        adminprof.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
         adminprof.setForeground(new java.awt.Color(255, 255, 255));
         adminprof.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        adminprof.setText("Halooo");
+        adminprof.setText("Administrator");
         adminprof.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 adminprofMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                adminprofMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                adminprofMouseExited(evt);
+            }
         });
-        jPanel1.add(adminprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 180, 50));
+        jPanel1.add(adminprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 180, -1));
 
         main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 640));
 
@@ -279,7 +349,7 @@ public class adminReport extends javax.swing.JFrame {
     }//GEN-LAST:event_c_tableMouseClicked
 
     private void dashMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseClicked
-        admindashboard admin = new admindashboard(fullname);
+        admindashboard admin = new admindashboard(fullname, userImagePath);
         admin.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_dashMouseClicked
@@ -320,7 +390,7 @@ public class adminReport extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutMouseExited
 
     private void managecitizenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseClicked
-        new adminCitizen(fullname).setVisible(true);
+        new adminCitizen(fullname, userImagePath).setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_managecitizenMouseClicked
@@ -336,7 +406,7 @@ public class adminReport extends javax.swing.JFrame {
     }//GEN-LAST:event_managecitizenMouseExited
 
     private void blotterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseClicked
-        new adminBlotter(fullname).setVisible(true);
+        new adminBlotter(fullname, userImagePath).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_blotterMouseClicked
 
@@ -351,7 +421,7 @@ public class adminReport extends javax.swing.JFrame {
     }//GEN-LAST:event_blotterMouseExited
 
     private void manageuserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseClicked
-        adminPage pag = new adminPage(fullname);
+        adminPage pag = new adminPage(fullname, userImagePath);
         pag.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_manageuserMouseClicked
@@ -387,7 +457,7 @@ public class adminReport extends javax.swing.JFrame {
     }//GEN-LAST:event_reportsMouseExited
 
     private void settingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseClicked
-        new adminSettings(fullname).setVisible(true);
+        new adminSettings(fullname, userImagePath).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_settingsMouseClicked
 
@@ -401,10 +471,24 @@ public class adminReport extends javax.swing.JFrame {
          settings.setOpaque(true);
     }//GEN-LAST:event_settingsMouseExited
 
+    private void profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileMouseClicked
+        displayImage();
+        new adminSettings(fullname, userImagePath).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_profileMouseClicked
+
     private void adminprofMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseClicked
-       new adminSettings(fullname).setVisible(true);
-       this.dispose();
+        new adminSettings(fullname, userImagePath).setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_adminprofMouseClicked
+
+    private void adminprofMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseEntered
+        adminprof.setForeground(java.awt.Color.GREEN);
+    }//GEN-LAST:event_adminprofMouseEntered
+
+    private void adminprofMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseExited
+        adminprof.setForeground(java.awt.Color.WHITE);
+    }//GEN-LAST:event_adminprofMouseExited
 
     /**
      * @param args the command line arguments
@@ -436,7 +520,8 @@ public class adminReport extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new adminReport("Admin User").setVisible(true);
+               String imgPath = "path/to/default/image.png";
+                new admindashboard("Admin User", imgPath).setVisible(true);
             }
         });
     }
@@ -450,13 +535,13 @@ public class adminReport extends javax.swing.JFrame {
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel logout;
     private javax.swing.JPanel main;
     private javax.swing.JLabel managecitizen;
     private javax.swing.JLabel manageuser;
+    private javax.swing.JLabel profile;
     private javax.swing.JLabel reports;
     private javax.swing.JLabel settings;
     // End of variables declaration//GEN-END:variables

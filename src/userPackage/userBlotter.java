@@ -8,8 +8,16 @@ package userPackage;
 import adminPackage.adminBlotterCRUD;
 import config.dbConnector;
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import loginReg.loginform;
 import net.proteanit.sql.DbUtils;
@@ -20,16 +28,22 @@ import net.proteanit.sql.DbUtils;
  */
 public class userBlotter extends javax.swing.JFrame {
          private String fullname;
+         private static String userImagePath = null;
     /**
      * Creates new form userBlotter
      */
-    public userBlotter(String fullname) {
+    public userBlotter(String fullname, String imgPath) {
         initComponents();
         
         this.fullname = fullname;
         
-        userprof.setText("" + fullname + "");
+        adminprof.setText("" + fullname + "");
          displayBlotterData();
+         
+          setLocationRelativeTo(null);
+        
+        userImagePath = imgPath;
+        displayImage();
     }
      Color navcolor = new Color(0,51,51);
     Color headcolor = new Color(0,51,51);
@@ -47,6 +61,47 @@ public class userBlotter extends javax.swing.JFrame {
         System.out.println("Error: " + ex.getMessage());
     }
 }
+      private void displayImage() {
+        if (userImagePath != null && !userImagePath.isEmpty()) {
+            updateProfilePicture(userImagePath);
+        }
+    }
+
+    public void updateProfilePicture(String imgPath) {
+        File imgFile = new File(imgPath);
+        if (imgFile.exists()) {
+            try {
+                BufferedImage img = ImageIO.read(imgFile);
+                ImageIcon circularImg = new ImageIcon(getRoundedImage(img, profile.getWidth(), profile.getHeight()));
+                profile.setIcon(circularImg);
+                profile.setText("");
+            } catch (Exception e) {
+                System.out.println("Error loading image: " + e.getMessage());
+            }
+        } else {
+            profile.setText("Image Not Found");
+        }
+    }
+
+private Image getRoundedImage(BufferedImage img, int width, int height) {
+    BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = output.createGraphics();
+    
+    // Enable anti-aliasing for smooth edges
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    
+    // Create a circular clipping mask
+    g2.setClip(new Ellipse2D.Float(0, 0, width, height));
+    
+    // Draw the image inside the circular area
+    g2.drawImage(img, 0, 0, width, height, null);
+    g2.dispose();
+    
+    return output;
+}
+
+     
+     
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -64,10 +119,10 @@ public class userBlotter extends javax.swing.JFrame {
         settings = new javax.swing.JLabel();
         dash2 = new javax.swing.JLabel();
         logout = new javax.swing.JLabel();
-        jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
+        profile = new javax.swing.JLabel();
         managecitizen = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
+        adminprof = new javax.swing.JLabel();
         addbutton2 = new javax.swing.JPanel();
         edit = new javax.swing.JLabel();
         deletebutton = new javax.swing.JPanel();
@@ -113,7 +168,7 @@ public class userBlotter extends javax.swing.JFrame {
         userprof.setForeground(new java.awt.Color(255, 255, 255));
         userprof.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         userprof.setText("User");
-        jPanel1.add(userprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 180, -1));
+        jPanel1.add(userprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 180, -1));
 
         settings.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         settings.setForeground(new java.awt.Color(255, 255, 255));
@@ -172,13 +227,9 @@ public class userBlotter extends javax.swing.JFrame {
         });
         jPanel1.add(logout, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 440, 180, 50));
 
-        jLabel8.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
-        jLabel8.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel8.setText("Welcome!");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 100, -1));
-
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-user-50.png"))); // NOI18N
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 60, -1));
+        profile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-user-50.png"))); // NOI18N
+        jPanel1.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 110, 90));
 
         managecitizen.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         managecitizen.setForeground(new java.awt.Color(255, 255, 255));
@@ -206,6 +257,23 @@ public class userBlotter extends javax.swing.JFrame {
         jLabel10.setText("         Blotter");
         jLabel10.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jPanel1.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 180, 50));
+
+        adminprof.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        adminprof.setForeground(new java.awt.Color(255, 255, 255));
+        adminprof.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        adminprof.setText("User Name");
+        adminprof.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adminprofMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                adminprofMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                adminprofMouseExited(evt);
+            }
+        });
+        jPanel1.add(adminprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 180, -1));
 
         dashboardPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 640));
 
@@ -391,7 +459,7 @@ public class userBlotter extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void settingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseClicked
-        new userSettings(fullname).setVisible(true);
+        new userSettings(fullname, userImagePath).setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_settingsMouseClicked
@@ -445,7 +513,7 @@ public class userBlotter extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutMouseExited
 
     private void managecitizenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseClicked
-        new userPage(fullname).setVisible(true);
+        new userPage(fullname, userImagePath).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_managecitizenMouseClicked
 
@@ -460,7 +528,7 @@ public class userBlotter extends javax.swing.JFrame {
     }//GEN-LAST:event_managecitizenMouseExited
 
     private void addbutton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseClicked
-        new adminBlotterCRUD(fullname).setVisible(true);
+        new adminBlotterCRUD(fullname, userImagePath).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_addbutton2MouseClicked
 
@@ -473,7 +541,7 @@ public class userBlotter extends javax.swing.JFrame {
     }//GEN-LAST:event_addbutton2MouseExited
 
     private void deletebuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deletebuttonMouseClicked
-        new adminBlotterCRUD(fullname).setVisible(true);
+        new adminBlotterCRUD(fullname, userImagePath).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_deletebuttonMouseClicked
 
@@ -486,27 +554,27 @@ public class userBlotter extends javax.swing.JFrame {
     }//GEN-LAST:event_deletebuttonMouseExited
 
     private void c_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_tableMouseClicked
-        int selectedRow = c_table.getSelectedRow();
+         int selectedRow = c_table.getSelectedRow();
+     
+    if (selectedRow != -1) {
+        int c_id = Integer.parseInt(c_table.getValueAt(selectedRow, 0).toString());
+        int b_id = Integer.parseInt(c_table.getValueAt(selectedRow, 1).toString()); 
+        String b_fname = c_table.getValueAt(selectedRow, 2).toString();
+        String b_incident = c_table.getValueAt(selectedRow, 3).toString();
+        String b_location = c_table.getValueAt(selectedRow, 4).toString();
+        String b_status = c_table.getValueAt(selectedRow, 5) != null ? c_table.getValueAt(selectedRow, 4).toString() : "Pending"; // Ensure "Pending" if null
+        String b_date = c_table.getValueAt(selectedRow, 6).toString();  
+        String b_witness1 = c_table.getValueAt(selectedRow, 7).toString();
+        String b_witness2 = c_table.getValueAt(selectedRow, 8).toString();
 
-        if (selectedRow != -1) {
-
-            int c_id = Integer.parseInt(c_table.getValueAt(selectedRow, 0).toString());
-            String b_fname = c_table.getValueAt(selectedRow, 1).toString();
-            String b_incident = c_table.getValueAt(selectedRow, 2).toString();
-            String b_location = c_table.getValueAt(selectedRow, 3).toString();
-            String b_status = c_table.getValueAt(selectedRow, 4).toString();
-            String b_date = c_table.getValueAt(selectedRow, 5).toString();  // Timestamp (not editable)
-            String b_witness1 = c_table.getValueAt(selectedRow, 6).toString();
-            String b_witness2 = c_table.getValueAt(selectedRow, 7).toString();
-
-            userBlotterCRUD editForm = new userBlotterCRUD(c_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2);
-            editForm.setVisible(true);
-            this.dispose();
-        }
+        adminBlotterCRUD editForm = new adminBlotterCRUD(fullname,userImagePath,c_id, b_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2);
+        editForm.setVisible(true);
+        this.dispose();
+    }
     }//GEN-LAST:event_c_tableMouseClicked
 
     private void editbutton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseClicked
-        new adminBlotterCRUD(fullname).setVisible(true);
+        new adminBlotterCRUD(fullname, userImagePath).setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_editbutton1MouseClicked
@@ -522,6 +590,19 @@ public class userBlotter extends javax.swing.JFrame {
     private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
 
     }//GEN-LAST:event_jTextField1ActionPerformed
+
+    private void adminprofMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseExited
+        adminprof.setForeground(java.awt.Color.WHITE);
+    }//GEN-LAST:event_adminprofMouseExited
+
+    private void adminprofMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseEntered
+        adminprof.setForeground(java.awt.Color.GREEN);
+    }//GEN-LAST:event_adminprofMouseEntered
+
+    private void adminprofMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseClicked
+        new userSettings(fullname, userImagePath).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_adminprofMouseClicked
 
     /**
      * @param args the command line arguments
@@ -553,7 +634,8 @@ public class userBlotter extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new userBlotter("Regular User").setVisible(true);
+                 String imgPath = "path/to/default/image.png";
+                new userBlotter("Regular User", imgPath).setVisible(true);
             }
         });
     }
@@ -562,6 +644,7 @@ public class userBlotter extends javax.swing.JFrame {
     private javax.swing.JLabel add;
     private javax.swing.JLabel add1;
     private javax.swing.JPanel addbutton2;
+    private javax.swing.JLabel adminprof;
     private javax.swing.JTable c_table;
     private javax.swing.JScrollPane citizen;
     private javax.swing.JLabel dash2;
@@ -573,12 +656,11 @@ public class userBlotter extends javax.swing.JFrame {
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel logout;
     private javax.swing.JLabel managecitizen;
+    private javax.swing.JLabel profile;
     private javax.swing.JPanel searchbutton;
     private javax.swing.JLabel settings;
     private javax.swing.JLabel userprof;

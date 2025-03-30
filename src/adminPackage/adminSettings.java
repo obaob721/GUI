@@ -5,8 +5,14 @@
  */
 package adminPackage;
 
+import config.ImageHandler;
 import config.dbConnector;
 import java.awt.Color;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.awt.Graphics2D;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
@@ -14,6 +20,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.imageio.ImageIO;
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import loginReg.loginform;
 
@@ -23,22 +32,98 @@ import loginReg.loginform;
  */
 public class adminSettings extends javax.swing.JFrame {
      private String fullname;
+     private static String userImagePath = null;
+
     /**
      * Creates new form adminSettings
      */
-    public adminSettings(String fullname) {
+    public adminSettings(String fullname, String imgPath) {
         initComponents();
         setSize(970, 590);
         setResizable(false);
         
         this.fullname = fullname;
         displayData();
+        loadUserData(fullname);
+        
+        setLocationRelativeTo(null);
+        
+        userImagePath = imgPath;
     }
     
     Color navcolor = new Color(204,255,204);
     Color headcolor = new Color(0,51,51);
     Color bodycolor = new Color(0,153,153);
+   
+   private String saveImageToFolder(String email) {
+        try {
+            // Convert JLabel Icon to BufferedImage
+            Icon icon = profile.getIcon();
+            if (icon instanceof ImageIcon) {
+                Image image = ((ImageIcon) icon).getImage();
+                BufferedImage bufferedImage = new BufferedImage(image.getWidth(null), image.getHeight(null), BufferedImage.TYPE_INT_RGB);
+                Graphics2D g2 = bufferedImage.createGraphics();
+                g2.drawImage(image, 0, 0, null);
+                g2.dispose();
 
+                // Define Folder and File Name
+                String folderPath = "src/usersImages";
+                File directory = new File(folderPath);
+                if (!directory.exists()) {
+                    directory.mkdir(); // Create folder if not exists
+                }
+
+                // Save image with unique name
+                String filePath = folderPath + email + ".jpg";
+                File outputFile = new File(filePath);
+                ImageIO.write(bufferedImage, "jpg", outputFile);
+
+                return filePath; 
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error saving image: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
+    }
+    
+   private void loadUserData(String fullname) {
+    String url = "jdbc:mysql://localhost:3306/obaob_db";
+    String user = "root";
+    String pass = "";
+
+    try (Connection conn = DriverManager.getConnection(url, user, pass)) {
+        String query = "SELECT u_image FROM user_table WHERE CONCAT(firstName, ' ', lastName) = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(query)) {
+            pstmt.setString(1, fullname);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    String imagePath = rs.getString("u_image");
+
+                    // Load image from file
+                    if (imagePath != null && !imagePath.isEmpty()) {
+                        File file = new File(imagePath);
+                        if (file.exists()) {
+                            ImageIcon icon = new ImageIcon(imagePath);
+                            Image img = icon.getImage().getScaledInstance(profile.getWidth(), profile.getHeight(), Image.SCALE_SMOOTH);
+                            profile.setIcon(new ImageIcon(img));
+                        } else {
+                            JOptionPane.showMessageDialog(this, "Image file not found: " + imagePath, "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "User not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+
+
+ 
+ 
    public void displayData() {
    try {
             dbConnector dbc = new dbConnector();
@@ -52,6 +137,7 @@ public class adminSettings extends javax.swing.JFrame {
 
             if (rs.next()) {
                 enteremail.setText(rs.getString("email"));
+                enteremail.setEditable(false);  
                 enterfn.setText(rs.getString("firstName"));
                 enterln.setText(rs.getString("lastName"));
                 enterpass.setText("********"); 
@@ -99,10 +185,7 @@ public class adminSettings extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         back = new javax.swing.JLabel();
         profile1 = new javax.swing.JLabel();
-        ln = new javax.swing.JLabel();
-        profile2 = new javax.swing.JPanel();
-        email = new javax.swing.JLabel();
-        profile3 = new javax.swing.JLabel();
+        profile = new javax.swing.JLabel();
         fn1 = new javax.swing.JLabel();
         email4 = new javax.swing.JLabel();
         pass = new javax.swing.JLabel();
@@ -116,6 +199,9 @@ public class adminSettings extends javax.swing.JFrame {
         ln5 = new javax.swing.JLabel();
         profile4 = new javax.swing.JLabel();
         enterfn = new javax.swing.JTextField();
+        select = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        profile6 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -130,7 +216,7 @@ public class adminSettings extends javax.swing.JFrame {
         jLabel1.setForeground(new java.awt.Color(255, 255, 255));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("ACCOUNT SETTINGS");
-        header.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 4, 900, 50));
+        header.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 10, 590, 50));
 
         back.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         back.setForeground(new java.awt.Color(255, 255, 255));
@@ -156,41 +242,18 @@ public class adminSettings extends javax.swing.JFrame {
         profile1.setForeground(new java.awt.Color(255, 255, 255));
         profile1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         profile1.setText("Looker user Gravatar for profile picture.");
-        main.add(profile1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 190, 250, 40));
+        main.add(profile1, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 200, 250, 40));
 
-        ln.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        ln.setForeground(new java.awt.Color(255, 255, 255));
-        ln.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        ln.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-male-user-100.png"))); // NOI18N
-        main.add(ln, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 140, 190, 100));
-
-        profile2.setBackground(new java.awt.Color(204, 255, 204));
-
-        email.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
-        email.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        email.setText("Change Profile Picture");
-
-        javax.swing.GroupLayout profile2Layout = new javax.swing.GroupLayout(profile2);
-        profile2.setLayout(profile2Layout);
-        profile2Layout.setHorizontalGroup(
-            profile2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(email, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-        profile2Layout.setVerticalGroup(
-            profile2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(profile2Layout.createSequentialGroup()
-                .addComponent(email, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-
-        main.add(profile2, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 150, 160, 30));
-
-        profile3.setBackground(new java.awt.Color(255, 255, 255));
-        profile3.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
-        profile3.setForeground(new java.awt.Color(255, 255, 255));
-        profile3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        profile3.setText("Personal Information");
-        main.add(profile3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 260, 40));
+        profile.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        profile.setForeground(new java.awt.Color(255, 255, 255));
+        profile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-male-user-100.png"))); // NOI18N
+        profile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                profileMouseClicked(evt);
+            }
+        });
+        main.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 100, 190, 140));
 
         fn1.setBackground(new java.awt.Color(255, 255, 255));
         fn1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -351,6 +414,43 @@ public class adminSettings extends javax.swing.JFrame {
         });
         main.add(enterfn, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 330, 200, 40));
 
+        select.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        select.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        select.setText("Select File");
+        select.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        select.setOpaque(true);
+        select.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                selectMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                selectMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                selectMouseExited(evt);
+            }
+        });
+        main.add(select, new org.netbeans.lib.awtextra.AbsoluteConstraints(460, 170, 90, 30));
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("Update Profile");
+        jLabel2.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jLabel2.setOpaque(true);
+        jLabel2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jLabel2MouseClicked(evt);
+            }
+        });
+        main.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 170, 100, 30));
+
+        profile6.setBackground(new java.awt.Color(255, 255, 255));
+        profile6.setFont(new java.awt.Font("Tahoma", 1, 18)); // NOI18N
+        profile6.setForeground(new java.awt.Color(255, 255, 255));
+        profile6.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        profile6.setText("Personal Information");
+        main.add(profile6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 80, 260, 40));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -379,7 +479,7 @@ public class adminSettings extends javax.swing.JFrame {
     }//GEN-LAST:event_enteremailActionPerformed
 
     private void backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseClicked
-       new admindashboard(fullname).setVisible(true);
+       new adminLogs(fullname, userImagePath).setVisible(true);
        this.dispose();  
     }//GEN-LAST:event_backMouseClicked
 
@@ -483,6 +583,70 @@ public class adminSettings extends javax.swing.JFrame {
         changepass.setBackground(navcolor);
     }//GEN-LAST:event_changepassMouseExited
 
+    private void profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileMouseClicked
+    
+           
+        
+    }//GEN-LAST:event_profileMouseClicked
+
+    private void selectMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectMouseClicked
+       ImageHandler.chooseImage(profile); 
+    }//GEN-LAST:event_selectMouseClicked
+
+    private void selectMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectMouseEntered
+      
+    }//GEN-LAST:event_selectMouseEntered
+
+    private void selectMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_selectMouseExited
+     
+    }//GEN-LAST:event_selectMouseExited
+
+    private void jLabel2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel2MouseClicked
+      String email = enteremail.getText();  
+       
+      
+      if (!email.toLowerCase().endsWith(".com")) {
+            JOptionPane.showMessageDialog(this, "Email must be valid. Please enter a valid email account.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        
+        String url = "jdbc:mysql://localhost:3306/obaob_db";
+        String user = "root";
+        String pass = "";
+
+        try (Connection conn = DriverManager.getConnection(url, user, pass)) {
+            String selectQuery = "SELECT email FROM user_table WHERE email = ?";
+            try (PreparedStatement selectPstmt = conn.prepareStatement(selectQuery)) {
+                selectPstmt.setString(1, email);
+                try (ResultSet rs = selectPstmt.executeQuery()) {
+                    if (rs.next()) {
+                        // Save Image
+                        String imagePath = saveImageToFolder(email); // Save and get the file path
+
+                        // Update user details along with the image path
+                        String updateQuery = "UPDATE user_table SET  u_image = ? WHERE email = ?";
+                        try (PreparedStatement updatePstmt = conn.prepareStatement(updateQuery)) {
+                            updatePstmt.setString(1, imagePath);
+                            updatePstmt.setString(2, email);
+
+                            int rowsUpdated = updatePstmt.executeUpdate();
+                            if (rowsUpdated > 0) {
+                                JOptionPane.showMessageDialog(this, "Account information updated successfully!");
+                            } else {
+                                JOptionPane.showMessageDialog(this, "Update failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
+                            }
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "User not found.", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jLabel2MouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -513,7 +677,8 @@ public class adminSettings extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new adminSettings("Admin Settings").setVisible(true);
+                String imgPath = "path/to/default/image.png";
+                new admindashboard("Admin User", imgPath).setVisible(true);
             }
         });
     }
@@ -521,7 +686,6 @@ public class adminSettings extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel back;
     private javax.swing.JPanel changepass;
-    private javax.swing.JLabel email;
     private javax.swing.JLabel email1;
     private javax.swing.JLabel email2;
     private javax.swing.JLabel email4;
@@ -532,14 +696,15 @@ public class adminSettings extends javax.swing.JFrame {
     private javax.swing.JLabel fn1;
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel ln;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel ln5;
     private javax.swing.JPanel logoutbutton;
     private javax.swing.JPanel main;
     private javax.swing.JLabel pass;
+    private javax.swing.JLabel profile;
     private javax.swing.JLabel profile1;
-    private javax.swing.JPanel profile2;
-    private javax.swing.JLabel profile3;
     private javax.swing.JLabel profile4;
+    private javax.swing.JLabel profile6;
+    private javax.swing.JLabel select;
     // End of variables declaration//GEN-END:variables
 }

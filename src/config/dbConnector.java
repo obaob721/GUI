@@ -28,6 +28,19 @@ public class dbConnector {
        public Connection getConnection(){
            return connect;
        }
+       
+        public void insertLog(int userId, String action) {
+        try {
+            String query = "INSERT INTO system_logs (user_id, logs_action, logs_date) VALUES (?, ?, NOW())";
+            PreparedStatement pst = connect.prepareStatement(query);
+            pst.setInt(1, userId);
+            pst.setString(2, action);
+            pst.executeUpdate();
+            pst.close();
+        } catch (SQLException ex) {
+            System.out.println("Error inserting log: " + ex.getMessage());
+        }
+    }
 }
        
     

@@ -7,8 +7,16 @@ package adminPackage;
 
 import config.dbConnector;
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import loginReg.loginform;
 import net.proteanit.sql.DbUtils;
@@ -20,16 +28,23 @@ import net.proteanit.sql.DbUtils;
  */
 public class adminBlotter extends javax.swing.JFrame {
        private String fullname;
+       private static String userImagePath = null;
+       
     /**
      * Creates new form adminBlotter
      */
-    public adminBlotter(String fullname) {
+    public adminBlotter(String fullname, String imgPath) {
         this.fullname = fullname;
     
         initComponents();
         adminprof.setText("" + fullname + "");
         
         displayBlotterData();
+        
+        setLocationRelativeTo(null);
+        
+        userImagePath = imgPath;
+        displayImage();
     }
     
     Color navcolor = new Color(0,51,51);
@@ -40,13 +55,92 @@ public class adminBlotter extends javax.swing.JFrame {
     private void displayBlotterData() {
     try {
         dbConnector dbc = new dbConnector();
-        ResultSet rs = dbc.getData("SELECT c_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2 FROM blotter_table");
+        ResultSet rs = dbc.getData("SELECT c_id,b_id ,b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2 FROM blotter_table");
         c_table.setModel(DbUtils.resultSetToTableModel(rs));
     } catch (SQLException ex) {
         System.out.println("Error: " + ex.getMessage());
     }
 }
 
+    private void highlightRow() {
+    String searchText = searchblotter.getText().trim().toLowerCase();
+
+    if (searchText.isEmpty()) {
+        return;
+    }
+
+    c_table.clearSelection(); // Clear previous selection
+    boolean matchFound = false;
+
+    for (int i = 0; i < c_table.getRowCount(); i++) { // Corrected loop condition
+        for (int j = 0; j < c_table.getColumnCount(); j++) { // Use 0-based index
+            Object cellValue = c_table.getValueAt(i, j);
+
+            if (cellValue != null) {
+                String cellText = cellValue.toString().trim().toLowerCase();
+
+                if (cellText.contains(searchText)) {
+                    c_table.addRowSelectionInterval(i, i); // Select row
+                    matchFound = true;
+                    break; // Exit column loop once a match is found
+                }
+            }
+        }
+    }
+
+    if (matchFound) {
+        // Scroll to the first selected row
+        int firstSelectedRow = c_table.getSelectedRow();
+        if (firstSelectedRow != -1) {
+            c_table.scrollRectToVisible(c_table.getCellRect(firstSelectedRow, 0, true));
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "No matching record found!", "Search", JOptionPane.INFORMATION_MESSAGE);
+    }
+}
+  
+       private void displayImage() {
+        if (userImagePath != null && !userImagePath.isEmpty()) {
+            updateProfilePicture(userImagePath);
+        }
+    }
+
+    public void updateProfilePicture(String imgPath) {
+        File imgFile = new File(imgPath);
+        if (imgFile.exists()) {
+            try {
+                BufferedImage img = ImageIO.read(imgFile);
+                ImageIcon circularImg = new ImageIcon(getRoundedImage(img, profile.getWidth(), profile.getHeight()));
+                profile.setIcon(circularImg);
+                profile.setText("");
+            } catch (Exception e) {
+                System.out.println("Error loading image: " + e.getMessage());
+            }
+        } else {
+            profile.setText("Image Not Found");
+        }
+    }
+
+private Image getRoundedImage(BufferedImage img, int width, int height) {
+    BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = output.createGraphics();
+    
+    // Enable anti-aliasing for smooth edges
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    
+    // Create a circular clipping mask
+    g2.setClip(new Ellipse2D.Float(0, 0, width, height));
+    
+    // Draw the image inside the circular area
+    g2.drawImage(img, 0, 0, width, height, null);
+    g2.dispose();
+    
+    return output;
+}
+
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -74,15 +168,15 @@ public class adminBlotter extends javax.swing.JFrame {
         manageuser = new javax.swing.JLabel();
         settings = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jLabel7 = new javax.swing.JLabel();
+        profile = new javax.swing.JLabel();
         adminprof = new javax.swing.JLabel();
         refresh = new javax.swing.JPanel();
         refresh1 = new javax.swing.JLabel();
         editbutton1 = new javax.swing.JPanel();
         edit1 = new javax.swing.JLabel();
-        searchbutton = new javax.swing.JPanel();
-        add1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        searchbtn = new javax.swing.JPanel();
+        search = new javax.swing.JLabel();
+        searchblotter = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -328,21 +422,33 @@ public class adminBlotter extends javax.swing.JFrame {
         jLabel5.setForeground(new java.awt.Color(255, 255, 255));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Admin");
-        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 140, 180, 30));
+        jPanel1.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 180, 30));
 
-        jLabel7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-admin-64.png"))); // NOI18N
-        jPanel1.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 30, 60, -1));
+        profile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-admin-64.png"))); // NOI18N
+        profile.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                profileMouseClicked(evt);
+            }
+        });
+        jPanel1.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, 110, 100));
 
-        adminprof.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        adminprof.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
         adminprof.setForeground(new java.awt.Color(255, 255, 255));
         adminprof.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        adminprof.setText("Halooo");
+        adminprof.setText("Administrator");
         adminprof.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 adminprofMouseClicked(evt);
             }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                adminprofMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                adminprofMouseExited(evt);
+            }
         });
-        jPanel1.add(adminprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 100, 180, 50));
+        jPanel1.add(adminprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 180, -1));
 
         main.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 640));
 
@@ -418,41 +524,52 @@ public class adminBlotter extends javax.swing.JFrame {
 
         main.add(editbutton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(320, 70, 80, 30));
 
-        searchbutton.setBackground(new java.awt.Color(0, 51, 51));
-        searchbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-
-        add1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        add1.setForeground(new java.awt.Color(255, 255, 255));
-        add1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        add1.setText("SEARCH");
-
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+        searchbtn.setBackground(new java.awt.Color(0, 51, 51));
+        searchbtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        searchbtn.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchbtnMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                searchbtnMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                searchbtnMouseExited(evt);
             }
         });
 
-        javax.swing.GroupLayout searchbuttonLayout = new javax.swing.GroupLayout(searchbutton);
-        searchbutton.setLayout(searchbuttonLayout);
-        searchbuttonLayout.setHorizontalGroup(
-            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
+        search.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        search.setForeground(new java.awt.Color(255, 255, 255));
+        search.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        search.setText("SEARCH");
+
+        searchblotter.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        searchblotter.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchblotterActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout searchbtnLayout = new javax.swing.GroupLayout(searchbtn);
+        searchbtn.setLayout(searchbtnLayout);
+        searchbtnLayout.setHorizontalGroup(
+            searchbtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbtnLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(searchblotter, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
-        searchbuttonLayout.setVerticalGroup(
-            searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
+        searchbtnLayout.setVerticalGroup(
+            searchbtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbtnLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addGroup(searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(searchbtnLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(search, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchblotter, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
-        main.add(searchbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 70, -1, -1));
+        main.add(searchbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 70, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -470,7 +587,7 @@ public class adminBlotter extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addbutton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseClicked
-       new adminBlotterCRUD(fullname).setVisible(true);
+       new adminBlotterCRUD(fullname, userImagePath).setVisible(true);
        this.dispose();
     }//GEN-LAST:event_addbutton2MouseClicked
 
@@ -483,7 +600,7 @@ public class adminBlotter extends javax.swing.JFrame {
     }//GEN-LAST:event_addbutton2MouseExited
 
     private void deletebuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deletebuttonMouseClicked
-        new adminBlotterCRUD(fullname).setVisible(true);
+        new adminBlotterCRUD(fullname, userImagePath).setVisible(true);
         this.dispose();   
     }//GEN-LAST:event_deletebuttonMouseClicked
 
@@ -499,26 +616,25 @@ public class adminBlotter extends javax.swing.JFrame {
     int selectedRow = c_table.getSelectedRow();
      
     if (selectedRow != -1) {
-       
-    int c_id = Integer.parseInt(c_table.getValueAt(selectedRow, 0).toString());
-    String b_fname = c_table.getValueAt(selectedRow, 1).toString();
-    String b_incident = c_table.getValueAt(selectedRow, 2).toString();
-    String b_location = c_table.getValueAt(selectedRow, 3).toString();
-    String b_status = c_table.getValueAt(selectedRow, 4).toString();
-    String b_date = c_table.getValueAt(selectedRow, 5).toString();  // Timestamp (not editable)
-    String b_witness1 = c_table.getValueAt(selectedRow, 6).toString();
-    String b_witness2 = c_table.getValueAt(selectedRow, 7).toString();
+        int c_id = Integer.parseInt(c_table.getValueAt(selectedRow, 0).toString());
+      int b_id = Integer.parseInt(c_table.getValueAt(selectedRow, 1).toString()); 
+        String b_fname = c_table.getValueAt(selectedRow, 2).toString();
+        String b_incident = c_table.getValueAt(selectedRow, 3).toString();
+        String b_location = c_table.getValueAt(selectedRow, 4).toString();
+        String b_status = c_table.getValueAt(selectedRow, 5) != null ? c_table.getValueAt(selectedRow, 4).toString() : "Pending"; // Ensure "Pending" if null
+        String b_date = c_table.getValueAt(selectedRow, 6).toString();  
+        String b_witness1 = c_table.getValueAt(selectedRow, 7).toString();
+        String b_witness2 = c_table.getValueAt(selectedRow, 8).toString();
 
-    
-    adminBlotterCRUD editForm = new adminBlotterCRUD(c_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2);
-    editForm.setVisible(true);
-    this.dispose();
+        adminBlotterCRUD editForm = new adminBlotterCRUD(fullname,userImagePath,c_id, b_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2);
+        editForm.setVisible(true);
+        this.dispose();
     }
 
     }//GEN-LAST:event_c_tableMouseClicked
 
     private void dashMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseClicked
-        admindashboard admin = new admindashboard(fullname);
+        admindashboard admin = new admindashboard(fullname, userImagePath);
         admin.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_dashMouseClicked
@@ -560,7 +676,7 @@ public class adminBlotter extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutMouseExited
 
     private void managecitizenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseClicked
-        new adminCitizen(fullname).setVisible(true);
+        new adminCitizen(fullname, userImagePath).setVisible(true);
         this.dispose();
        
     }//GEN-LAST:event_managecitizenMouseClicked
@@ -576,7 +692,7 @@ public class adminBlotter extends javax.swing.JFrame {
     }//GEN-LAST:event_managecitizenMouseExited
 
     private void manageuserMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_manageuserMouseClicked
-        adminPage pag = new adminPage(fullname);
+        adminPage pag = new adminPage(fullname, userImagePath);
         pag.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_manageuserMouseClicked
@@ -605,7 +721,7 @@ public class adminBlotter extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshMouseExited
 
     private void editbutton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseClicked
-        new adminBlotterCRUD(fullname).setVisible(true);
+        new adminBlotterCRUD(fullname, userImagePath).setVisible(true);
         this.dispose();
        
     }//GEN-LAST:event_editbutton1MouseClicked
@@ -618,9 +734,9 @@ public class adminBlotter extends javax.swing.JFrame {
         editbutton1.setBackground(navcolor);
     }//GEN-LAST:event_editbutton1MouseExited
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void searchblotterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchblotterActionPerformed
 
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_searchblotterActionPerformed
 
     private void blotterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseClicked
    
@@ -639,7 +755,7 @@ public class adminBlotter extends javax.swing.JFrame {
     }//GEN-LAST:event_blotterMouseExited
 
     private void reportsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportsMouseClicked
-        new adminReport(fullname).setVisible(true);
+        new adminReport(fullname, userImagePath).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_reportsMouseClicked
 
@@ -654,7 +770,7 @@ public class adminBlotter extends javax.swing.JFrame {
     }//GEN-LAST:event_reportsMouseExited
 
     private void settingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseClicked
-        new adminSettings(fullname).setVisible(true);
+        new adminLogs(fullname, userImagePath).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_settingsMouseClicked
 
@@ -668,10 +784,36 @@ public class adminBlotter extends javax.swing.JFrame {
          settings.setOpaque(true);
     }//GEN-LAST:event_settingsMouseExited
 
+    private void searchbtnMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchbtnMouseClicked
+       highlightRow();
+    }//GEN-LAST:event_searchbtnMouseClicked
+
+    private void searchbtnMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchbtnMouseEntered
+        searchbtn.setBackground(bodycolor);
+    }//GEN-LAST:event_searchbtnMouseEntered
+
+    private void searchbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchbtnMouseExited
+         searchbtn.setBackground(navcolor);
+    }//GEN-LAST:event_searchbtnMouseExited
+
+    private void profileMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_profileMouseClicked
+        displayImage();
+        new adminSettings(fullname, userImagePath).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_profileMouseClicked
+
     private void adminprofMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseClicked
-        new adminSettings(fullname).setVisible(true);
+        new adminSettings(fullname, userImagePath).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_adminprofMouseClicked
+
+    private void adminprofMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseEntered
+        adminprof.setForeground(java.awt.Color.GREEN);
+    }//GEN-LAST:event_adminprofMouseEntered
+
+    private void adminprofMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseExited
+        adminprof.setForeground(java.awt.Color.WHITE);
+    }//GEN-LAST:event_adminprofMouseExited
 
     /**
      * @param args the command line arguments
@@ -703,14 +845,14 @@ public class adminBlotter extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new adminBlotter("Admin User").setVisible(true);
+              String imgPath = "path/to/default/image.png";
+              new admindashboard("Admin User", imgPath).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel add;
-    private javax.swing.JLabel add1;
     private javax.swing.JPanel addbutton2;
     private javax.swing.JLabel adminprof;
     private javax.swing.JLabel blotter;
@@ -723,17 +865,18 @@ public class adminBlotter extends javax.swing.JFrame {
     private javax.swing.JPanel editbutton1;
     private javax.swing.JPanel header;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel logout;
     private javax.swing.JPanel main;
     private javax.swing.JLabel managecitizen;
     private javax.swing.JLabel manageuser;
+    private javax.swing.JLabel profile;
     private javax.swing.JPanel refresh;
     private javax.swing.JLabel refresh1;
     private javax.swing.JLabel reports;
-    private javax.swing.JPanel searchbutton;
+    private javax.swing.JLabel search;
+    private javax.swing.JTextField searchblotter;
+    private javax.swing.JPanel searchbtn;
     private javax.swing.JLabel settings;
     // End of variables declaration//GEN-END:variables
 }

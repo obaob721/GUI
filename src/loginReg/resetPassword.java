@@ -5,7 +5,6 @@
  */
 package loginReg;
 
-import config.dbConnector;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.security.MessageDigest;
@@ -13,7 +12,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.BorderFactory;
 import javax.swing.JOptionPane;

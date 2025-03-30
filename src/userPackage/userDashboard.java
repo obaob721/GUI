@@ -3,8 +3,16 @@ package userPackage;
 
 import config.dbConnector;
 import java.awt.Color;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.RenderingHints;
+import java.awt.geom.Ellipse2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import loginReg.loginform;
 
@@ -14,15 +22,22 @@ import loginReg.loginform;
  */
 public class userDashboard extends javax.swing.JFrame {
        private String fullname;
+       private static String userImagePath = null;
     /**
      * Creates new form userDashboard
      */
-    public userDashboard(String fullname) {
+    public userDashboard(String fullname, String imgPath) {
         this.fullname = fullname;
         
         initComponents();
-        userprof.setText("" + fullname + "");
+        adminprof.setText("" + fullname + "");
         displayTotalCitizens();
+        
+        
+        setLocationRelativeTo(null);
+        
+        userImagePath = imgPath;
+        displayImage();
     }
      public userDashboard(){
         initComponents();
@@ -45,6 +60,47 @@ public class userDashboard extends javax.swing.JFrame {
         System.out.println("Error: " + ex.getMessage());
     }
 }
+    
+    
+       private void displayImage() {
+        if (userImagePath != null && !userImagePath.isEmpty()) {
+            updateProfilePicture(userImagePath);
+        }
+    }
+
+    public void updateProfilePicture(String imgPath) {
+        File imgFile = new File(imgPath);
+        if (imgFile.exists()) {
+            try {
+                BufferedImage img = ImageIO.read(imgFile);
+                ImageIcon circularImg = new ImageIcon(getRoundedImage(img, profile.getWidth(), profile.getHeight()));
+                profile.setIcon(circularImg);
+                profile.setText("");
+            } catch (Exception e) {
+                System.out.println("Error loading image: " + e.getMessage());
+            }
+        } else {
+            profile.setText("Image Not Found");
+        }
+    }
+
+private Image getRoundedImage(BufferedImage img, int width, int height) {
+    BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    Graphics2D g2 = output.createGraphics();
+    
+    // Enable anti-aliasing for smooth edges
+    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+    
+    // Create a circular clipping mask
+    g2.setClip(new Ellipse2D.Float(0, 0, width, height));
+    
+    // Draw the image inside the circular area
+    g2.drawImage(img, 0, 0, width, height, null);
+    g2.dispose();
+    
+    return output;
+}
+
 
 
 
@@ -86,9 +142,10 @@ public class userDashboard extends javax.swing.JFrame {
         dash2 = new javax.swing.JLabel();
         logout = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
-        jLabel9 = new javax.swing.JLabel();
         managecitizen = new javax.swing.JLabel();
         blotter = new javax.swing.JLabel();
+        adminprof = new javax.swing.JLabel();
+        profile = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -294,7 +351,7 @@ public class userDashboard extends javax.swing.JFrame {
         userprof.setForeground(new java.awt.Color(255, 255, 255));
         userprof.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         userprof.setText("User");
-        jPanel1.add(userprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 120, 180, -1));
+        jPanel1.add(userprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 150, 180, -1));
 
         settings.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         settings.setForeground(new java.awt.Color(255, 255, 255));
@@ -356,15 +413,7 @@ public class userDashboard extends javax.swing.JFrame {
         jLabel8.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
         jLabel8.setText("Welcome!");
-        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 20, 100, -1));
-
-        jLabel9.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-user-50.png"))); // NOI18N
-        jLabel9.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jLabel9MouseClicked(evt);
-            }
-        });
-        jPanel1.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 50, 60, -1));
+        jPanel1.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 100, -1));
 
         managecitizen.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         managecitizen.setForeground(new java.awt.Color(255, 255, 255));
@@ -404,6 +453,27 @@ public class userDashboard extends javax.swing.JFrame {
         });
         jPanel1.add(blotter, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 290, 180, 50));
 
+        adminprof.setFont(new java.awt.Font("Arial Black", 1, 14)); // NOI18N
+        adminprof.setForeground(new java.awt.Color(255, 255, 255));
+        adminprof.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        adminprof.setText("User Name");
+        adminprof.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                adminprofMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                adminprofMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                adminprofMouseExited(evt);
+            }
+        });
+        jPanel1.add(adminprof, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 180, -1));
+
+        profile.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        profile.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-user-50.png"))); // NOI18N
+        jPanel1.add(profile, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 40, 110, 90));
+
         dashboardPanel2.add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 180, 640));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -427,7 +497,7 @@ public class userDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_dash2MouseClicked
 
     private void managecitizenMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseClicked
-       new userPage(fullname).setVisible(true);
+       new userPage(fullname, userImagePath).setVisible(true);
        this.dispose();
     }//GEN-LAST:event_managecitizenMouseClicked
 
@@ -482,7 +552,7 @@ public class userDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutMouseExited
 
     private void settingsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settingsMouseClicked
-       new userSettings(fullname).setVisible(true);
+       new userSettings(fullname, userImagePath).setVisible(true);
        this.dispose();
         
         
@@ -499,7 +569,7 @@ public class userDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_settingsMouseExited
 
     private void blotterMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_blotterMouseClicked
-        new userBlotter(fullname).setVisible(true);
+        new userBlotter(fullname, userImagePath).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_blotterMouseClicked
 
@@ -513,9 +583,18 @@ public class userDashboard extends javax.swing.JFrame {
                 blotter.setOpaque(true);
     }//GEN-LAST:event_blotterMouseExited
 
-    private void jLabel9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel9MouseClicked
-        new userSettings(fullname).setVisible(true);
-    }//GEN-LAST:event_jLabel9MouseClicked
+    private void adminprofMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseClicked
+        new userSettings(fullname, userImagePath).setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_adminprofMouseClicked
+
+    private void adminprofMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseEntered
+        adminprof.setForeground(java.awt.Color.GREEN);
+    }//GEN-LAST:event_adminprofMouseEntered
+
+    private void adminprofMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_adminprofMouseExited
+        adminprof.setForeground(java.awt.Color.WHITE);
+    }//GEN-LAST:event_adminprofMouseExited
 
     /**
      * @param args the command line arguments
@@ -547,12 +626,14 @@ public class userDashboard extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new userDashboard("Regular User").setVisible(true);
+                String imgPath = "path/to/default/image.png";
+                new userDashboard("Regular User", imgPath).setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel adminprof;
     private javax.swing.JLabel blotter;
     private javax.swing.JLabel dash2;
     private javax.swing.JPanel dashboardPanel2;
@@ -573,11 +654,11 @@ public class userDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel35;
     private javax.swing.JLabel jLabel36;
     private javax.swing.JLabel jLabel8;
-    private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JLabel logout;
     private javax.swing.JLabel managecitizen;
     private javax.swing.JPanel pendingcases;
+    private javax.swing.JLabel profile;
     private javax.swing.JLabel settings;
     private javax.swing.JPanel settledcases;
     private javax.swing.JPanel sumBlotter;
@@ -585,4 +666,6 @@ public class userDashboard extends javax.swing.JFrame {
     private javax.swing.JLabel totalCitizensLabel;
     private javax.swing.JLabel userprof;
     // End of variables declaration//GEN-END:variables
+
+   
 }

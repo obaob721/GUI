@@ -11,6 +11,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Timestamp;
+import java.time.Instant;
 import javax.swing.JOptionPane;
 
 /**
@@ -19,31 +22,44 @@ import javax.swing.JOptionPane;
  */
 public class userBlotterCRUD extends javax.swing.JFrame {
       private String fullname;
+      private static String userImagePath = null;
     /**
      * Creates new form userBlotterCRUD
      */
-    public userBlotterCRUD(String fullname) {
+    public userBlotterCRUD(String fullname, String imgPath) {
         this.fullname = fullname;
         initComponents();
         setSize(970, 540);
         setResizable(false);
+        
+        
+        setLocationRelativeTo(null);
+        
+        userImagePath = imgPath;
     }
-     public userBlotterCRUD(int c_id, String b_fname, String b_incident,String b_location, String b_status, String b_date, String b_witness1,String b_witness2) {
-        initComponents(); 
-        
-        
-    txtc_id.setText(String.valueOf(c_id));   
-    txtComplainant.setText(b_fname);
+     public userBlotterCRUD(String fullname, String imgPath, int c_id, int b_id, String b_fname, String b_incident, String b_location, String b_status, String b_date, String b_witness1, String b_witness2) {
+    this.fullname = fullname; 
+    userImagePath = imgPath;
+    
+       initComponents();
+
+    txtc_id.setText(String.valueOf(c_id));  
+    txtb_id.setText(String.valueOf(b_id));  
+    txtComplainant1.setText(b_fname);
     txtincident.setText(b_incident);
     txtlocation.setText(b_location);
     cmbstatus.setSelectedItem(b_status);
-    txtdate.setText(b_date); 
-    txtdate.setEnabled(false); 
+    txtdate.setText(b_date);
+    txtdate.setEnabled(false);
     txtwitness1.setText(b_witness1);
     txtwitness2.setText(b_witness2);
     
-    
-    showCitizenDetails(c_id);
+ 
+}
+    private void switchToAdminBlotter() {
+        userBlotter adminFrame = new userBlotter(fullname, userImagePath);  // 🔥 Pass fullname
+        adminFrame.setVisible(true);
+        this.dispose();
     }
     Color navcolor = new Color(204,255,204);
     Color headcolor = new Color(0,51,51);
@@ -99,7 +115,7 @@ public class userBlotterCRUD extends javax.swing.JFrame {
         edit1 = new javax.swing.JLabel();
         fn1 = new javax.swing.JLabel();
         email = new javax.swing.JLabel();
-        txtComplainant = new javax.swing.JTextField();
+        txtComplainant1 = new javax.swing.JTextField();
         txtincident = new javax.swing.JTextField();
         email2 = new javax.swing.JLabel();
         txtdate = new javax.swing.JTextField();
@@ -118,6 +134,8 @@ public class userBlotterCRUD extends javax.swing.JFrame {
         txtc_fname = new javax.swing.JTextField();
         ln3 = new javax.swing.JLabel();
         txtc_id = new javax.swing.JTextField();
+        ln4 = new javax.swing.JLabel();
+        txtb_id = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -289,14 +307,14 @@ public class userBlotterCRUD extends javax.swing.JFrame {
         email.setText("Incident Type:");
         main.add(email, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 240, 130, 30));
 
-        txtComplainant.setHorizontalAlignment(javax.swing.JTextField.CENTER);
-        txtComplainant.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        txtComplainant.addActionListener(new java.awt.event.ActionListener() {
+        txtComplainant1.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtComplainant1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtComplainant1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtComplainantActionPerformed(evt);
+                txtComplainant1ActionPerformed(evt);
             }
         });
-        main.add(txtComplainant, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, 260, 40));
+        main.add(txtComplainant1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 160, 260, 40));
 
         txtincident.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txtincident.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -449,7 +467,27 @@ public class userBlotterCRUD extends javax.swing.JFrame {
                 txtc_idActionPerformed(evt);
             }
         });
+        txtc_id.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtc_idKeyReleased(evt);
+            }
+        });
         main.add(txtc_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 160, 120, 30));
+
+        ln4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        ln4.setForeground(new java.awt.Color(255, 255, 255));
+        ln4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        ln4.setText("Blotter ID:");
+        main.add(ln4, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 120, 80, 30));
+
+        txtb_id.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+        txtb_id.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        txtb_id.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtb_idActionPerformed(evt);
+            }
+        });
+        main.add(txtb_id, new org.netbeans.lib.awtextra.AbsoluteConstraints(160, 120, 70, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -466,7 +504,69 @@ public class userBlotterCRUD extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addbutton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseClicked
+       String c_id = txtc_id.getText().trim(); // Get c_id from text field
+    String b_fname = txtComplainant1.getText().trim();
+    String b_incident = txtincident.getText().trim();
+    String b_location = txtlocation.getText().trim();
+    String b_witness1 = txtwitness1.getText().trim();
+    String b_witness2 = txtwitness2.getText().trim();
+    String b_status = cmbstatus.getSelectedItem().toString();
+    Timestamp b_date = Timestamp.from(Instant.now());
 
+    if (c_id.isEmpty() || b_fname.isEmpty() || b_incident.isEmpty() || b_location.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Please fill in all required fields!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    String url = "jdbc:mysql://localhost:3306/obaob_db";
+    String user = "root";
+    String pass = "";
+
+    Connection conn = null;
+    PreparedStatement insertStmt = null;
+    ResultSet generatedKeys = null;
+
+    try {
+        conn = DriverManager.getConnection(url, user, pass);
+
+        // Include c_id in the insert statement
+        String insertQuery = "INSERT INTO blotter_table (c_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2) " +
+                             "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        
+        insertStmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
+        insertStmt.setInt(1, Integer.parseInt(c_id)); // Convert c_id to int
+        insertStmt.setString(2, b_fname);
+        insertStmt.setString(3, b_incident);
+        insertStmt.setString(4, b_location);
+        insertStmt.setString(5, b_status);
+        insertStmt.setTimestamp(6, b_date);
+        insertStmt.setString(7, b_witness1);
+        insertStmt.setString(8, b_witness2);
+
+        int rowsInserted = insertStmt.executeUpdate();
+        if (rowsInserted > 0) {
+            generatedKeys = insertStmt.getGeneratedKeys();
+            if (generatedKeys.next()) {
+                int generatedBId = generatedKeys.getInt(1); // Get the new b_id
+                txtb_id.setText(String.valueOf(generatedBId)); // Display in txtb_id
+                JOptionPane.showMessageDialog(null, "Blotter added successfully! (ID: " + generatedBId + ")", "Success", JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Error: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+    } finally {
+        try {
+            if (generatedKeys != null) generatedKeys.close();
+            if (insertStmt != null) insertStmt.close();
+            if (conn != null) conn.close();
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(null, "Error closing resources: " + ex.getMessage(), "Database Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+        
+        
+        
     }//GEN-LAST:event_addbutton2MouseClicked
 
     private void addbutton2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseEntered
@@ -478,7 +578,39 @@ public class userBlotterCRUD extends javax.swing.JFrame {
     }//GEN-LAST:event_addbutton2MouseExited
 
     private void deletebuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deletebuttonMouseClicked
+         String b_id = txtb_id.getText().trim(); // Get Blotter ID
 
+    if (b_id.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Please select a blotter record to delete!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to delete this blotter record?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+    if (confirm != JOptionPane.YES_OPTION) {
+        return;
+    }
+
+    String url = "jdbc:mysql://localhost:3306/obaob_db";
+    String user = "root";
+    String pass = "";
+
+    try (Connection conn = DriverManager.getConnection(url, user, pass)) {
+        // Delete only from blotter_table
+        String deleteBlotterQuery = "DELETE FROM blotter_table WHERE b_id = ?";
+        try (PreparedStatement blotterStmt = conn.prepareStatement(deleteBlotterQuery)) {
+            blotterStmt.setString(1, b_id);
+            int rowsDeleted = blotterStmt.executeUpdate();
+
+            if (rowsDeleted > 0) {
+                JOptionPane.showMessageDialog(null, "Blotter record deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            } else {
+                JOptionPane.showMessageDialog(null, "No record found to delete!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+        
     }//GEN-LAST:event_deletebuttonMouseClicked
 
     private void deletebuttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deletebuttonMouseEntered
@@ -502,7 +634,61 @@ public class userBlotterCRUD extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshMouseExited
 
     private void editbutton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseClicked
+        String c_id = txtc_id.getText().trim();
+    String c_fname = txtc_fname.getText().trim();
+    String c_lname = txtc_lname.getText().trim();
+    String b_id = txtb_id.getText().trim();  // Get the blotter ID
+    String b_fname = txtComplainant1.getText().trim();
+    String b_incident = txtincident.getText().trim();
+    String b_location = txtlocation.getText().trim();
+    String b_status = cmbstatus.getSelectedItem().toString();
+    String b_witness1 = txtwitness1.getText().trim();
+    String b_witness2 = txtwitness2.getText().trim();
 
+    if (c_id.isEmpty() || c_fname.isEmpty() || c_lname.isEmpty() || b_id.isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Please fill in all required fields!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    String url = "jdbc:mysql://localhost:3306/obaob_db";
+    String user = "root";
+    String pass = "";
+
+    try (Connection conn = DriverManager.getConnection(url, user, pass)) {
+        conn.setAutoCommit(false); // Enable transaction control
+
+        // ✅ Update Citizen details
+        String updateCitizenQuery = "UPDATE citizen_table SET c_fname = ?, c_lname = ? WHERE c_id = ?";
+        try (PreparedStatement citizenStmt = conn.prepareStatement(updateCitizenQuery)) {
+            citizenStmt.setString(1, c_fname);
+            citizenStmt.setString(2, c_lname);
+            citizenStmt.setString(3, c_id);
+            citizenStmt.executeUpdate();
+        }
+
+        // ✅ Update Blotter details (Fixed: Added WHERE clause for b_id)
+        String updateBlotterQuery = "UPDATE blotter_table SET b_fname = ?, b_incident = ?, b_location = ?, b_status = ?, b_witness1 = ?, b_witness2 = ? WHERE b_id = ?";
+        try (PreparedStatement blotterStmt = conn.prepareStatement(updateBlotterQuery)) {
+            blotterStmt.setString(1, b_fname);
+            blotterStmt.setString(2, b_incident);
+            blotterStmt.setString(3, b_location);
+            blotterStmt.setString(4, b_status);
+            blotterStmt.setString(5, b_witness1);
+            blotterStmt.setString(6, b_witness2);
+            blotterStmt.setString(7, b_id); // Use b_id to update the correct row
+            blotterStmt.executeUpdate();
+        }
+
+        conn.commit(); // Commit both updates if successful
+        JOptionPane.showMessageDialog(null, "Record updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+        
+        
+        
+        
     }//GEN-LAST:event_editbutton1MouseClicked
 
     private void editbutton1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseEntered
@@ -513,9 +699,9 @@ public class userBlotterCRUD extends javax.swing.JFrame {
         editbutton1.setBackground(navcolor);
     }//GEN-LAST:event_editbutton1MouseExited
 
-    private void txtComplainantActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtComplainantActionPerformed
+    private void txtComplainant1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtComplainant1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtComplainantActionPerformed
+    }//GEN-LAST:event_txtComplainant1ActionPerformed
 
     private void txtincidentActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtincidentActionPerformed
         // TODO add your handling code here:
@@ -542,7 +728,7 @@ public class userBlotterCRUD extends javax.swing.JFrame {
     }//GEN-LAST:event_txtwitness2ActionPerformed
 
     private void backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseClicked
-        new userBlotter(fullname).setVisible(true);
+        new userBlotter(fullname, userImagePath).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_backMouseClicked
 
@@ -561,6 +747,45 @@ public class userBlotterCRUD extends javax.swing.JFrame {
     private void txtc_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtc_idActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtc_idActionPerformed
+
+    private void txtb_idActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtb_idActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtb_idActionPerformed
+
+    private void txtc_idKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtc_idKeyReleased
+        
+          String url = "jdbc:mysql://localhost:3306/obaob_db";
+        String user = "root";
+        String pass = "";
+
+        String c_id = txtc_id.getText().trim(); // Get the entered ID
+
+        if (c_id.isEmpty()) {
+            txtc_fname.setText(""); // Clear fields if empty
+            txtc_lname.setText("");
+            return;
+        }
+
+        try (Connection conn = DriverManager.getConnection(url, user, pass);
+                PreparedStatement pstmt = conn.prepareStatement("SELECT c_fname, c_lname FROM citizen_table WHERE c_id = ?")) {
+
+            pstmt.setString(1, c_id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                txtc_fname.setText(rs.getString("c_fname"));
+                txtc_lname.setText(rs.getString("c_lname"));
+            } else {
+                txtc_fname.setText(""); // Clear fields if no match
+                txtc_lname.setText("");
+            }
+
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
+    }//GEN-LAST:event_txtc_idKeyReleased
 
     /**
      * @param args the command line arguments
@@ -592,7 +817,8 @@ public class userBlotterCRUD extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new userBlotterCRUD("Regular User").setVisible(true);
+                String imgPath = "path/to/default/image.png";
+                new userBlotterCRUD("Regular User", imgPath).setVisible(true);
             }
         });
     }
@@ -618,10 +844,12 @@ public class userBlotterCRUD extends javax.swing.JFrame {
     private javax.swing.JLabel ln1;
     private javax.swing.JLabel ln2;
     private javax.swing.JLabel ln3;
+    private javax.swing.JLabel ln4;
     private javax.swing.JPanel main;
     private javax.swing.JPanel refresh;
     private javax.swing.JLabel refresh1;
-    private javax.swing.JTextField txtComplainant;
+    private javax.swing.JTextField txtComplainant1;
+    private javax.swing.JTextField txtb_id;
     private javax.swing.JTextField txtc_fname;
     private javax.swing.JTextField txtc_id;
     private javax.swing.JTextField txtc_lname;

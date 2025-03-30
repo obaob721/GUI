@@ -18,6 +18,7 @@ import userPackage.userDashboard;
 import javax.swing.JFrame;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import javax.swing.ImageIcon;
 
 
 /**
@@ -83,6 +84,7 @@ public class loginform extends JFrame {
             return null;
         }
     }
+
     
     
 
@@ -324,8 +326,8 @@ public class loginform extends JFrame {
     }//GEN-LAST:event_canbgMouseExited
 
     private void logbgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logbgMouseClicked
-       String email = enterusername.getText();
-       String password = new String(enterpass.getPassword());
+      String email = enterusername.getText();
+    String password = new String(enterpass.getPassword());
 
     if (email.isEmpty() || password.isEmpty()) {
         JOptionPane.showMessageDialog(this, "Please enter both email and password.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -333,8 +335,7 @@ public class loginform extends JFrame {
     }
 
     String hashedPassword = passwordHash(password);
-  String sql = "SELECT * FROM user_table WHERE email = ? AND password = ?";
-
+    String sql = "SELECT * FROM user_table WHERE email = ? AND password = ?";
 
     dbConnector db = new dbConnector(); 
 
@@ -345,10 +346,9 @@ public class loginform extends JFrame {
         pst.setString(2, hashedPassword);
         ResultSet rs = pst.executeQuery();
         
-        if(rs.next()){
+        if (rs.next()) {
             String user_status = rs.getString("user_status");
-        
-        
+
             if (user_status.equalsIgnoreCase("Pending")) {
                 JOptionPane.showMessageDialog(this, "Account Pending. Please contact the Admin.", "Access Denied", JOptionPane.WARNING_MESSAGE);
                 return;
@@ -358,18 +358,19 @@ public class loginform extends JFrame {
             
             String firstName = rs.getString("firstName");
             String lastName = rs.getString("lastName");
-            String fullname = firstName+" "+lastName;
-            
+            String fullname = firstName + " " + lastName;
             String use_type = rs.getString("use_type");
 
             if (use_type.equals("Admin")) {
-                admindashboard admin = new admindashboard(fullname);
+                String imgPath = rs.getString("u_image"); // Get user image from DB
+                admindashboard admin = new admindashboard(fullname, imgPath);
                 admin.setVisible(true);
-                System.out.println("Admin dashboard opened"); 
+                System.out.println("Admin dashboard opened");
             } else {
-                userDashboard user = new userDashboard(fullname);
+                String imgPath = rs.getString("u_image");
+                userDashboard user = new userDashboard(fullname, imgPath);
                 user.setVisible(true);
-                System.out.println("User dashboard opened"); 
+                System.out.println("User dashboard opened");
             }
 
             this.dispose(); 
@@ -393,65 +394,65 @@ public class loginform extends JFrame {
     }//GEN-LAST:event_logbgMouseExited
 
     private void enterpassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_enterpassKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) { 
+         if (evt.getKeyCode() == KeyEvent.VK_ENTER) { 
         String email = enterusername.getText();
         String password = new String(enterpass.getPassword());
-        
-        
+
         if (email.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "Please enter both email and password.", "Error", JOptionPane.ERROR_MESSAGE);
             return;
         }
+
         String hashedPassword = passwordHash(password);
         String sql = "SELECT * FROM user_table WHERE email = ? AND password = ?";
 
         dbConnector db = new dbConnector(); 
 
         try (Connection conn = db.getConnection();  
-            PreparedStatement pst = conn.prepareStatement(sql)) {
+             PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, email);
             pst.setString(2, hashedPassword);
             ResultSet rs = pst.executeQuery();
 
-            if(rs.next()){
-            String user_status = rs.getString("user_status");
-        
-        
-            if (user_status.equalsIgnoreCase("Pending")) {
-                JOptionPane.showMessageDialog(this, "Account Pending. Please contact the Admin.", "Access Denied", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
+            if (rs.next()) {
+                String user_status = rs.getString("user_status");
 
-            JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            
-            
-            String firstName = rs.getString("firstName");
-            String lastName = rs.getString("lastName");
-            String fullname = firstName+" "+lastName;
-            
-            String use_type = rs.getString("use_type");
+                if (user_status.equalsIgnoreCase("Pending")) {
+                    JOptionPane.showMessageDialog(this, "Account Pending. Please contact the Admin.", "Access Denied", JOptionPane.WARNING_MESSAGE);
+                    return;
+                }
 
-            if (use_type.equals("Admin")) {
-                admindashboard admin = new admindashboard(fullname);
-                admin.setVisible(true);
-                System.out.println("Admin dashboard opened"); 
+                JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                String firstName = rs.getString("firstName");
+                String lastName = rs.getString("lastName");
+                String fullname = firstName + " " + lastName;
+                String use_type = rs.getString("use_type");
+
+                if (use_type.equals("Admin")) {
+                    String imgPath = rs.getString("u_image"); // Get user image from DB
+                    admindashboard admin = new admindashboard(fullname, imgPath);
+                    admin.setVisible(true);
+                    System.out.println("Admin dashboard opened");
+                } else {
+                    String imgPath = rs.getString("u_image");
+                    userDashboard user = new userDashboard(fullname, imgPath);
+                    user.setVisible(true);
+                    System.out.println("User dashboard opened");
+                }
+
+
+                this.dispose(); 
+
             } else {
-                userDashboard user = new userDashboard(fullname);
-                user.setVisible(true);
-                System.out.println("User dashboard opened"); 
+                JOptionPane.showMessageDialog(this, "Incorrect username or password.", "Error", JOptionPane.ERROR_MESSAGE);
             }
 
-            this.dispose(); 
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Incorrect username or password.", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-        }
     }//GEN-LAST:event_enterpassKeyPressed
 
     private void forgotpassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotpassMouseClicked
