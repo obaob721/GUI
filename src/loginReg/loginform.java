@@ -18,7 +18,6 @@ import userPackage.userDashboard;
 import javax.swing.JFrame;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import javax.swing.ImageIcon;
 
 
 /**

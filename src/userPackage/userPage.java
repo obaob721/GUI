@@ -51,7 +51,7 @@ public class userPage extends javax.swing.JFrame {
         
         userImagePath = imgPath;
         displayImage();
-
+        highlightRow();
     }
     Color navcolor = new Color(0,51,51);
     Color headcolor = new Color(0,51,51);
@@ -106,7 +106,42 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     
     return output;
 }
-     
+       private void highlightRow() {
+    String searchText = searchcitizen.getText().trim().toLowerCase();
+
+    if (searchText.isEmpty()) {
+        return;
+    }
+
+    c_table.clearSelection(); // Clear previous selection
+    boolean matchFound = false;
+
+    for (int i = 0; i < c_table.getRowCount(); i++) { // Corrected loop condition
+        for (int j = 0; j < c_table.getColumnCount(); j++) { // Use 0-based index
+            Object cellValue = c_table.getValueAt(i, j);
+
+            if (cellValue != null) {
+                String cellText = cellValue.toString().trim().toLowerCase();
+
+                if (cellText.contains(searchText)) {
+                    c_table.addRowSelectionInterval(i, i); // Select row
+                    matchFound = true;
+                    break; // Exit column loop once a match is found
+                }
+            }
+        }
+    }
+
+    if (matchFound) {
+        // Scroll to the first selected row
+        int firstSelectedRow = c_table.getSelectedRow();
+        if (firstSelectedRow != -1) {
+            c_table.scrollRectToVisible(c_table.getCellRect(firstSelectedRow, 0, true));
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "No matching record found!", "Search", JOptionPane.INFORMATION_MESSAGE);
+    }
+} 
      
     /**
      * This method is called from within the constructor to initialize the form.
@@ -150,7 +185,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         number = new javax.swing.JTextField();
         searchbutton = new javax.swing.JPanel();
         add1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
+        searchcitizen = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -528,16 +563,27 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
 
         searchbutton.setBackground(new java.awt.Color(0, 51, 51));
         searchbutton.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        searchbutton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                searchbuttonMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                searchbuttonMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                searchbuttonMouseExited(evt);
+            }
+        });
 
         add1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         add1.setForeground(new java.awt.Color(255, 255, 255));
         add1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         add1.setText("SEARCH");
 
-        jTextField1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        searchcitizen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        searchcitizen.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                searchcitizenActionPerformed(evt);
             }
         });
 
@@ -547,7 +593,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
             searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, searchbuttonLayout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(searchcitizen, javax.swing.GroupLayout.PREFERRED_SIZE, 170, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -557,7 +603,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
                 .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(searchbuttonLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(add1, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(searchcitizen, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
         );
 
         main.add(searchbutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(690, 70, -1, -1));
@@ -577,9 +623,9 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void searchcitizenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchcitizenActionPerformed
 
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_searchcitizenActionPerformed
 
     private void managecitizenMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_managecitizenMouseExited
         managecitizen.setBackground(navcolor);
@@ -895,6 +941,19 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         adminprof.setForeground(java.awt.Color.WHITE);
     }//GEN-LAST:event_adminprofMouseExited
 
+    private void searchbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchbuttonMouseClicked
+         highlightRow();
+
+    }//GEN-LAST:event_searchbuttonMouseClicked
+
+    private void searchbuttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchbuttonMouseEntered
+        searchbutton.setBackground(bodycolor);
+    }//GEN-LAST:event_searchbuttonMouseEntered
+
+    private void searchbuttonMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchbuttonMouseExited
+      searchbutton.setBackground(navcolor);
+    }//GEN-LAST:event_searchbuttonMouseExited
+
     /**
      * @param args the command line arguments
      */
@@ -926,7 +985,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 String imgPath = "path/to/default/image.png";
-                new userDashboard("Regular User", imgPath).setVisible(true);
+                new userPage("Regular User", imgPath).setVisible(true);
             }
         });
     }
@@ -955,7 +1014,6 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     private javax.swing.JLabel fn1;
     private javax.swing.JPanel header;
     private javax.swing.JPanel jPanel1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JLabel ln;
     private javax.swing.JLabel logout;
     private javax.swing.JPanel main;
@@ -965,6 +1023,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     private javax.swing.JPanel refresh;
     private javax.swing.JLabel refresh1;
     private javax.swing.JPanel searchbutton;
+    private javax.swing.JTextField searchcitizen;
     private javax.swing.JLabel settings;
     // End of variables declaration//GEN-END:variables
 }

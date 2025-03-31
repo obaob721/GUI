@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 30, 2025 at 06:11 PM
+-- Generation Time: Mar 31, 2025 at 07:43 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -45,7 +45,9 @@ CREATE TABLE `blotter_table` (
 
 INSERT INTO `blotter_table` (`b_id`, `c_id`, `b_fname`, `b_incident`, `b_location`, `b_status`, `b_date`, `b_witness1`, `b_witness2`) VALUES
 (3, 2, 'Mae Anne Amante', 'Robbery', 'St.Cecilia\'s, Minglanilla,Cebu.', 'Pending', '2025-03-30 22:20:34', 'Pat Obaob', 'Mary Obaob'),
-(4, 1, 'Jaylon Mantillas', 'Scam', 'Sport\'s Complex, Minglanilla, Cebu.', 'Pending', '2025-03-30 22:35:03', 'David Vergara', 'Dustin Collins');
+(4, 1, 'Jaylon Mantillas', 'Scam', 'Sport\'s Complex, Minglanilla, Cebu.', 'Pending', '2025-03-30 22:35:03', 'David Vergara', 'Dustin Collins'),
+(5, 11, 'Lelouch Takanashi', 'kusog pa sound bisag gabie na kaayo', 'Minglanilla, Cebu.', 'Pending', '2025-04-01 00:08:06', 'Ren Takahashi', 'Hakuie Takahashi'),
+(6, 16, 'Mark Sanchez', 'Lumay', 'Minglanilla, Cebu.', 'Settled', '2025-04-01 01:03:54', 'Dhyll Roco', 'Angel Amaro');
 
 -- --------------------------------------------------------
 
@@ -72,7 +74,47 @@ INSERT INTO `citizen_table` (`c_id`, `c_fname`, `c_lname`, `c_age`, `c_address`,
 (3, 'Justin', 'Valen', 22, 'Minglanilla, Cebu.', '09992345768'),
 (5, 'Patricia', 'Obaob', 19, 'Minglanilla, Cebu.', '09223198120'),
 (6, 'Lawrence', 'Sumbi', 20, 'Minglanilla, Cebu.', '09167892345'),
-(7, 'Jaymaica', 'Narvasa', 22, 'Minglanilla, Cebu.', '09203247795');
+(7, 'Jaymaica', 'Narvasa', 22, 'Minglanilla, Cebu.', '09203247795'),
+(8, 'Juan', 'Dela Cruz', 34, 'Minglanilla, Cebu.', '09171234567'),
+(9, 'Maria', 'Santos', 28, 'Minglanilla, Cebu.', '09283456789'),
+(10, 'Jose', 'Reyes', 45, 'Minglanilla, Cebu.', '09394567890'),
+(11, 'Pedro', 'Garcia', 52, 'Minglanilla, Cebu.', '09406789012'),
+(12, 'Clara', 'Fernandez', 26, 'Minglanilla, Cebu', '09517890123'),
+(13, 'Rosa', 'Bautista', 29, 'Minglanilla, Cebu.', '09739012345'),
+(14, 'Daniel', 'Ramos', 41, 'Minglanilla, Cebu.', '09840123456'),
+(15, 'Ernesto', 'Castillo', 50, 'Minglanilla, Cebu.', '09162345678'),
+(16, 'Sofia', 'Villanueva', 22, 'Minglanilla, Cebu.', '09273456789'),
+(19, 'Ramon', 'Navarro', 44, 'Minglanilla, Cebu.', '09384567890'),
+(20, 'Teresa', 'Guzman', 37, 'Minglanilla, Cebu.', '09495678901'),
+(21, 'Victor', 'Salazar', 47, 'Minglanilla, Cebu.', '09506789012'),
+(22, 'Carla', 'Dominguez', 32, 'Minglanilla, Cebu.', '09617890123'),
+(23, 'Samuel', 'Roldan', 39, 'Minglanilla, Cebu.', '09728901234'),
+(24, 'Beatriz', 'Lorenzo', 25, 'Minglanilla, Cebu.', '09839012345'),
+(25, 'Antonio', 'Espinosa', 46, 'Minglanilla, Cebu.', '09940123456'),
+(26, 'Margarita', 'Cervantes', 30, 'Minglanilla, Cebu.', '09151234567');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reports_table`
+--
+
+CREATE TABLE `reports_table` (
+  `r_id` int(11) NOT NULL,
+  `b_id` int(11) NOT NULL,
+  `r_datesettled` timestamp NOT NULL DEFAULT current_timestamp(),
+  `r_description` varchar(500) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `reports_table`
+--
+
+INSERT INTO `reports_table` (`r_id`, `b_id`, `r_datesettled`, `r_description`) VALUES
+(3, 3, '2025-03-31 08:32:45', 'imissyou guiannn'),
+(5, 4, '2025-03-31 09:29:38', 'Fist Warning, If done again the suspect\'s may suffers or be punished.'),
+(9, 5, '2025-03-31 16:08:42', 'Gaan Chance'),
+(10, 6, '2025-03-31 17:04:01', 'okay ragud basta ikaw lodicakes');
 
 -- --------------------------------------------------------
 
@@ -136,6 +178,13 @@ ALTER TABLE `citizen_table`
   ADD PRIMARY KEY (`c_id`);
 
 --
+-- Indexes for table `reports_table`
+--
+ALTER TABLE `reports_table`
+  ADD PRIMARY KEY (`r_id`),
+  ADD KEY `b_id` (`b_id`);
+
+--
 -- Indexes for table `system_logs`
 --
 ALTER TABLE `system_logs`
@@ -156,13 +205,19 @@ ALTER TABLE `user_table`
 -- AUTO_INCREMENT for table `blotter_table`
 --
 ALTER TABLE `blotter_table`
-  MODIFY `b_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `b_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `citizen_table`
 --
 ALTER TABLE `citizen_table`
-  MODIFY `c_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `c_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+
+--
+-- AUTO_INCREMENT for table `reports_table`
+--
+ALTER TABLE `reports_table`
+  MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `system_logs`
@@ -185,6 +240,12 @@ ALTER TABLE `user_table`
 --
 ALTER TABLE `blotter_table`
   ADD CONSTRAINT `blotter_table_c_id_fr` FOREIGN KEY (`c_id`) REFERENCES `citizen_table` (`c_id`);
+
+--
+-- Constraints for table `reports_table`
+--
+ALTER TABLE `reports_table`
+  ADD CONSTRAINT `reports_table_b_id_fr` FOREIGN KEY (`b_id`) REFERENCES `blotter_table` (`b_id`);
 
 --
 -- Constraints for table `system_logs`

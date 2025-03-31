@@ -63,6 +63,32 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
         adminFrame.setVisible(true);
         this.dispose();
     }
+    
+    
+    
+    private String getSusFullName(int c_id) {
+    String url = "jdbc:mysql://localhost:3306/obaob_db";
+    String user = "root";
+    String pass = "";
+    String susFullName = "";
+
+    try (Connection conn = DriverManager.getConnection(url, user, pass);
+         PreparedStatement stmt = conn.prepareStatement("SELECT c_fname, c_lname FROM citizen_table WHERE c_id = ?")) {
+        stmt.setInt(1, c_id);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            String c_fname = rs.getString("c_fname");
+            String c_lname = rs.getString("c_lname");
+            susFullName = c_fname + " " + c_lname;
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    return susFullName;
+}
+
   
     Color navcolor = new Color(204,255,204);
     Color headcolor = new Color(0,51,51);
@@ -113,7 +139,7 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
         txtc_id = new javax.swing.JTextField();
         ln4 = new javax.swing.JLabel();
         txtComplainant1 = new javax.swing.JTextField();
-        jButton1 = new javax.swing.JButton();
+        next = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -470,8 +496,13 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
         });
         main.add(txtComplainant1, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 140, 260, 40));
 
-        jButton1.setText("Generate Report");
-        main.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(713, 403, 140, 30));
+        next.setText("Next");
+        next.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                nextMouseClicked(evt);
+            }
+        });
+        main.add(next, new org.netbeans.lib.awtextra.AbsoluteConstraints(713, 403, 140, 30));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -489,8 +520,8 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addbutton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseClicked
-   String c_id = txtc_id.getText().trim(); // Get c_id from text field
-    String b_fname = txtComplainant1.getText().trim();
+   String c_id = txtc_id.getText().trim(); // Get suspect's c_id
+    String b_fname = txtComplainant1.getText().trim(); // Suspect's name (different from complainant)
     String b_incident = txtincident.getText().trim();
     String b_location = txtlocation.getText().trim();
     String b_witness1 = txtwitness1.getText().trim();
@@ -503,6 +534,8 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
         return;
     }
 
+    String susFullName = getSusFullName(Integer.parseInt(c_id)); // Get suspect's full name
+
     String url = "jdbc:mysql://localhost:3306/obaob_db";
     String user = "root";
     String pass = "";
@@ -514,12 +547,11 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
     try {
         conn = DriverManager.getConnection(url, user, pass);
 
-        // Include c_id in the insert statement
         String insertQuery = "INSERT INTO blotter_table (c_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2) " +
                              "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         
         insertStmt = conn.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
-        insertStmt.setInt(1, Integer.parseInt(c_id)); // Convert c_id to int
+        insertStmt.setInt(1, Integer.parseInt(c_id)); // Store c_id (FK), not susFullName
         insertStmt.setString(2, b_fname);
         insertStmt.setString(3, b_incident);
         insertStmt.setString(4, b_location);
@@ -532,9 +564,9 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
         if (rowsInserted > 0) {
             generatedKeys = insertStmt.getGeneratedKeys();
             if (generatedKeys.next()) {
-                int generatedBId = generatedKeys.getInt(1); // Get the new b_id
+                int generatedBId = generatedKeys.getInt(1); // Get new blotter ID
                 txtb_id.setText(String.valueOf(generatedBId)); // Display in txtb_id
-                JOptionPane.showMessageDialog(null, "Blotter added successfully! (ID: " + generatedBId + ")", "Success", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Blotter added successfully! (ID: " + generatedBId + ")\nSuspect: " + susFullName, "Success", JOptionPane.INFORMATION_MESSAGE);
             }
         }
 
@@ -617,10 +649,10 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshMouseExited
 
     private void editbutton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseClicked
-    String c_id = txtc_id.getText().trim();
+ String c_id = txtc_id.getText().trim();
     String c_fname = txtc_fname.getText().trim();
     String c_lname = txtc_lname.getText().trim();
-    String b_id = txtb_id.getText().trim();  // Get the blotter ID
+    String b_id = txtb_id.getText().trim();
     String b_fname = txtComplainant1.getText().trim();
     String b_incident = txtincident.getText().trim();
     String b_location = txtlocation.getText().trim();
@@ -632,6 +664,8 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "Please fill in all required fields!", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
+
+    String susFullName = getSusFullName(Integer.parseInt(c_id)); // Retrieve suspect's full name
 
     String url = "jdbc:mysql://localhost:3306/obaob_db";
     String user = "root";
@@ -649,7 +683,7 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
             citizenStmt.executeUpdate();
         }
 
-        // ✅ Update Blotter details (Fixed: Added WHERE clause for b_id)
+        // ✅ Update Blotter details
         String updateBlotterQuery = "UPDATE blotter_table SET b_fname = ?, b_incident = ?, b_location = ?, b_status = ?, b_witness1 = ?, b_witness2 = ? WHERE b_id = ?";
         try (PreparedStatement blotterStmt = conn.prepareStatement(updateBlotterQuery)) {
             blotterStmt.setString(1, b_fname);
@@ -658,18 +692,16 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
             blotterStmt.setString(4, b_status);
             blotterStmt.setString(5, b_witness1);
             blotterStmt.setString(6, b_witness2);
-            blotterStmt.setString(7, b_id); // Use b_id to update the correct row
+            blotterStmt.setString(7, b_id);
             blotterStmt.executeUpdate();
         }
 
         conn.commit(); // Commit both updates if successful
-        JOptionPane.showMessageDialog(null, "Record updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "Record updated successfully!\nSuspect: " + susFullName, "Success", JOptionPane.INFORMATION_MESSAGE);
 
     } catch (SQLException ex) {
         JOptionPane.showMessageDialog(null, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }
-  
-        
         
         
     }//GEN-LAST:event_editbutton1MouseClicked
@@ -772,6 +804,62 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtComplainant1ActionPerformed
 
+    private void nextMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_nextMouseClicked
+  String url = "jdbc:mysql://localhost:3306/obaob_db";
+    String user = "root";
+    String pass = "";
+    Timestamp dateSettled = Timestamp.from(Instant.now()); // Get current timestamp
+
+    try (Connection conn = DriverManager.getConnection(url, user, pass);
+         PreparedStatement checkStmt = conn.prepareStatement(
+             "SELECT r_id, r_datesettled FROM reports_table WHERE b_id = ?")) {
+
+        int b_id = Integer.parseInt(txtb_id.getText()); // Convert to int
+        checkStmt.setInt(1, b_id); // ✅ Bind b_id to the query
+
+        ResultSet rs = checkStmt.executeQuery();
+        int r_id;
+
+        if (rs.next()) {
+            // ✅ If report already exists, retrieve r_id and r_datesettled
+            r_id = rs.getInt("r_id");
+            dateSettled = rs.getTimestamp("r_datesettled"); // Keep existing date settled
+        } else {
+            // ✅ If no report exists, INSERT a new record
+            try (PreparedStatement insertStmt = conn.prepareStatement(
+                "INSERT INTO reports_table (b_id, r_description, r_datesettled) VALUES (?, ?, ?)", 
+                Statement.RETURN_GENERATED_KEYS)) {
+
+                insertStmt.setInt(1, b_id); // ✅ Insert b_id
+                insertStmt.setString(2, ""); // ✅ Insert an empty description
+                insertStmt.setTimestamp(3, dateSettled); // ✅ Keep date settled
+
+                int rowsInserted = insertStmt.executeUpdate();
+                if (rowsInserted > 0) {
+                    ResultSet generatedKeys = insertStmt.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        r_id = generatedKeys.getInt(1); // ✅ Get generated report ID
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Failed to generate report ID!", "Error", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(null, "Failed to insert report!", "Error", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            }
+        }
+
+        // ✅ Pass correct data types
+        new admindescription(r_id, b_id, dateSettled).setVisible(true); 
+        this.dispose();
+
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    }//GEN-LAST:event_nextMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -803,7 +891,7 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                String imgPath = "path/to/default/image.png";
-              new admindashboard("Admin User", imgPath).setVisible(true);
+              new adminBlotterCRUD("Admin User", imgPath).setVisible(true);
             }
         });
     }
@@ -824,7 +912,6 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
     private javax.swing.JLabel email3;
     private javax.swing.JLabel fn1;
     private javax.swing.JPanel header;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel ln;
     private javax.swing.JLabel ln1;
@@ -832,6 +919,7 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
     private javax.swing.JLabel ln3;
     private javax.swing.JLabel ln4;
     private javax.swing.JPanel main;
+    private javax.swing.JButton next;
     private javax.swing.JPanel refresh;
     private javax.swing.JLabel refresh1;
     private javax.swing.JTextField txtComplainant1;

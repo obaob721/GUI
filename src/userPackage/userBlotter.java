@@ -475,7 +475,8 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     }//GEN-LAST:event_settingsMouseExited
 
     private void dash2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dash2MouseClicked
-
+         new userDashboard(fullname, userImagePath).setVisible(true);
+         this.dispose();
     }//GEN-LAST:event_dash2MouseClicked
 
     private void dash2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dash2MouseEntered
@@ -528,7 +529,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     }//GEN-LAST:event_managecitizenMouseExited
 
     private void addbutton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseClicked
-        new adminBlotterCRUD(fullname, userImagePath).setVisible(true);
+        new userBlotterCRUD(fullname, userImagePath).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_addbutton2MouseClicked
 
@@ -541,7 +542,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     }//GEN-LAST:event_addbutton2MouseExited
 
     private void deletebuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deletebuttonMouseClicked
-        new adminBlotterCRUD(fullname, userImagePath).setVisible(true);
+        new userBlotterCRUD(fullname, userImagePath).setVisible(true);
         this.dispose();
     }//GEN-LAST:event_deletebuttonMouseClicked
 
@@ -574,7 +575,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     }//GEN-LAST:event_c_tableMouseClicked
 
     private void editbutton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseClicked
-        new adminBlotterCRUD(fullname, userImagePath).setVisible(true);
+        new userBlotterCRUD(fullname, userImagePath).setVisible(true);
         this.dispose();
 
     }//GEN-LAST:event_editbutton1MouseClicked

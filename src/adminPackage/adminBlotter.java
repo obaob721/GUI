@@ -13,6 +13,9 @@ import java.awt.RenderingHints;
 import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.imageio.ImageIO;
@@ -136,6 +139,28 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     g2.dispose();
     
     return output;
+}
+private String getSusFullName(int c_id) {
+    String url = "jdbc:mysql://localhost:3306/obaob_db";
+    String user = "root";
+    String pass = "";
+    String susFullName = "";
+
+    try (Connection conn = DriverManager.getConnection(url, user, pass);
+         PreparedStatement stmt = conn.prepareStatement("SELECT c_fname, c_lname FROM citizen_table WHERE c_id = ?")) {
+        stmt.setInt(1, c_id);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            String c_fname = rs.getString("c_fname");
+            String c_lname = rs.getString("c_lname");
+            susFullName = c_fname + " " + c_lname;
+        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(null, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    return susFullName;
 }
 
     
@@ -613,20 +638,22 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     }//GEN-LAST:event_deletebuttonMouseExited
 
     private void c_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_tableMouseClicked
-    int selectedRow = c_table.getSelectedRow();
+   int selectedRow = c_table.getSelectedRow();
      
     if (selectedRow != -1) {
         int c_id = Integer.parseInt(c_table.getValueAt(selectedRow, 0).toString());
-      int b_id = Integer.parseInt(c_table.getValueAt(selectedRow, 1).toString()); 
+        int b_id = Integer.parseInt(c_table.getValueAt(selectedRow, 1).toString()); 
         String b_fname = c_table.getValueAt(selectedRow, 2).toString();
         String b_incident = c_table.getValueAt(selectedRow, 3).toString();
         String b_location = c_table.getValueAt(selectedRow, 4).toString();
-        String b_status = c_table.getValueAt(selectedRow, 5) != null ? c_table.getValueAt(selectedRow, 4).toString() : "Pending"; // Ensure "Pending" if null
+        String b_status = c_table.getValueAt(selectedRow, 5) != null ? c_table.getValueAt(selectedRow, 5).toString() : "Pending";
         String b_date = c_table.getValueAt(selectedRow, 6).toString();  
         String b_witness1 = c_table.getValueAt(selectedRow, 7).toString();
         String b_witness2 = c_table.getValueAt(selectedRow, 8).toString();
 
-        adminBlotterCRUD editForm = new adminBlotterCRUD(fullname,userImagePath,c_id, b_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2);
+        String susFullName = getSusFullName(c_id); // Retrieve suspect's full name
+
+        adminBlotterCRUD editForm = new adminBlotterCRUD(susFullName, userImagePath, c_id, b_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2);
         editForm.setVisible(true);
         this.dispose();
     }
@@ -846,7 +873,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
               String imgPath = "path/to/default/image.png";
-              new admindashboard("Admin User", imgPath).setVisible(true);
+              new adminBlotter("Admin User", imgPath).setVisible(true);
             }
         });
     }

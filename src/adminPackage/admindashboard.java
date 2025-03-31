@@ -35,6 +35,9 @@ public class admindashboard extends javax.swing.JFrame {
         displayPendingUsers();
         displayBlotterCount();
         displayTotalUsers();
+        displayReportCount();
+        displayPendingCase();
+        displaySettledCase();
         
         setLocationRelativeTo(null);
         
@@ -122,6 +125,53 @@ public class admindashboard extends javax.swing.JFrame {
             System.out.println("Error: " + ex.getMessage());
         }
     }
+    
+    
+     public void displayReportCount() {
+        dbConnector dbc = new dbConnector();
+        String query = "SELECT COUNT(*) AS total_reports FROM reports_table";
+
+        try (ResultSet rs = dbc.getData(query)) {
+            if (rs.next()) {
+                int totalReports = rs.getInt("total_reports");
+                totalReportsLabel.setText(String.valueOf(totalReports));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Error: " + ex.getMessage());
+        }
+    }
+     public void displayPendingCase() {
+     dbConnector dbc = new dbConnector();
+       String query = "SELECT COUNT(*) AS pending_case FROM blotter_table WHERE b_status = 'Pending'";
+
+     try (ResultSet rs = dbc.getData(query)) {
+
+        if (rs.next()) {
+            int pendingCases = rs.getInt("pending_case");
+            pendingCasesLabel.setText(String.valueOf(pendingCases)); 
+        }
+
+    } catch (SQLException ex) {
+        System.out.println("Error: " + ex.getMessage());
+    }
+}
+      public void displaySettledCase() {
+     dbConnector dbc = new dbConnector();
+       String query = "SELECT COUNT(*) AS settled_case FROM blotter_table WHERE b_status = 'Settled'";
+
+     try (ResultSet rs = dbc.getData(query)) {
+
+        if (rs.next()) {
+            int settledCases = rs.getInt("settled_case");
+            settledCasesLabel.setText(String.valueOf(settledCases)); 
+        }
+
+    } catch (SQLException ex) {
+        System.out.println("Error: " + ex.getMessage());
+    }
+}
+     
+    
 
 private void displayImage() {
         if (userImagePath != null && !userImagePath.isEmpty()) {
@@ -207,13 +257,13 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         jLabel16 = new javax.swing.JLabel();
         sumReports = new javax.swing.JPanel();
         jLabel19 = new javax.swing.JLabel();
-        jLabel20 = new javax.swing.JLabel();
+        totalReportsLabel = new javax.swing.JLabel();
         jLabel21 = new javax.swing.JLabel();
         jLabel29 = new javax.swing.JLabel();
         settledcases = new javax.swing.JPanel();
         jLabel26 = new javax.swing.JLabel();
         jLabel24 = new javax.swing.JLabel();
-        jLabel30 = new javax.swing.JLabel();
+        settledCasesLabel = new javax.swing.JLabel();
         pendingusers = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
         pendingUsersLabel = new javax.swing.JLabel();
@@ -221,7 +271,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         pendingcases = new javax.swing.JPanel();
         jLabel28 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
-        jLabel31 = new javax.swing.JLabel();
+        pendingCasesLabel = new javax.swing.JLabel();
         user = new javax.swing.JScrollPane();
         user_table = new javax.swing.JTable();
         jLabel32 = new javax.swing.JLabel();
@@ -588,10 +638,15 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
 
         jLabel19.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-reports-50.png"))); // NOI18N
 
-        jLabel20.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
-        jLabel20.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel20.setText("0");
+        totalReportsLabel.setFont(new java.awt.Font("Tahoma", 1, 24)); // NOI18N
+        totalReportsLabel.setForeground(new java.awt.Color(255, 255, 255));
+        totalReportsLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        totalReportsLabel.setText("0");
+        totalReportsLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                totalReportsLabelMouseClicked(evt);
+            }
+        });
 
         jLabel21.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel21.setForeground(new java.awt.Color(255, 255, 255));
@@ -609,7 +664,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
                         .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(sumReportsLayout.createSequentialGroup()
                         .addGap(19, 19, 19)
-                        .addComponent(jLabel20, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(totalReportsLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel19)
                 .addGap(37, 37, 37))
@@ -621,7 +676,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
                 .addGroup(sumReportsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jLabel19, javax.swing.GroupLayout.PREFERRED_SIZE, 68, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(sumReportsLayout.createSequentialGroup()
-                        .addComponent(jLabel20)
+                        .addComponent(totalReportsLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jLabel21, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(44, 44, 44))
@@ -658,11 +713,16 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         jLabel24.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 102, 153), 3));
         dashboardPanel.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 380, 230, 90));
 
-        jLabel30.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel30.setForeground(new java.awt.Color(0, 51, 102));
-        jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel30.setText("0");
-        dashboardPanel.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 430, 230, 40));
+        settledCasesLabel.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        settledCasesLabel.setForeground(new java.awt.Color(0, 51, 102));
+        settledCasesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        settledCasesLabel.setText("0");
+        settledCasesLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                settledCasesLabelMouseClicked(evt);
+            }
+        });
+        dashboardPanel.add(settledCasesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 430, 230, 40));
 
         pendingusers.setBackground(new java.awt.Color(153, 0, 0));
 
@@ -724,11 +784,16 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         jLabel25.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(51, 102, 0), 3));
         dashboardPanel.add(jLabel25, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 380, 230, 90));
 
-        jLabel31.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
-        jLabel31.setForeground(new java.awt.Color(0, 102, 0));
-        jLabel31.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel31.setText("0");
-        dashboardPanel.add(jLabel31, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 430, 230, 40));
+        pendingCasesLabel.setFont(new java.awt.Font("Tahoma", 1, 36)); // NOI18N
+        pendingCasesLabel.setForeground(new java.awt.Color(0, 102, 0));
+        pendingCasesLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        pendingCasesLabel.setText("0");
+        pendingCasesLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pendingCasesLabelMouseClicked(evt);
+            }
+        });
+        dashboardPanel.add(pendingCasesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 430, 230, 40));
 
         user.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
 
@@ -939,6 +1004,19 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
 
     }//GEN-LAST:event_adminprofMouseExited
 
+    private void totalReportsLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_totalReportsLabelMouseClicked
+        displayReportCount();
+    }//GEN-LAST:event_totalReportsLabelMouseClicked
+
+    private void pendingCasesLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pendingCasesLabelMouseClicked
+      displayPendingCase();
+    }//GEN-LAST:event_pendingCasesLabelMouseClicked
+
+    private void settledCasesLabelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settledCasesLabelMouseClicked
+      displaySettledCase();
+        
+    }//GEN-LAST:event_settledCasesLabelMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -991,7 +1069,6 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     private javax.swing.JLabel jLabel17;
     private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
     private javax.swing.JLabel jLabel24;
@@ -1000,8 +1077,6 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel28;
     private javax.swing.JLabel jLabel29;
-    private javax.swing.JLabel jLabel30;
-    private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel32;
     private javax.swing.JLabel jLabel33;
     private javax.swing.JLabel jLabel6;
@@ -1009,12 +1084,14 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     private javax.swing.JLabel managecitizen;
     private javax.swing.JLabel manageuser;
     private javax.swing.JPanel nav;
+    private javax.swing.JLabel pendingCasesLabel;
     private javax.swing.JLabel pendingUsersLabel;
     private javax.swing.JPanel pendingcases;
     private javax.swing.JPanel pendingusers;
     private javax.swing.JLabel profile;
     private javax.swing.JLabel reports;
     private javax.swing.JLabel settings;
+    private javax.swing.JLabel settledCasesLabel;
     private javax.swing.JPanel settledcases;
     private javax.swing.JPanel sumBlotter;
     private javax.swing.JPanel sumCitizens;
@@ -1022,6 +1099,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     private javax.swing.JPanel sumUsers;
     private javax.swing.JLabel totalBlottersLabel;
     private javax.swing.JLabel totalCitizensLabel;
+    private javax.swing.JLabel totalReportsLabel;
     private javax.swing.JLabel totalUsersLabel;
     private javax.swing.JLabel update;
     private javax.swing.JScrollPane user;

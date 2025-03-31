@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 24, 2025 at 04:58 PM
+-- Generation Time: Mar 30, 2025 at 06:11 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -44,7 +44,8 @@ CREATE TABLE `blotter_table` (
 --
 
 INSERT INTO `blotter_table` (`b_id`, `c_id`, `b_fname`, `b_incident`, `b_location`, `b_status`, `b_date`, `b_witness1`, `b_witness2`) VALUES
-(2, 2, 'Paticia Obaob', 'Scam', 'St. Cecilia\'s College, Minglanilla, Cebu.', 'Pending', '2025-03-14 21:22:20', 'Lawrence Sumbi', 'Jaymaica Narvasa');
+(3, 2, 'Mae Anne Amante', 'Robbery', 'St.Cecilia\'s, Minglanilla,Cebu.', 'Pending', '2025-03-30 22:20:34', 'Pat Obaob', 'Mary Obaob'),
+(4, 1, 'Jaylon Mantillas', 'Scam', 'Sport\'s Complex, Minglanilla, Cebu.', 'Pending', '2025-03-30 22:35:03', 'David Vergara', 'Dustin Collins');
 
 -- --------------------------------------------------------
 
@@ -76,6 +77,19 @@ INSERT INTO `citizen_table` (`c_id`, `c_fname`, `c_lname`, `c_age`, `c_address`,
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `system_logs`
+--
+
+CREATE TABLE `system_logs` (
+  `logs_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `logs_action` varchar(200) NOT NULL,
+  `logs_date` datetime(6) NOT NULL DEFAULT current_timestamp(6)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `user_table`
 --
 
@@ -86,22 +100,23 @@ CREATE TABLE `user_table` (
   `email` varchar(50) NOT NULL,
   `password` varchar(50) NOT NULL,
   `use_type` varchar(50) NOT NULL,
-  `user_status` varchar(50) NOT NULL
+  `user_status` varchar(50) NOT NULL,
+  `u_image` varchar(100) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_table`
 --
 
-INSERT INTO `user_table` (`user_id`, `firstName`, `lastName`, `email`, `password`, `use_type`, `user_status`) VALUES
-(1, 'Lawrence', 'Sumbi', 'guian@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Deactivated'),
-(2, 'Patricia', 'Obaob', 'pat@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'Admin', 'Deactivated'),
-(5, 'Mary', 'Largo', 'largo@gmail.com', 'uglymary', 'User	', 'Pending'),
-(6, 'Risa', 'Ravina', 'risahon@gmail.com', 'mamarisa', 'User	', 'Pending'),
-(7, 'Jaymaica', 'Narvasa', 'maica@gmail.com', 'maicamaica', 'User	', 'Pending'),
-(11, 'sample', 'sample', 'sample@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Pending'),
-(12, 'sample2', 'sample2', 'sample2@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Pending'),
-(14, 'Ann', 'Obaob', 'obaob@gmail.com', 'ba5df9e16a645ea16661db81f5792d7d95453b26', 'Admin', 'Active');
+INSERT INTO `user_table` (`user_id`, `firstName`, `lastName`, `email`, `password`, `use_type`, `user_status`, `u_image`) VALUES
+(1, 'Lawrence', 'Sumbi', 'guian@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Active', 'src/usersImagesguian@gmail.com.jpg'),
+(2, 'Patricia', 'Obaob', 'pat@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'Admin', 'Active', 'src/usersImagespat@gmail.com.jpg'),
+(5, 'Mary', 'Largo', 'largo@gmail.com', 'uglymary', 'User	', 'Pending', ''),
+(6, 'Risa', 'Ravina', 'risahon@gmail.com', 'mamarisa', 'User	', 'Pending', ''),
+(7, 'Jaymaica', 'Narvasa', 'maica@gmail.com', 'maicamaica', 'User	', 'Pending', ''),
+(11, 'sample', 'sample', 'sample@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Pending', ''),
+(12, 'sample2', 'sample2', 'sample2@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Pending', ''),
+(14, 'Ann', 'Obaob', 'obaob@gmail.com', 'c07eb5a8c0dc7bb81c217b67f11c3b7a5e95ffd7', 'Admin', 'Deactivated', '');
 
 --
 -- Indexes for dumped tables
@@ -121,6 +136,13 @@ ALTER TABLE `citizen_table`
   ADD PRIMARY KEY (`c_id`);
 
 --
+-- Indexes for table `system_logs`
+--
+ALTER TABLE `system_logs`
+  ADD PRIMARY KEY (`logs_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
 -- Indexes for table `user_table`
 --
 ALTER TABLE `user_table`
@@ -134,13 +156,19 @@ ALTER TABLE `user_table`
 -- AUTO_INCREMENT for table `blotter_table`
 --
 ALTER TABLE `blotter_table`
-  MODIFY `b_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `b_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `citizen_table`
 --
 ALTER TABLE `citizen_table`
   MODIFY `c_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+
+--
+-- AUTO_INCREMENT for table `system_logs`
+--
+ALTER TABLE `system_logs`
+  MODIFY `logs_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `user_table`
@@ -157,6 +185,12 @@ ALTER TABLE `user_table`
 --
 ALTER TABLE `blotter_table`
   ADD CONSTRAINT `blotter_table_c_id_fr` FOREIGN KEY (`c_id`) REFERENCES `citizen_table` (`c_id`);
+
+--
+-- Constraints for table `system_logs`
+--
+ALTER TABLE `system_logs`
+  ADD CONSTRAINT `user_table_user_id_fr` FOREIGN KEY (`user_id`) REFERENCES `user_table` (`user_id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

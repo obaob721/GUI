@@ -733,7 +733,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         String email = enteremail.getText().trim();
         String password = new String(enterpass.getPassword());
         String use_type = user.getSelectedItem().toString();
-        String user_status = "Pending";
+        String user_status = userStatusComboBox.getSelectedItem().toString();
 
         if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
@@ -1171,7 +1171,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 String imgPath = "path/to/default/image.png";
-                new admindashboard("Admin User", imgPath).setVisible(true);
+                new adminPage("Admin User", imgPath).setVisible(true);
             }
         });
     }

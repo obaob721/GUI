@@ -57,7 +57,7 @@ public class adminSettings extends javax.swing.JFrame {
    
    private String saveImageToFolder(String email) {
         try {
-            // Convert JLabel Icon to BufferedImage
+            
             Icon icon = profile.getIcon();
             if (icon instanceof ImageIcon) {
                 Image image = ((ImageIcon) icon).getImage();
@@ -66,14 +66,12 @@ public class adminSettings extends javax.swing.JFrame {
                 g2.drawImage(image, 0, 0, null);
                 g2.dispose();
 
-                // Define Folder and File Name
                 String folderPath = "src/usersImages";
                 File directory = new File(folderPath);
                 if (!directory.exists()) {
-                    directory.mkdir(); // Create folder if not exists
+                    directory.mkdir(); 
                 }
 
-                // Save image with unique name
                 String filePath = folderPath + email + ".jpg";
                 File outputFile = new File(filePath);
                 ImageIO.write(bufferedImage, "jpg", outputFile);
@@ -99,7 +97,6 @@ public class adminSettings extends javax.swing.JFrame {
                 if (rs.next()) {
                     String imagePath = rs.getString("u_image");
 
-                    // Load image from file
                     if (imagePath != null && !imagePath.isEmpty()) {
                         File file = new File(imagePath);
                         if (file.exists()) {
@@ -678,7 +675,7 @@ public class adminSettings extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 String imgPath = "path/to/default/image.png";
-                new admindashboard("Admin User", imgPath).setVisible(true);
+                new adminSettings("Admin User", imgPath).setVisible(true);
             }
         });
     }
