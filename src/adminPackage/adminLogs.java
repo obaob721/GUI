@@ -7,6 +7,8 @@ package adminPackage;
 
 import config.dbConnector;
 import java.awt.Color;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import javax.swing.JOptionPane;
@@ -29,10 +31,16 @@ public class adminLogs extends javax.swing.JFrame {
         displayData();
         this.fullname = fullname;
         setLocationRelativeTo(null);
-
+        
+     
+        
         userImagePath = imgPath;
 
     }
+    
+    
+       
+    
     Color navcolor = new Color(0,51,51);
     Color headcolor = new Color(0,153,153);
     Color bodycolor = new Color(0,153,153);
@@ -41,11 +49,8 @@ public class adminLogs extends javax.swing.JFrame {
     public void displayData() {
         try {
             dbConnector dbc = new dbConnector();
-            String query = "SELECT l.logs_id, CONCAT(u.user_id, ' - ', u.use_type) AS user_info, "
-                    + "l.logs_action, l.logs_date "
-                    + "FROM system_logs l "
-                    + "JOIN user_table u ON l.user_id = u.user_id "
-                    + "ORDER BY l.logs_date DESC";
+            String query = "SELECT * FROM system_logs";
+                  
             ResultSet rs = dbc.getData(query);
             logs.setModel(DbUtils.resultSetToTableModel(rs));
 
@@ -91,6 +96,8 @@ public class adminLogs extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(null, "No matching record found!", "Search", JOptionPane.INFORMATION_MESSAGE);
     }
 }
+    
+   
 
     /**
      * This method is called from within the constructor to initialize the form.

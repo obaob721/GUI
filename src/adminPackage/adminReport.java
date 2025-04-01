@@ -5,8 +5,14 @@
  */
 package adminPackage;
 
+import config.panelPrinter;
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Timestamp;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 /**
  *
@@ -15,6 +21,7 @@ import java.sql.Timestamp;
 public class adminReport extends javax.swing.JFrame {
     private String fullname;
      private static String userImagePath = null;
+     private JPanel reportPanel; 
     /**
      * Creates new form adminReport
      */
@@ -24,7 +31,7 @@ public class adminReport extends javax.swing.JFrame {
         setResizable(false);
         setSize(860, 770);
         
-        
+        reportPanel = bodycolorPanel; 
         
         initComponents();
        
@@ -48,7 +55,34 @@ public class adminReport extends javax.swing.JFrame {
     datereported.setText(dateReported);
     description10.setText(description); 
     datesettled.setText(dateSettled.toString()); // ✅ Convert Timestamp to String for display
+    
+     if (reportPanel == null) {
+        reportPanel = new JPanel(); // If it's missing, initialize it
+    }
+
+    JButton printButton = new JButton("Print");
+    printButton.setBounds(50, 500, 100, 30);
+    printButton.addActionListener(new ActionListener() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            printReport();
+        }
+    });
+
+    this.add(printButton); // ✅ Add button to JFrame
 }
+
+// ✅ Printing function (Minimal Fix)
+private void printReport() {
+    if (reportPanel != null) {
+        panelPrinter printer = new panelPrinter(reportPanel);
+        printer.printPanel();
+    } else {
+        JOptionPane.showMessageDialog(this, "Error: Report panel not found!", "Printing Error", JOptionPane.ERROR_MESSAGE);
+    }
+    }
+
+
 
  
     Color navcolor = new Color(0, 51, 51);
@@ -68,9 +102,7 @@ public class adminReport extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel6 = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
-        info = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
-        jLabel19 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         jLabel23 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
@@ -78,8 +110,10 @@ public class adminReport extends javax.swing.JFrame {
         jLabel29 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
         save = new javax.swing.JLabel();
+        printPreview = new javax.swing.JButton();
+        printButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
-        bond = new javax.swing.JPanel();
+        bodycolorPanel = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -128,31 +162,12 @@ public class adminReport extends javax.swing.JFrame {
         jLabel16.setText("____________________");
         jPanel1.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 390, 190, 40));
 
-        info.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        info.setForeground(new java.awt.Color(255, 255, 255));
-        info.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        info.setText("Info");
-        info.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        info.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                infoMouseClicked(evt);
-            }
-        });
-        jPanel1.add(info, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 190, 40));
-
         jLabel18.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel18.setForeground(new java.awt.Color(255, 255, 255));
         jLabel18.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel18.setText("Save As");
         jLabel18.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jPanel1.add(jLabel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 170, 190, 40));
-
-        jLabel19.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel19.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel19.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel19.setText("Print ");
-        jLabel19.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
-        jPanel1.add(jLabel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 190, 40));
 
         jLabel22.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel22.setForeground(new java.awt.Color(255, 255, 255));
@@ -203,155 +218,173 @@ public class adminReport extends javax.swing.JFrame {
         save.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jPanel1.add(save, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 190, 40));
 
+        printPreview.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        printPreview.setText("Print Preview");
+        printPreview.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printPreviewActionPerformed(evt);
+            }
+        });
+        jPanel1.add(printPreview, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 190, 40));
+
+        printButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        printButton1.setText("Print");
+        printButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printButton1ActionPerformed(evt);
+            }
+        });
+        jPanel1.add(printButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 210, 190, 40));
+
         jPanel2.setBackground(new java.awt.Color(204, 255, 204));
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        bond.setBackground(new java.awt.Color(255, 255, 255));
-        bond.setPreferredSize(new java.awt.Dimension(100, 100));
-        bond.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        bodycolorPanel.setBackground(new java.awt.Color(255, 255, 255));
+        bodycolorPanel.setPreferredSize(new java.awt.Dimension(100, 100));
+        bodycolorPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/download (2).png"))); // NOI18N
-        bond.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 11, -1, 101));
+        bodycolorPanel.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 11, -1, 101));
 
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/download (1).png"))); // NOI18N
-        bond.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 11, 73, 101));
+        bodycolorPanel.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 11, 73, 101));
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel3.setText("Republic of the Philippines");
-        bond.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 20, 260, -1));
+        bodycolorPanel.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 20, 260, -1));
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel4.setText("Region VII");
-        bond.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 41, 260, -1));
+        bodycolorPanel.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 41, 260, -1));
 
         jLabel5.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel5.setText("Province of Cebu");
-        bond.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 62, 260, -1));
+        bodycolorPanel.add(jLabel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 62, 260, -1));
 
         jLabel7.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel7.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel7.setText("Witness 2:");
-        bond.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 520, 90, 20));
+        bodycolorPanel.add(jLabel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 520, 90, 20));
 
         jLabel8.setFont(new java.awt.Font("Tahoma", 1, 11)); // NOI18N
         jLabel8.setText("_____________________________________________________________________");
-        bond.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 140, 485, -1));
+        bodycolorPanel.add(jLabel8, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 140, 485, -1));
 
         jLabel9.setFont(new java.awt.Font("Tahoma", 3, 13)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("B A R A N G A Y  B L O T T E R");
-        bond.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 485, -1));
+        bodycolorPanel.add(jLabel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 160, 485, -1));
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 3, 13)); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel10.setText("OFFICE OF THE PUNONG BARANGAY");
-        bond.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 118, 485, -1));
+        bodycolorPanel.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 118, 485, -1));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel11.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel11.setText("Municipality of Minglanilla");
-        bond.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 78, 260, 20));
+        bodycolorPanel.add(jLabel11, new org.netbeans.lib.awtextra.AbsoluteConstraints(157, 78, 260, 20));
 
         description10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         description10.setText("display description");
-        bond.add(description10, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 410, 510, 60));
+        bodycolorPanel.add(description10, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 410, 510, 60));
 
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setText("Date & Time Reported:");
-        bond.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 170, 20));
+        bodycolorPanel.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 170, 20));
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel13.setText("Complainant's Name:");
-        bond.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 230, 130, 20));
+        bodycolorPanel.add(jLabel13, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 230, 130, 20));
 
         jLabel14.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel14.setText("Incident:");
-        bond.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, 70, 20));
+        bodycolorPanel.add(jLabel14, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 290, 70, 20));
 
         jLabel15.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel15.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel15.setText("Location:");
-        bond.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 320, 70, 20));
+        bodycolorPanel.add(jLabel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 320, 70, 20));
 
         datereported.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         datereported.setText("     display date");
-        bond.add(datereported, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 190, 200, 20));
+        bodycolorPanel.add(datereported, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 190, 200, 20));
 
         complainantsname.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         complainantsname.setText("display name");
-        bond.add(complainantsname, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 230, 200, 20));
+        bodycolorPanel.add(complainantsname, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 230, 200, 20));
 
         incident1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         incident1.setText("  display incident");
-        bond.add(incident1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 420, 20));
+        bodycolorPanel.add(incident1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 290, 420, 20));
 
         txtwitness2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtwitness2.setText("display winess2");
-        bond.add(txtwitness2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 520, 200, 20));
+        bodycolorPanel.add(txtwitness2, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 520, 200, 20));
 
         jLabel20.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel20.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel20.setText("Description:");
-        bond.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, 90, 20));
+        bodycolorPanel.add(jLabel20, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 380, 90, 20));
 
         jLabel21.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel21.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel21.setText("Witness 1:");
-        bond.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 490, 90, 20));
+        bodycolorPanel.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 490, 90, 20));
 
         location1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         location1.setText("  display location");
-        bond.add(location1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 320, 200, 20));
+        bodycolorPanel.add(location1, new org.netbeans.lib.awtextra.AbsoluteConstraints(130, 320, 200, 20));
 
         txtwitness1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         txtwitness1.setText("display winess1");
-        bond.add(txtwitness1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 490, 200, 20));
+        bodycolorPanel.add(txtwitness1, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 490, 200, 20));
 
         jLabel24.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel24.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel24.setText("Suspect's Name:");
-        bond.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 260, -1, 20));
+        bodycolorPanel.add(jLabel24, new org.netbeans.lib.awtextra.AbsoluteConstraints(60, 260, -1, 20));
 
         suspectsname.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         suspectsname.setText("display susname");
-        bond.add(suspectsname, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 260, 200, 20));
+        bodycolorPanel.add(suspectsname, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 260, 200, 20));
 
         jLabel26.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel26.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel26.setText("Reported by:");
-        bond.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 630, 170, 20));
+        bodycolorPanel.add(jLabel26, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 630, 170, 20));
 
         datesettled.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         datesettled.setText("display date");
-        bond.add(datesettled, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 560, 200, 20));
+        bodycolorPanel.add(datesettled, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 560, 200, 20));
 
         jLabel28.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel28.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel28.setText("Date & Time Settled:");
-        bond.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 560, 170, 20));
+        bodycolorPanel.add(jLabel28, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 560, 170, 20));
 
         complanantsname10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         complanantsname10.setText("Complainant's Name");
-        bond.add(complanantsname10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 650, 190, 40));
+        bodycolorPanel.add(complanantsname10, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 650, 190, 40));
 
         jLabel30.setFont(new java.awt.Font("Tahoma", 0, 12)); // NOI18N
         jLabel30.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel30.setText("Recorded by:");
-        bond.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 630, 170, 20));
+        bodycolorPanel.add(jLabel30, new org.netbeans.lib.awtextra.AbsoluteConstraints(390, 630, 170, 20));
 
         adminname.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         adminname.setText("Patricia Obaob");
-        bond.add(adminname, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 650, 190, 40));
+        bodycolorPanel.add(adminname, new org.netbeans.lib.awtextra.AbsoluteConstraints(380, 650, 190, 40));
 
-        jPanel2.add(bond, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 10, 570, 720));
+        jPanel2.add(bodycolorPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(40, 30, 570, 710));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -365,19 +398,25 @@ public class adminReport extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void infoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_infoMouseClicked
-       
+    private void printPreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printPreviewActionPerformed
+         
         
         
-    }//GEN-LAST:event_infoMouseClicked
-    
+    }//GEN-LAST:event_printPreviewActionPerformed
+
+    private void printButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButton1ActionPerformed
+        printReport();
+    }//GEN-LAST:event_printButton1ActionPerformed
+
     
     
     
@@ -420,14 +459,13 @@ public class adminReport extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel adminname;
-    private javax.swing.JPanel bond;
+    private javax.swing.JPanel bodycolorPanel;
     private javax.swing.JLabel complainantsname;
     private javax.swing.JLabel complanantsname10;
     private javax.swing.JLabel datereported;
     private javax.swing.JLabel datesettled;
     private javax.swing.JLabel description10;
     private javax.swing.JLabel incident1;
-    private javax.swing.JLabel info;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -437,7 +475,6 @@ public class adminReport extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel18;
-    private javax.swing.JLabel jLabel19;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
@@ -461,6 +498,8 @@ public class adminReport extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel location1;
+    private javax.swing.JButton printButton1;
+    private javax.swing.JButton printPreview;
     private javax.swing.JLabel save;
     private javax.swing.JLabel suspectsname;
     private javax.swing.JLabel txtwitness1;

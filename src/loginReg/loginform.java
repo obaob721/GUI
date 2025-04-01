@@ -35,6 +35,7 @@ public class loginform extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         
     }
+   
      Color hover = new Color(0, 153, 153);
      Color defbutton = new Color(204,255,204);
      
@@ -83,7 +84,19 @@ public class loginform extends JFrame {
             return null;
         }
     }
+ private void logActivity(int user_id, String action) {
+        String sql = "INSERT INTO system_logs (user_id, logs_action, logs_date) VALUES (?, ?, NOW())";
+        dbConnector db = new dbConnector();
 
+        try (Connection conn = db.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, user_id);
+            pst.setString(2, action);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error logging activity: " + e.getMessage());
+        }
+    }
     
     
 
@@ -334,9 +347,9 @@ public class loginform extends JFrame {
     }
 
     String hashedPassword = passwordHash(password);
-    String sql = "SELECT * FROM user_table WHERE email = ? AND password = ?";
 
     dbConnector db = new dbConnector(); 
+    String sql = "SELECT * FROM user_table WHERE email = ? AND password = ?";
 
     try (Connection conn = db.getConnection();  
          PreparedStatement pst = conn.prepareStatement(sql)) {
@@ -346,6 +359,8 @@ public class loginform extends JFrame {
         ResultSet rs = pst.executeQuery();
         
         if (rs.next()) {
+            int user_id = rs.getInt("user_id");
+            
             String user_status = rs.getString("user_status");
 
             if (user_status.equalsIgnoreCase("Pending")) {
@@ -354,6 +369,8 @@ public class loginform extends JFrame {
             }
 
             JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+            
+            logActivity(user_id, "Admin logged in");
             
             String firstName = rs.getString("firstName");
             String lastName = rs.getString("lastName");
@@ -415,6 +432,8 @@ public class loginform extends JFrame {
             ResultSet rs = pst.executeQuery();
 
             if (rs.next()) {
+                int user_id = rs.getInt("user_id");
+
                 String user_status = rs.getString("user_status");
 
                 if (user_status.equalsIgnoreCase("Pending")) {
@@ -423,7 +442,10 @@ public class loginform extends JFrame {
                 }
 
                 JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                
+                logActivity(user_id, "Admin logged in");
 
+                
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
                 String fullname = firstName + " " + lastName;
