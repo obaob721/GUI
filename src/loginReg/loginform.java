@@ -1,7 +1,7 @@
 package loginReg;
 
-
 import adminPackage.admindashboard;
+import config.Session;
 import config.dbConnector;
 import java.awt.BasicStroke;
 import java.awt.Color;
@@ -19,7 +19,6 @@ import javax.swing.JFrame;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-
 /**
  *
  * @author PATRICIA
@@ -33,42 +32,42 @@ public class loginform extends JFrame {
         initComponents();
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        
+
     }
-   
-     Color hover = new Color(0, 153, 153);
-     Color defbutton = new Color(204,255,204);
-     
-     Border empty = BorderFactory.createEmptyBorder();
-     
-     void buttonBorderAnimation(JPanel panel){
-     panel.setBackground(hover);
-     panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-     panel.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
-     }
-    
-     void buttonDefaultColor(JPanel panel){
-     panel.setBackground(defbutton);
-     panel.setBorder(empty);
-     }
-     
-     private boolean validateLogin() {
+
+    Color hover = new Color(0, 153, 153);
+    Color defbutton = new Color(204, 255, 204);
+
+    Border empty = BorderFactory.createEmptyBorder();
+
+    void buttonBorderAnimation(JPanel panel) {
+        panel.setBackground(hover);
+        panel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
+        panel.setBorder(BorderFactory.createStrokeBorder(new BasicStroke(2.0f)));
+    }
+
+    void buttonDefaultColor(JPanel panel) {
+        panel.setBackground(defbutton);
+        panel.setBorder(empty);
+    }
+
+    private boolean validateLogin() {
         String user = enterusername.getText().trim();
         String password = new String(enterpass.getPassword());
 
-        if (user.isEmpty()|| password.isEmpty()) {
+        if (user.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
-        
+
         if (password.length() < 8) {
             JOptionPane.showMessageDialog(this, "Password must be at least 8 characters long!", "Error", JOptionPane.ERROR_MESSAGE);
             return false;
         }
         return true;
-     }
-     
-     public static String passwordHash(String password) {
+    }
+
+    public static String passwordHash(String password) {
         try {
             MessageDigest md = MessageDigest.getInstance("SHA"); // Use SHA-256
             md.update(password.getBytes());
@@ -84,12 +83,13 @@ public class loginform extends JFrame {
             return null;
         }
     }
- private void logActivity(int user_id, String action) {
+
+    private void logActivity(int user_id, String action) {
         String sql = "INSERT INTO system_logs (user_id, logs_action, logs_date) VALUES (?, ?, NOW())";
         dbConnector db = new dbConnector();
 
         try (Connection conn = db.getConnection();
-             PreparedStatement pst = conn.prepareStatement(sql)) {
+                PreparedStatement pst = conn.prepareStatement(sql)) {
             pst.setInt(1, user_id);
             pst.setString(2, action);
             pst.executeUpdate();
@@ -97,8 +97,6 @@ public class loginform extends JFrame {
             System.err.println("Error logging activity: " + e.getMessage());
         }
     }
-    
-    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -293,7 +291,7 @@ public class loginform extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void enterusernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterusernameActionPerformed
-        
+
     }//GEN-LAST:event_enterusernameActionPerformed
 
     private void enterpassActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_enterpassActionPerformed
@@ -301,7 +299,7 @@ public class loginform extends JFrame {
     }//GEN-LAST:event_enterpassActionPerformed
 
     private void clickMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickMouseClicked
-       registerform regForm = new registerform();
+        registerform regForm = new registerform();
         regForm.setVisible(true);
         this.dispose();
     }//GEN-LAST:event_clickMouseClicked
@@ -312,105 +310,32 @@ public class loginform extends JFrame {
     }//GEN-LAST:event_clickMouseEntered
 
     private void clickMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_clickMouseExited
-       click.setForeground(java.awt.Color.WHITE);
+        click.setForeground(java.awt.Color.WHITE);
     }//GEN-LAST:event_clickMouseExited
 
     private void canbgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canbgMouseClicked
-       int response = JOptionPane.showConfirmDialog(
-            this,
-            "Are you sure you want to cancel the login process?",
-            "Confirm Cancel",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE
+        int response = JOptionPane.showConfirmDialog(
+                this,
+                "Are you sure you want to cancel the login process?",
+                "Confirm Cancel",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE
         );
 
         if (response == JOptionPane.YES_OPTION) {
-            this.dispose(); 
+            this.dispose();
         }
     }//GEN-LAST:event_canbgMouseClicked
 
     private void canbgMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canbgMouseEntered
-         buttonBorderAnimation(canbg);
+        buttonBorderAnimation(canbg);
     }//GEN-LAST:event_canbgMouseEntered
 
     private void canbgMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_canbgMouseExited
-       buttonDefaultColor(canbg);
+        buttonDefaultColor(canbg);
     }//GEN-LAST:event_canbgMouseExited
 
     private void logbgMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logbgMouseClicked
-      String email = enterusername.getText();
-    String password = new String(enterpass.getPassword());
-
-    if (email.isEmpty() || password.isEmpty()) {
-        JOptionPane.showMessageDialog(this, "Please enter both email and password.", "Error", JOptionPane.ERROR_MESSAGE);
-        return;
-    }
-
-    String hashedPassword = passwordHash(password);
-
-    dbConnector db = new dbConnector(); 
-    String sql = "SELECT * FROM user_table WHERE email = ? AND password = ?";
-
-    try (Connection conn = db.getConnection();  
-         PreparedStatement pst = conn.prepareStatement(sql)) {
-
-        pst.setString(1, email);
-        pst.setString(2, hashedPassword);
-        ResultSet rs = pst.executeQuery();
-        
-        if (rs.next()) {
-            int user_id = rs.getInt("user_id");
-            
-            String user_status = rs.getString("user_status");
-
-            if (user_status.equalsIgnoreCase("Pending")) {
-                JOptionPane.showMessageDialog(this, "Account Pending. Please contact the Admin.", "Access Denied", JOptionPane.WARNING_MESSAGE);
-                return;
-            }
-
-            JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-            
-            logActivity(user_id, "Admin logged in");
-            
-            String firstName = rs.getString("firstName");
-            String lastName = rs.getString("lastName");
-            String fullname = firstName + " " + lastName;
-            String use_type = rs.getString("use_type");
-
-            if (use_type.equals("Admin")) {
-                String imgPath = rs.getString("u_image"); // Get user image from DB
-                admindashboard admin = new admindashboard(fullname, imgPath);
-                admin.setVisible(true);
-                System.out.println("Admin dashboard opened");
-            } else {
-                String imgPath = rs.getString("u_image");
-                userDashboard user = new userDashboard(fullname, imgPath);
-                user.setVisible(true);
-                System.out.println("User dashboard opened");
-            }
-
-            this.dispose(); 
-
-        } else {
-            JOptionPane.showMessageDialog(this, "Incorrect username or password.", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-
-    } catch (SQLException e) {
-        JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-    
-    }//GEN-LAST:event_logbgMouseClicked
-
-    private void logbgMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logbgMouseEntered
-        buttonBorderAnimation(logbg);
-    }//GEN-LAST:event_logbgMouseEntered
-
-    private void logbgMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logbgMouseExited
-         buttonDefaultColor(logbg);
-    }//GEN-LAST:event_logbgMouseExited
-
-    private void enterpassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_enterpassKeyPressed
-         if (evt.getKeyCode() == KeyEvent.VK_ENTER) { 
         String email = enterusername.getText();
         String password = new String(enterpass.getPassword());
 
@@ -422,10 +347,10 @@ public class loginform extends JFrame {
         String hashedPassword = passwordHash(password);
         String sql = "SELECT * FROM user_table WHERE email = ? AND password = ?";
 
-        dbConnector db = new dbConnector(); 
+        dbConnector db = new dbConnector();
 
-        try (Connection conn = db.getConnection();  
-             PreparedStatement pst = conn.prepareStatement(sql)) {
+        try (Connection conn = db.getConnection();
+                PreparedStatement pst = conn.prepareStatement(sql)) {
 
             pst.setString(1, email);
             pst.setString(2, hashedPassword);
@@ -433,7 +358,6 @@ public class loginform extends JFrame {
 
             if (rs.next()) {
                 int user_id = rs.getInt("user_id");
-
                 String user_status = rs.getString("user_status");
 
                 if (user_status.equalsIgnoreCase("Pending")) {
@@ -441,11 +365,17 @@ public class loginform extends JFrame {
                     return;
                 }
 
-                JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
-                
-                logActivity(user_id, "Admin logged in");
+                Session session = Session.getInstance();
+                session.setUid(rs.getInt("user_id")); // Set user_id
+                session.setFname(rs.getString("firstName"));
+                session.setLname(rs.getString("lastnName"));
+                session.setType(rs.getString("use_type"));
 
-                
+// ✅ Log login activity using the getter
+                logActivity(session.getUid(), session.getType() + " Logged in");
+
+                JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
                 String firstName = rs.getString("firstName");
                 String lastName = rs.getString("lastName");
                 String fullname = firstName + " " + lastName;
@@ -463,8 +393,7 @@ public class loginform extends JFrame {
                     System.out.println("User dashboard opened");
                 }
 
-
-                this.dispose(); 
+                this.dispose();
 
             } else {
                 JOptionPane.showMessageDialog(this, "Incorrect username or password.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -473,7 +402,85 @@ public class loginform extends JFrame {
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
+    }//GEN-LAST:event_logbgMouseClicked
+
+    private void logbgMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logbgMouseEntered
+        buttonBorderAnimation(logbg);
+    }//GEN-LAST:event_logbgMouseEntered
+
+    private void logbgMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logbgMouseExited
+        buttonDefaultColor(logbg);
+    }//GEN-LAST:event_logbgMouseExited
+
+    private void enterpassKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_enterpassKeyPressed
+        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+            String email = enterusername.getText();
+            String password = new String(enterpass.getPassword());
+
+            if (email.isEmpty() || password.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please enter both email and password.", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String hashedPassword = passwordHash(password);
+            String sql = "SELECT * FROM user_table WHERE email = ? AND password = ?";
+
+            dbConnector db = new dbConnector();
+
+            try (Connection conn = db.getConnection();
+                    PreparedStatement pst = conn.prepareStatement(sql)) {
+
+                pst.setString(1, email);
+                pst.setString(2, hashedPassword);
+                ResultSet rs = pst.executeQuery();
+
+                if (rs.next()) {
+                    int user_id = rs.getInt("user_id");
+                    String user_status = rs.getString("user_status");
+
+                    if (user_status.equalsIgnoreCase("Pending")) {
+                        JOptionPane.showMessageDialog(this, "Account Pending. Please contact the Admin.", "Access Denied", JOptionPane.WARNING_MESSAGE);
+                        return;
+                    }
+
+                    Session session = Session.getInstance();
+                    session.setUid(rs.getInt("user_id")); // Set user_id
+                    session.setFname(rs.getString("firstName"));
+                    session.setLname(rs.getString("lastName"));
+                    session.setType(rs.getString("use_type"));
+
+// ✅ Log login activity using the getter
+                    logActivity(session.getUid(), session.getType() + " Logged in");
+
+                    JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+                    String firstName = rs.getString("firstName");
+                    String lastName = rs.getString("lastName");
+                    String fullname = firstName + " " + lastName;
+                    String use_type = rs.getString("use_type");
+
+                    if (use_type.equals("Admin")) {
+                        String imgPath = rs.getString("u_image"); // Get user image from DB
+                        admindashboard admin = new admindashboard(fullname, imgPath);
+                        admin.setVisible(true);
+                        System.out.println("Admin dashboard opened");
+                    } else {
+                        String imgPath = rs.getString("u_image");
+                        userDashboard user = new userDashboard(fullname, imgPath);
+                        user.setVisible(true);
+                        System.out.println("User dashboard opened");
+                    }
+
+                    this.dispose();
+
+                } else {
+                    JOptionPane.showMessageDialog(this, "Incorrect username or password.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+
+            } catch (SQLException e) {
+                JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_enterpassKeyPressed
 
     private void forgotpassMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotpassMouseClicked
@@ -486,15 +493,14 @@ public class loginform extends JFrame {
     }//GEN-LAST:event_forgotpassMouseEntered
 
     private void forgotpassMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_forgotpassMouseExited
-       forgotpass.setForeground(java.awt.Color.WHITE);
+        forgotpass.setForeground(java.awt.Color.WHITE);
     }//GEN-LAST:event_forgotpassMouseExited
 
-    
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-       try {
+        try {
             for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());

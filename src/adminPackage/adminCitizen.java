@@ -5,6 +5,7 @@
  */
 package adminPackage;
 
+import config.Session;
 import config.dbConnector;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -30,46 +31,45 @@ import net.proteanit.sql.DbUtils;
  * @author PATRICIA
  */
 public class adminCitizen extends javax.swing.JFrame {
+
     private String fullname;
     private static String userImagePath = null;
-    
-    
-    
+
     /**
      * Creates new form adminCitizen
      */
     public adminCitizen(String fullname, String imgPath) {
         initComponents();
-        
-         this.fullname = fullname;
-                
+
+        this.fullname = fullname;
+
         adminprof.setText("" + fullname + "");
-        
+
         displayCitizenData();
-        
+
         setLocationRelativeTo(null);
-        
+
         userImagePath = imgPath;
         displayImage();
         highlightRow();
     }
 
-    Color navcolor = new Color(0,51,51);
-    Color headcolor = new Color(0,51,51);
-    Color bodycolor = new Color(0,153,153);
+    Color navcolor = new Color(0, 51, 51);
+    Color headcolor = new Color(0, 51, 51);
+    Color bodycolor = new Color(0, 153, 153);
 
-     private void displayCitizenData() {
-       try{
+    private void displayCitizenData() {
+        try {
             dbConnector dbc = new dbConnector();
             ResultSet rs = dbc.getData("SELECT * FROM citizen_table");
             c_table.setModel(DbUtils.resultSetToTableModel(rs));
-            
-        }catch(SQLException ex){
-            System.out.println("Errors"+ex.getMessage());
+
+        } catch (SQLException ex) {
+            System.out.println("Errors" + ex.getMessage());
         }
     }
-     
-       private void displayImage() {
+
+    private void displayImage() {
         if (userImagePath != null && !userImagePath.isEmpty()) {
             updateProfilePicture(userImagePath);
         }
@@ -91,63 +91,74 @@ public class adminCitizen extends javax.swing.JFrame {
         }
     }
 
-private Image getRoundedImage(BufferedImage img, int width, int height) {
-    BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-    Graphics2D g2 = output.createGraphics();
-    
-    // Enable anti-aliasing for smooth edges
-    g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
-    
-    // Create a circular clipping mask
-    g2.setClip(new Ellipse2D.Float(0, 0, width, height));
-    
-    // Draw the image inside the circular area
-    g2.drawImage(img, 0, 0, width, height, null);
-    g2.dispose();
-    
-    return output;
-}
-       private void highlightRow() {
-    String searchText = searchcitizen.getText().trim().toLowerCase();
+    private Image getRoundedImage(BufferedImage img, int width, int height) {
+        BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2 = output.createGraphics();
 
-    if (searchText.isEmpty()) {
-        return;
+        // Enable anti-aliasing for smooth edges
+        g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+        // Create a circular clipping mask
+        g2.setClip(new Ellipse2D.Float(0, 0, width, height));
+
+        // Draw the image inside the circular area
+        g2.drawImage(img, 0, 0, width, height, null);
+        g2.dispose();
+
+        return output;
     }
 
-    c_table.clearSelection(); // Clear previous selection
-    boolean matchFound = false;
+    private void highlightRow() {
+        String searchText = searchcitizen.getText().trim().toLowerCase();
 
-    for (int i = 0; i < c_table.getRowCount(); i++) { // Corrected loop condition
-        for (int j = 0; j < c_table.getColumnCount(); j++) { // Use 0-based index
-            Object cellValue = c_table.getValueAt(i, j);
+        if (searchText.isEmpty()) {
+            return;
+        }
 
-            if (cellValue != null) {
-                String cellText = cellValue.toString().trim().toLowerCase();
+        c_table.clearSelection(); // Clear previous selection
+        boolean matchFound = false;
 
-                if (cellText.contains(searchText)) {
-                    c_table.addRowSelectionInterval(i, i); // Select row
-                    matchFound = true;
-                    break; // Exit column loop once a match is found
+        for (int i = 0; i < c_table.getRowCount(); i++) { // Corrected loop condition
+            for (int j = 0; j < c_table.getColumnCount(); j++) { // Use 0-based index
+                Object cellValue = c_table.getValueAt(i, j);
+
+                if (cellValue != null) {
+                    String cellText = cellValue.toString().trim().toLowerCase();
+
+                    if (cellText.contains(searchText)) {
+                        c_table.addRowSelectionInterval(i, i); // Select row
+                        matchFound = true;
+                        break; // Exit column loop once a match is found
+                    }
                 }
             }
         }
+
+        if (matchFound) {
+            // Scroll to the first selected row
+            int firstSelectedRow = c_table.getSelectedRow();
+            if (firstSelectedRow != -1) {
+                c_table.scrollRectToVisible(c_table.getCellRect(firstSelectedRow, 0, true));
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No matching record found!", "Search", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
 
-    if (matchFound) {
-        // Scroll to the first selected row
-        int firstSelectedRow = c_table.getSelectedRow();
-        if (firstSelectedRow != -1) {
-            c_table.scrollRectToVisible(c_table.getCellRect(firstSelectedRow, 0, true));
+    private void logActivity(int user_id, String action) {
+        String sql = "INSERT INTO system_logs (user_id, logs_action, logs_date) VALUES (?, ?, NOW())";
+        dbConnector db = new dbConnector();
+
+        try (Connection conn = db.getConnection();
+                PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, user_id);
+            pst.setString(2, action);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error logging activity: " + e.getMessage());
         }
-    } else {
-        JOptionPane.showMessageDialog(null, "No matching record found!", "Search", JOptionPane.INFORMATION_MESSAGE);
     }
-} 
-     
-    
-    
-    
-    
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -675,7 +686,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     }// </editor-fold>//GEN-END:initComponents
 
     private void c_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_tableMouseClicked
-       int i = c_table.getSelectedRow();
+        int i = c_table.getSelectedRow();
         if (i == -1) {
             JOptionPane.showMessageDialog(this, "Please select a row first!", "Error", JOptionPane.ERROR_MESSAGE);
             return;
@@ -683,11 +694,11 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
 
         TableModel model = c_table.getModel();
 
-        enterfn.setText(model.getValueAt(i,1) != null ? model.getValueAt(i,1).toString() : "");
-        enterln.setText(model.getValueAt(i,2) != null ? model.getValueAt(i,2).toString() : "");
-        age.setText(model.getValueAt(i,3) != null ? model.getValueAt(i,3).toString() : "");
-        address.setText(model.getValueAt(i,4) != null ? model.getValueAt(i,4).toString() : "");
-        number.setText(model.getValueAt(i,5) != null ? model.getValueAt(i,5).toString() : "");
+        enterfn.setText(model.getValueAt(i, 1) != null ? model.getValueAt(i, 1).toString() : "");
+        enterln.setText(model.getValueAt(i, 2) != null ? model.getValueAt(i, 2).toString() : "");
+        age.setText(model.getValueAt(i, 3) != null ? model.getValueAt(i, 3).toString() : "");
+        address.setText(model.getValueAt(i, 4) != null ? model.getValueAt(i, 4).toString() : "");
+        number.setText(model.getValueAt(i, 5) != null ? model.getValueAt(i, 5).toString() : "");
 
     }//GEN-LAST:event_c_tableMouseClicked
 
@@ -708,16 +719,40 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     }//GEN-LAST:event_dashMouseExited
 
     private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-        int choice = JOptionPane.showConfirmDialog(this,
-            "Are you sure you want to log out?",
-            "Logout Confirmation",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE);
+        String sql = "SELECT user_id FROM user_table WHERE CONCAT(firstName, ' ', lastName) = ?";
 
-        if (choice == JOptionPane.YES_OPTION) {
-            this.dispose();
+        dbConnector db = new dbConnector();
 
-            new loginform().setVisible(true);
+        try (Connection conn = db.getConnection();
+                PreparedStatement pst = conn.prepareStatement(sql)) {
+
+            pst.setString(1, this.fullname); // Set the logged-in user's full name (firstName + lastName)
+
+            ResultSet rs = pst.executeQuery();
+
+            if (rs.next()) {
+                int user_id = rs.getInt("user_id");
+
+                // Confirm logout with the user
+                int response = JOptionPane.showConfirmDialog(this,
+                        "Confirm Log Out?",
+                        "Logout Confirmation",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (response == JOptionPane.YES_OPTION) {
+                    // Log the logout activity
+                    logActivity(user_id, "Admin Logged out");
+
+                    // Redirect to login form
+                    new loginform().setVisible(true);
+
+                    // Dispose current window (user is logged out)
+                    this.dispose();
+                }
+            }
+
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_logoutMouseClicked
 
@@ -850,6 +885,16 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
             int rowsInserted = pstmt.executeUpdate();
             if (rowsInserted > 0) {
                 JOptionPane.showMessageDialog(this, "Citizen Added Successfully!");
+
+                // ✅ Log the action using the current logged-in user
+                Session session = Session.getInstance();
+                int userId = session.getUid(); // Get actual user_id from session
+
+                if (userId != -1) {
+                    logActivity(userId, "Admin Added a new Citizen: " + c_fname + " " + c_lname);
+                } else {
+                    System.err.println("Session user ID not set. Cannot log activity.");
+                }
             }
 
         } catch (SQLException ex) {
@@ -885,7 +930,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         try (Connection conn = DriverManager.getConnection(url, db_user, db_pass)) {
 
             int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this citizen?",
-                "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+                    "Confirm Deletion", JOptionPane.YES_NO_OPTION);
             if (confirm != JOptionPane.YES_OPTION) {
                 return;
             }
@@ -897,10 +942,16 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
             int rowsDeleted = pstmt.executeUpdate();
             if (rowsDeleted > 0) {
                 JOptionPane.showMessageDialog(this, "Citizen deleted successfully!");
-            } else {
-                JOptionPane.showMessageDialog(this, "Deletion failed. Phone number not found.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
+                Session session = Session.getInstance();
+                int userId = session.getUid();
 
+                if (userId != -1) {
+                    logActivity(userId, "Admin Deleted a Citizen with phone number: " + c_pnumber);
+                } else {
+                    System.err.println("Session user ID not set. Cannot log delete activity.");
+                }
+
+            }
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -915,7 +966,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     }//GEN-LAST:event_deletebuttonMouseExited
 
     private void refreshMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_refreshMouseClicked
-         displayCitizenData();
+        displayCitizenData();
         enterfn.setText("");
         enterln.setText("");
         age.setText("");
@@ -973,6 +1024,14 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
             int rowsInserted = pstmt.executeUpdate();
             if (rowsInserted > 0) {
                 JOptionPane.showMessageDialog(this, "Citizen Edited Successfully!");
+                Session session = Session.getInstance();
+                int userId = session.getUid();
+
+                if (userId != -1) {
+                    logActivity(userId, "Admin Updated Citizen: " + c_fname + " " + c_lname);
+                } else {
+                    System.err.println("Session user ID not set. Cannot log edit activity.");
+                }
 
             }
 
@@ -1059,7 +1118,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                 String imgPath = "path/to/default/image.png";
+                String imgPath = "path/to/default/image.png";
                 new adminCitizen("Admin User", imgPath).setVisible(true);
             }
         });

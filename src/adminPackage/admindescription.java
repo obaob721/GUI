@@ -5,6 +5,8 @@
  */
 package adminPackage;
 
+import config.Session;
+import config.dbConnector;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -52,6 +54,19 @@ public class admindescription extends javax.swing.JFrame {
 }
     
     
+     private void logActivity(int user_id, String action) {
+        String sql = "INSERT INTO system_logs (user_id, logs_action, logs_date) VALUES (?, ?, NOW())";
+        dbConnector db = new dbConnector();
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, user_id);
+            pst.setString(2, action);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error logging activity: " + e.getMessage());
+        }
+    }
     
     
     /**
@@ -209,7 +224,16 @@ public class admindescription extends javax.swing.JFrame {
 
             if (rowsUpdated > 0) {
                 JOptionPane.showMessageDialog(null, "Report updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                
+                 Session session = Session.getInstance();
+            int userId = session.getUid();
 
+            if (userId != -1) {
+                logActivity(userId, "Admin Updated Report (r_id: " + r_id + ") with description.");
+            } else {
+                System.err.println("Session user ID not set. Cannot log report update activity.");
+            }
+            
                 // ✅ Retrieve full blotter details
                 PreparedStatement stmt = conn.prepareStatement(
                         "SELECT b.b_id, c.c_fname, c.c_lname, b.b_fname, b.b_incident, b.b_location, "

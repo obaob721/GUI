@@ -1,5 +1,6 @@
 package adminPackage;
 
+import config.Session;
 import loginReg.loginform;
 import config.dbConnector;
 import java.awt.Color;
@@ -44,7 +45,6 @@ public class adminPage extends javax.swing.JFrame {
 
         initComponents();
         adminprof.setText("" + fullname + "");
-
 
         displayData();
         highlightRow();
@@ -160,7 +160,19 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     return output;
 }
 
-   
+   private void logActivity(int user_id, String action) {
+        String sql = "INSERT INTO system_logs (user_id, logs_action, logs_date) VALUES (?, ?, NOW())";
+        dbConnector db = new dbConnector();
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, user_id);
+            pst.setString(2, action);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error logging activity: " + e.getMessage());
+        }
+    }
    
    
    
@@ -728,58 +740,61 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     }//GEN-LAST:event_searchuserActionPerformed
 
     private void addbutton2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addbutton2MouseClicked
-        String firstName = enterfn.getText().trim();
-        String lastName = enterln.getText().trim();
-        String email = enteremail.getText().trim();
-        String password = new String(enterpass.getPassword());
-        String use_type = user.getSelectedItem().toString();
-        String user_status = userStatusComboBox.getSelectedItem().toString();
+         String firstName = enterfn.getText().trim();
+    String lastName = enterln.getText().trim();
+    String email = enteremail.getText().trim();
+    String password = new String(enterpass.getPassword());
+    String use_type = user.getSelectedItem().toString();
+    String user_status = userStatusComboBox.getSelectedItem().toString();
 
-        if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
+    if (firstName.isEmpty() || lastName.isEmpty() || email.isEmpty() || password.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+        JOptionPane.showMessageDialog(this, "Please enter a valid Gmail address (example@gmail.com)", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    if (password.length() < 8) {
+        JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    String url = "jdbc:mysql://localhost:3306/obaob_db";
+    String user = "root";
+    String pass = "";
+
+    try {
+        Connection conn = DriverManager.getConnection(url, user, pass);
+        
+        String hashedPassword = passwordHash(password);
+        
+        String sql = "INSERT INTO user_table (firstName, lastName, email, password, use_type, user_status) VALUES (?, ?, ?, ?, ?, ?)";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+
+        pstmt.setString(1, firstName);
+        pstmt.setString(2, lastName);
+        pstmt.setString(3, email);
+        pstmt.setString(4, hashedPassword);
+        pstmt.setString(5, use_type);
+        pstmt.setString(6, user_status);
+
+        int rowsInserted = pstmt.executeUpdate();
+        if (rowsInserted > 0) {
+            JOptionPane.showMessageDialog(this, "Registration Successful!");
+           
+            // 🔒 Log action by session user (not the new user)
+            Session session = Session.getInstance();
+            int sessionUserId = session.getUid();
+            logActivity(sessionUserId, "Registered new User: " + firstName + " " + lastName);
         }
-         if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid Gmail address (example@gmail.com)", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+         this.dispose();
 
-        if (password.length() < 8) {
-            JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-
-        String url = "jdbc:mysql://localhost:3306/obaob_db";
-        String user = "root";
-        String pass = "";
-
-        try {
-
-            Connection conn = DriverManager.getConnection(url, user, pass);
-            
-            String hashedPassword = passwordHash(password);
-            
-            String sql = "INSERT INTO user_table (firstName, lastName, email, password, use_type, user_status) VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-
-            pstmt.setString(1, firstName);
-            pstmt.setString(2, lastName);
-            pstmt.setString(3, email);
-            pstmt.setString(4, hashedPassword);
-            pstmt.setString(5, use_type);
-            pstmt.setString(6, user_status);
-
-            int rowsInserted = pstmt.executeUpdate();
-            if (rowsInserted > 0) {
-                JOptionPane.showMessageDialog(this, "Registration Successful!");
-                this.dispose();
-
-            }
-
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
 
     }//GEN-LAST:event_addbutton2MouseClicked
 
@@ -792,42 +807,64 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     }//GEN-LAST:event_addbutton2MouseExited
 
     private void deletebuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deletebuttonMouseClicked
-        String user_email = enteremail.getText();
+ String user_email = enteremail.getText();
 
-        if (user_email.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter an email.", "Error", JOptionPane.ERROR_MESSAGE);
+    if (user_email.isEmpty()) {
+        JOptionPane.showMessageDialog(this, "Please enter an email.", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    String url = "jdbc:mysql://localhost:3306/obaob_db";
+    String user = "root";
+    String pass = "";
+
+    try {
+        Connection conn = DriverManager.getConnection(url, user, pass);
+
+        // Get target user (to be deleted)
+        String getIdQuery = "SELECT user_id, firstName, lastName FROM user_table WHERE email = ?";
+        PreparedStatement idStmt = conn.prepareStatement(getIdQuery);
+        idStmt.setString(1, user_email);
+        ResultSet rs = idStmt.executeQuery();
+
+        int targetUserId = -1;
+        String fullName = "";
+        if (rs.next()) {
+            targetUserId = rs.getInt("user_id");
+            fullName = rs.getString("firstName") + " " + rs.getString("lastName");
+        }
+        rs.close();
+        idStmt.close();
+
+        int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this user?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
+        if (confirm != JOptionPane.YES_OPTION) {
+            conn.close();
             return;
         }
 
-        String url = "jdbc:mysql://localhost:3306/obaob_db";
-        String user = "root";
-        String pass = "";
+        // Delete target user
+        String sql = "DELETE FROM user_table WHERE email = ?";
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.setString(1, user_email);
 
-        try {
-            Connection conn = DriverManager.getConnection(url, user, pass);
+        int rowsDeleted = pstmt.executeUpdate();
+        pstmt.close();
 
-            int confirm = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete this user?", "Confirm Deletion", JOptionPane.YES_NO_OPTION);
-            if (confirm != JOptionPane.YES_OPTION) {
-                conn.close();
-                return;
-            }
-            
-            String sql = "DELETE FROM user_table WHERE email = ?";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-            pstmt.setString(1, user_email);
+        if (rowsDeleted > 0) {
+            JOptionPane.showMessageDialog(this, "User deleted successfully!");
 
-            int rowsDeleted = pstmt.executeUpdate();
-            if (rowsDeleted > 0) {
-                JOptionPane.showMessageDialog(this, "User deleted successfully!");
-            } else {
-                JOptionPane.showMessageDialog(this, "Deletion failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-
-            pstmt.close();
-            conn.close();
-        } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            // 🟢 Use Session to log the ACTOR's ID, not the deleted user's
+            Session session = Session.getInstance();
+            int sessionUserId = session.getUid();
+            logActivity(sessionUserId, "Deleted User Account: " + fullName);
+        } else {
+            JOptionPane.showMessageDialog(this, "Deletion failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
+
+        conn.close();
+    } catch (SQLException ex) {
+        JOptionPane.showMessageDialog(this, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_deletebuttonMouseClicked
 
     private void deletebuttonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_deletebuttonMouseEntered
@@ -858,7 +895,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     }//GEN-LAST:event_refreshMouseExited
 
     private void editbutton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_editbutton1MouseClicked
-     String firstName = enterfn.getText().trim();
+      String firstName = enterfn.getText().trim();
     String lastName = enterln.getText().trim();
     String email = enteremail.getText().trim();
     String password = new String(enterpass.getPassword());
@@ -869,10 +906,12 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         JOptionPane.showMessageDialog(this, "All fields are required!", "Error", JOptionPane.ERROR_MESSAGE);
         return;
     }
-        if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
-            JOptionPane.showMessageDialog(this, "Please enter a valid Gmail address (example@gmail.com)", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
+
+    if (!email.matches("^[a-zA-Z0-9._%+-]+@gmail\\.com$")) {
+        JOptionPane.showMessageDialog(this, "Please enter a valid Gmail address (example@gmail.com)", "Error", JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
     if (password.length() < 8) {
         JOptionPane.showMessageDialog(this, "Password should have at least 8 characters.", "Error", JOptionPane.ERROR_MESSAGE);
         return;
@@ -906,7 +945,14 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         int rowsUpdated = pstmt.executeUpdate();
         if (rowsUpdated > 0) {
             JOptionPane.showMessageDialog(this, "User information updated successfully!");
-            displayData(); 
+            displayData();
+            
+            // Use the session to get the logged-in user's user_id
+            Session session = Session.getInstance();
+            int user_id = session.getUid(); // Get the user_id from the session
+            
+            // Log the update activity (this logs who updated their profile)
+            logActivity(user_id, "Updated User Profile: " + firstName + " " + lastName);
         } else {
             JOptionPane.showMessageDialog(this, "Update failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -1041,18 +1087,41 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     }//GEN-LAST:event_logoutMouseEntered
 
     private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-        int choice = JOptionPane.showConfirmDialog(this,
-            "Are you sure you want to log out?",
-            "Logout Confirmation",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE);
+         String sql = "SELECT user_id FROM user_table WHERE CONCAT(firstName, ' ', lastName) = ?"; 
+    
+    dbConnector db = new dbConnector();
 
-        if (choice == JOptionPane.YES_OPTION) {
-            this.dispose();
+    try (Connection conn = db.getConnection();
+         PreparedStatement pst = conn.prepareStatement(sql)) {
 
-            new loginform().setVisible(true);
-        }
+        pst.setString(1, this.fullname); // Set the logged-in user's full name (firstName + lastName)
 
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            int user_id = rs.getInt("user_id");
+
+            // Confirm logout with the user
+            int response = JOptionPane.showConfirmDialog(this,
+                "Confirm Log Out?",
+                "Logout Confirmation",
+                JOptionPane.YES_NO_OPTION);
+
+            if (response == JOptionPane.YES_OPTION) {
+                // Log the logout activity
+                logActivity(user_id, "Logged out");
+
+                // Redirect to login form
+                new loginform().setVisible(true);
+
+                // Dispose current window (user is logged out)
+                this.dispose();
+            }
+        }        
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_logoutMouseClicked
 
     private void dashMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseExited

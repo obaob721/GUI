@@ -5,6 +5,8 @@
  */
 package adminPackage;
 
+import config.Session;
+import config.dbConnector;
 import java.awt.Color;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -94,6 +96,19 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
     Color headcolor = new Color(0,51,51);
     Color bodycolor = new Color(0,153,153);
    
+     private void logActivity(int user_id, String action) {
+        String sql = "INSERT INTO system_logs (user_id, logs_action, logs_date) VALUES (?, ?, NOW())";
+        dbConnector db = new dbConnector();
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, user_id);
+            pst.setString(2, action);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error logging activity: " + e.getMessage());
+        }
+    }
     
 
     /**
@@ -567,6 +582,16 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
                 int generatedBId = generatedKeys.getInt(1); // Get new blotter ID
                 txtb_id.setText(String.valueOf(generatedBId)); // Display in txtb_id
                 JOptionPane.showMessageDialog(null, "Blotter added successfully! (ID: " + generatedBId + ")\nSuspect: " + susFullName, "Success", JOptionPane.INFORMATION_MESSAGE);
+                
+                // Log activity
+                Session session = Session.getInstance();
+                int userId = session.getUid(); // Get the actual user ID from session
+
+                if (userId != -1) {
+                    logActivity(userId, "Admin Added a new Blotter entry (ID: " + generatedBId + ") for Suspect: " + susFullName);
+                } else {
+                    System.err.println("Session user ID not set. Cannot log add blotter activity.");
+                }
             }
         }
 
@@ -616,7 +641,17 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
             int rowsDeleted = blotterStmt.executeUpdate();
 
             if (rowsDeleted > 0) {
-                JOptionPane.showMessageDialog(null, "Blotter record deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+               JOptionPane.showMessageDialog(null, "Blotter record deleted successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+                
+               Session session = Session.getInstance();
+                int userId = session.getUid();
+
+                if (userId != -1) {
+                    logActivity(userId, "Admin Deleted a Blotter Entry: " + b_id);
+                } else {
+                    System.err.println("Session user ID not set. Cannot log delete activity.");
+                }
+               
             } else {
                 JOptionPane.showMessageDialog(null, "No record found to delete!", "Error", JOptionPane.ERROR_MESSAGE);
             }
@@ -698,7 +733,16 @@ public class adminBlotterCRUD extends javax.swing.JFrame {
 
         conn.commit(); // Commit both updates if successful
         JOptionPane.showMessageDialog(null, "Record updated successfully!\nSuspect: " + susFullName, "Success", JOptionPane.INFORMATION_MESSAGE);
+        
+        Session session = Session.getInstance();
+        int userId = session.getUid(); // Get the actual user ID from session
 
+        if (userId != -1) {
+            logActivity(userId, "Updated Blotter (ID: " + b_id + ") and Citizen (ID: " + c_id + ")");
+        } else {
+            System.err.println("Session user ID not set. Cannot log update activity.");
+        }
+        
     } catch (SQLException ex) {
         JOptionPane.showMessageDialog(null, "Database Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
     }

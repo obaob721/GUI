@@ -163,7 +163,19 @@ private String getSusFullName(int c_id) {
     return susFullName;
 }
 
-    
+    private void logActivity(int user_id, String action) {
+        String sql = "INSERT INTO system_logs (user_id, logs_action, logs_date) VALUES (?, ?, NOW())";
+        dbConnector db = new dbConnector();
+
+        try (Connection conn = db.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, user_id);
+            pst.setString(2, action);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error logging activity: " + e.getMessage());
+        }
+    }
     
     
 
@@ -677,19 +689,41 @@ private String getSusFullName(int c_id) {
     }//GEN-LAST:event_dashMouseExited
 
     private void logoutMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseClicked
-       int choice = JOptionPane.showConfirmDialog(this,
-        "Are you sure you want to log out?", 
-        "Logout Confirmation",               
-        JOptionPane.YES_NO_OPTION,           
-        JOptionPane.QUESTION_MESSAGE); 
-
-    if (choice == JOptionPane.YES_OPTION) {
-        this.dispose(); 
-
-        
-        new loginform().setVisible(true);
-    }
+          String sql = "SELECT user_id FROM user_table WHERE CONCAT(firstName, ' ', lastName) = ?"; 
     
+    dbConnector db = new dbConnector();
+
+    try (Connection conn = db.getConnection();
+         PreparedStatement pst = conn.prepareStatement(sql)) {
+
+        pst.setString(1, this.fullname); // Set the logged-in user's full name (firstName + lastName)
+
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            int user_id = rs.getInt("user_id");
+
+            // Confirm logout with the user
+            int response = JOptionPane.showConfirmDialog(this,
+                "Confirm Log Out?",
+                "Logout Confirmation",
+                JOptionPane.YES_NO_OPTION);
+
+            if (response == JOptionPane.YES_OPTION) {
+                // Log the logout activity
+                logActivity(user_id, "Admin Logged out");
+
+                // Redirect to login form
+                new loginform().setVisible(true);
+
+                // Dispose current window (user is logged out)
+                this.dispose();
+            }
+        }        
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_logoutMouseClicked
 
     private void logoutMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutMouseEntered

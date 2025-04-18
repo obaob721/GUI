@@ -28,7 +28,7 @@ public class adminLogs extends javax.swing.JFrame {
      */
     public adminLogs(String fullname, String imgPath) {
         initComponents();
-        displayData();
+        displayLogs();
         this.fullname = fullname;
         setLocationRelativeTo(null);
         
@@ -45,21 +45,19 @@ public class adminLogs extends javax.swing.JFrame {
     Color headcolor = new Color(0,153,153);
     Color bodycolor = new Color(0,153,153);
     
-
-    public void displayData() {
-        try {
-            dbConnector dbc = new dbConnector();
-            String query = "SELECT * FROM system_logs";
-                  
-            ResultSet rs = dbc.getData(query);
+    public void displayLogs(){
+        try{
+            dbConnector db = new dbConnector();
+            ResultSet rs = db.getData("SELECT user_id, logs_action, logs_date FROM system_logs ORDER BY logs_id DESC");
             logs.setModel(DbUtils.resultSetToTableModel(rs));
-
             rs.close();
-        } catch (SQLException ex) {
-            System.out.println("Errors: " + ex.getMessage());
+        }catch(SQLException e){
+            System.out.println("Error loading logs: "+e.getMessage());
         }
     }
-    
+
+
+   
     private void highlightRow() {
     String searchText = searchlogs.getText().trim().toLowerCase();
 
