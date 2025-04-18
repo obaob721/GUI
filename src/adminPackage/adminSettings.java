@@ -6,6 +6,7 @@
 package adminPackage;
 
 import config.ImageHandler;
+import config.Session;
 import config.dbConnector;
 import java.awt.Color;
 import java.awt.Image;
@@ -166,7 +167,22 @@ public class adminSettings extends javax.swing.JFrame {
         }
     }
 
+        private void logActivity(int user_id, String action) {
+        String sql = "INSERT INTO system_logs (user_id, logs_action, logs_date) VALUES (?, ?, NOW())";
+        dbConnector db = new dbConnector();
 
+        try (Connection conn = db.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, user_id);
+            pst.setString(2, action);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error logging activity: " + e.getMessage());
+        }
+    }
+      
+      
+      
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -531,6 +547,16 @@ public class adminSettings extends javax.swing.JFrame {
         if (rowsUpdated > 0) {
             JOptionPane.showMessageDialog(this, "Password updated successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
             enterpass.setText("********"); 
+            
+            Session session = Session.getInstance();
+            int userId = session.getUid();
+
+            if (userId != -1) {
+                logActivity(userId, "Changed password for account: " + email);
+            } else {
+                System.err.println("Session user ID not set. Cannot log password change activity.");
+            }
+            
         } else {
             JOptionPane.showMessageDialog(this, "Error: User not found!", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -544,17 +570,41 @@ public class adminSettings extends javax.swing.JFrame {
     }//GEN-LAST:event_changepassMouseClicked
 
     private void logoutbuttonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_logoutbuttonMouseClicked
-         int choice = JOptionPane.showConfirmDialog(this,
-            "Are you sure you want to log out?",
-            "Logout Confirmation",
-            JOptionPane.YES_NO_OPTION,
-            JOptionPane.QUESTION_MESSAGE);
+         String sql = "SELECT user_id FROM user_table WHERE CONCAT(firstName, ' ', lastName) = ?"; 
+    
+    dbConnector db = new dbConnector();
 
-        if (choice == JOptionPane.YES_OPTION) {
-            this.dispose();
+    try (Connection conn = db.getConnection();
+         PreparedStatement pst = conn.prepareStatement(sql)) {
 
-            new loginform().setVisible(true);
-        }
+        pst.setString(1, this.fullname); // Set the logged-in user's full name (firstName + lastName)
+
+        ResultSet rs = pst.executeQuery();
+
+        if (rs.next()) {
+            int user_id = rs.getInt("user_id");
+
+            // Confirm logout with the user
+            int response = JOptionPane.showConfirmDialog(this,
+                "Confirm Log Out?",
+                "Logout Confirmation",
+                JOptionPane.YES_NO_OPTION);
+
+            if (response == JOptionPane.YES_OPTION) {
+                // Log the logout activity
+                logActivity(user_id, "Admin Logged out");
+
+                // Redirect to login form
+                new loginform().setVisible(true);
+
+                // Dispose current window (user is logged out)
+                this.dispose();
+            }
+        }        
+
+    } catch (SQLException e) {
+        JOptionPane.showMessageDialog(this, "Database Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
         
         
         
@@ -630,6 +680,16 @@ public class adminSettings extends javax.swing.JFrame {
                             int rowsUpdated = updatePstmt.executeUpdate();
                             if (rowsUpdated > 0) {
                                 JOptionPane.showMessageDialog(this, "Account information updated successfully!");
+
+                                Session session = Session.getInstance();
+                                int userId = session.getUid();
+
+                                if (userId != -1) {
+                                    logActivity(userId, "Updated the Account Information: " + email);
+                                } else {
+                                    System.err.println("Session user ID not set. Cannot log password change activity.");
+                                }
+
                             } else {
                                 JOptionPane.showMessageDialog(this, "Update failed. Please try again.", "Error", JOptionPane.ERROR_MESSAGE);
                             }

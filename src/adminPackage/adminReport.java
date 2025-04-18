@@ -5,13 +5,17 @@
  */
 package adminPackage;
 
+import config.Session;
+import config.dbConnector;
 import config.panelPrinter;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 /**
@@ -19,78 +23,106 @@ import javax.swing.JPanel;
  * @author PATRICIA
  */
 public class adminReport extends javax.swing.JFrame {
+
     private String fullname;
-     private static String userImagePath = null;
-     private JPanel reportPanel; 
+    private static String userImagePath = null;
+    private JPanel reportPanel;
+
     /**
      * Creates new form adminReport
      */
     public adminReport(String fullname, String imgPath) {
         this.fullname = fullname;
-      
+
         setResizable(false);
         setSize(860, 770);
-        
-        reportPanel = bodycolorPanel; 
-        
+
+        reportPanel = bodycolorPanel;
+
         initComponents();
-       
+
         setLocationRelativeTo(null);
-        
+
         userImagePath = imgPath;
-       
+
     }
-   
-  public adminReport(String susFullName, String complainant, String incident, String location, 
-                   String witness1, String witness2, String dateReported, String description, Timestamp dateSettled) {
-    initComponents();
-   
-    suspectsname.setText(susFullName);
-    complainantsname.setText(complainant);
-    complanantsname10.setText(complainant);
-    incident1.setText(incident);
-    location1.setText(location);
-    txtwitness1.setText(witness1);
-    txtwitness2.setText(witness2);
-    datereported.setText(dateReported);
-    description10.setText(description); 
-    datesettled.setText(dateSettled.toString()); // ✅ Convert Timestamp to String for display
     
-     if (reportPanel == null) {
-        reportPanel = new JPanel(); // If it's missing, initialize it
-    }
+      private void logActivity(int user_id, String action) {
+        String sql = "INSERT INTO system_logs (user_id, logs_action, logs_date) VALUES (?, ?, NOW())";
+        dbConnector db = new dbConnector();
 
-    JButton printButton = new JButton("Print");
-    printButton.setBounds(50, 500, 100, 30);
-    printButton.addActionListener(new ActionListener() {
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            printReport();
+        try (Connection conn = db.getConnection();
+             PreparedStatement pst = conn.prepareStatement(sql)) {
+            pst.setInt(1, user_id);
+            pst.setString(2, action);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.err.println("Error logging activity: " + e.getMessage());
         }
-    });
+    }
+    
+    
 
-    this.add(printButton); // ✅ Add button to JFrame
-}
+    public adminReport(String susFullName, String complainant, String incident, String location,
+            String witness1, String witness2, String dateReported, String description, Timestamp dateSettled) {
+        initComponents();
 
-// ✅ Printing function (Minimal Fix)
-private void printReport() {
-    if (reportPanel != null) {
-        panelPrinter printer = new panelPrinter(reportPanel);
+        suspectsname.setText(susFullName);
+        complainantsname.setText(complainant);
+        complanantsname10.setText(complainant);
+        incident1.setText(incident);
+        location1.setText(location);
+        txtwitness1.setText(witness1);
+        txtwitness2.setText(witness2);
+        datereported.setText(dateReported);
+        description10.setText(description);
+        datesettled.setText(dateSettled.toString()); // ✅ Convert Timestamp to String for display
+
+        if (reportPanel == null) {
+            reportPanel = new JPanel(); // If it's missing, initialize it
+        }
+
+        JButton printButton = new JButton("Print");
+        printButton.setBounds(50, 500, 100, 30);
+        printButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                printReport();
+            }
+        });
+
+        this.add(printButton); // ✅ Add button to JFrameJButton printButton = new JButton("Print");
+        printButton.setBounds(50, 500, 100, 30);
+        printButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                printReport();
+            }
+        });
+
+        this.add(printButton);
+
+    }
+
+    private void printReport() {
+        panelPrinter printer = new panelPrinter(bodycolorPanel); // ✅ Replace jPanel1 with your actual panel name
         printer.printPanel();
+        
+        Session session = Session.getInstance();
+    int userId = session.getUid();
+
+    if (userId != -1) {
+        logActivity(userId, "Printed a report from the admin panel.");
     } else {
-        JOptionPane.showMessageDialog(this, "Error: Report panel not found!", "Printing Error", JOptionPane.ERROR_MESSAGE);
+        System.err.println("Session user ID not set. Cannot log print activity.");
     }
     }
 
-
-
- 
     Color navcolor = new Color(0, 51, 51);
     Color headcolor = new Color(0, 153, 153);
     Color bodycolor = new Color(0, 153, 153);
-    
-    
-   /**
+
+    /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
@@ -100,7 +132,7 @@ private void printReport() {
     private void initComponents() {
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel6 = new javax.swing.JLabel();
+        back = new javax.swing.JLabel();
         jLabel16 = new javax.swing.JLabel();
         jLabel18 = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
@@ -110,7 +142,6 @@ private void printReport() {
         jLabel29 = new javax.swing.JLabel();
         jLabel31 = new javax.swing.JLabel();
         save = new javax.swing.JLabel();
-        printPreview = new javax.swing.JButton();
         printButton1 = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         bodycolorPanel = new javax.swing.JPanel();
@@ -153,8 +184,13 @@ private void printReport() {
         jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel6.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-left-50.png"))); // NOI18N
-        jPanel1.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, -1, -1));
+        back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-left-50.png"))); // NOI18N
+        back.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backMouseClicked(evt);
+            }
+        });
+        jPanel1.add(back, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 11, -1, -1));
 
         jLabel16.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel16.setForeground(new java.awt.Color(255, 255, 255));
@@ -218,15 +254,6 @@ private void printReport() {
         save.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 255, 255)));
         jPanel1.add(save, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 130, 190, 40));
 
-        printPreview.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        printPreview.setText("Print Preview");
-        printPreview.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                printPreviewActionPerformed(evt);
-            }
-        });
-        jPanel1.add(printPreview, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 90, 190, 40));
-
         printButton1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         printButton1.setText("Print");
         printButton1.addActionListener(new java.awt.event.ActionListener() {
@@ -282,7 +309,7 @@ private void printReport() {
 
         jLabel10.setFont(new java.awt.Font("Tahoma", 3, 13)); // NOI18N
         jLabel10.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel10.setText("OFFICE OF THE PUNONG BARANGAY");
+        jLabel10.setText("OFFICE  OF  THE  PUNONG  BARANGAY");
         bodycolorPanel.add(jLabel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(49, 118, 485, -1));
 
         jLabel11.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -297,7 +324,7 @@ private void printReport() {
         jLabel12.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setText("Date & Time Reported:");
-        bodycolorPanel.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 190, 170, 20));
+        bodycolorPanel.add(jLabel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 190, 170, 20));
 
         jLabel13.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
@@ -316,7 +343,7 @@ private void printReport() {
 
         datereported.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         datereported.setText("     display date");
-        bodycolorPanel.add(datereported, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 190, 200, 20));
+        bodycolorPanel.add(datereported, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 190, 200, 20));
 
         complainantsname.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         complainantsname.setText("display name");
@@ -407,20 +434,16 @@ private void printReport() {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void printPreviewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printPreviewActionPerformed
-         
-        
-        
-    }//GEN-LAST:event_printPreviewActionPerformed
-
     private void printButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printButton1ActionPerformed
         printReport();
     }//GEN-LAST:event_printButton1ActionPerformed
 
-    
-    
-    
-    
+    private void backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseClicked
+        new adminBlotter(fullname, userImagePath).setVisible(true);
+        this.dispose();
+
+    }//GEN-LAST:event_backMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -451,7 +474,7 @@ private void printReport() {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-               String imgPath = "path/to/default/image.png";
+                String imgPath = "path/to/default/image.png";
                 new adminReport("Admin User", imgPath).setVisible(true);
             }
         });
@@ -459,6 +482,7 @@ private void printReport() {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel adminname;
+    private javax.swing.JLabel back;
     private javax.swing.JPanel bodycolorPanel;
     private javax.swing.JLabel complainantsname;
     private javax.swing.JLabel complanantsname10;
@@ -491,7 +515,6 @@ private void printReport() {
     private javax.swing.JLabel jLabel31;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
@@ -499,7 +522,6 @@ private void printReport() {
     private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel location1;
     private javax.swing.JButton printButton1;
-    private javax.swing.JButton printPreview;
     private javax.swing.JLabel save;
     private javax.swing.JLabel suspectsname;
     private javax.swing.JLabel txtwitness1;

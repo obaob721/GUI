@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2025 at 07:43 PM
+-- Generation Time: Apr 18, 2025 at 10:07 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -47,7 +47,8 @@ INSERT INTO `blotter_table` (`b_id`, `c_id`, `b_fname`, `b_incident`, `b_locatio
 (3, 2, 'Mae Anne Amante', 'Robbery', 'St.Cecilia\'s, Minglanilla,Cebu.', 'Pending', '2025-03-30 22:20:34', 'Pat Obaob', 'Mary Obaob'),
 (4, 1, 'Jaylon Mantillas', 'Scam', 'Sport\'s Complex, Minglanilla, Cebu.', 'Pending', '2025-03-30 22:35:03', 'David Vergara', 'Dustin Collins'),
 (5, 11, 'Lelouch Takanashi', 'kusog pa sound bisag gabie na kaayo', 'Minglanilla, Cebu.', 'Pending', '2025-04-01 00:08:06', 'Ren Takahashi', 'Hakuie Takahashi'),
-(6, 16, 'Mark Sanchez', 'Lumay', 'Minglanilla, Cebu.', 'Settled', '2025-04-01 01:03:54', 'Dhyll Roco', 'Angel Amaro');
+(6, 16, 'Mark Sanchez', 'Lumay', 'Minglanilla, Cebu.', 'Settled', '2025-04-01 01:03:54', 'Dhyll Roco', 'Angel Amaro'),
+(7, 8, 'Michael Frodo', 'Thief', 'Lungsod, Minglanilla, Cebu.', 'Pending', '2025-04-18 15:58:16', 'Anney Capta', 'Jerolle Undas');
 
 -- --------------------------------------------------------
 
@@ -89,9 +90,9 @@ INSERT INTO `citizen_table` (`c_id`, `c_fname`, `c_lname`, `c_age`, `c_address`,
 (21, 'Victor', 'Salazar', 47, 'Minglanilla, Cebu.', '09506789012'),
 (22, 'Carla', 'Dominguez', 32, 'Minglanilla, Cebu.', '09617890123'),
 (23, 'Samuel', 'Roldan', 39, 'Minglanilla, Cebu.', '09728901234'),
-(24, 'Beatriz', 'Lorenzo', 25, 'Minglanilla, Cebu.', '09839012345'),
-(25, 'Antonio', 'Espinosa', 46, 'Minglanilla, Cebu.', '09940123456'),
-(26, 'Margarita', 'Cervantes', 30, 'Minglanilla, Cebu.', '09151234567');
+(27, 'King James', 'Ravina', 19, 'Minglanilla, Cebu.', '09839012345'),
+(28, 'John', 'Rome', 31, 'Minglanilla, Cebu.', '09940123456'),
+(29, 'Angelica', 'Mendoza', 25, 'Minglanilla, Cebu.', '09180987654');
 
 -- --------------------------------------------------------
 
@@ -113,8 +114,9 @@ CREATE TABLE `reports_table` (
 INSERT INTO `reports_table` (`r_id`, `b_id`, `r_datesettled`, `r_description`) VALUES
 (3, 3, '2025-03-31 08:32:45', 'imissyou guiannn'),
 (5, 4, '2025-03-31 09:29:38', 'Fist Warning, If done again the suspect\'s may suffers or be punished.'),
-(9, 5, '2025-03-31 16:08:42', 'Gaan Chance'),
-(10, 6, '2025-03-31 17:04:01', 'okay ragud basta ikaw lodicakes');
+(9, 5, '2025-03-31 16:08:42', 'skskskskskksks'),
+(10, 6, '2025-03-31 17:04:01', 'okay ragud basta ikaw lodicakes'),
+(11, 7, '2025-04-18 07:58:22', 'Second Warning or else might send a warrant of arrest.');
 
 -- --------------------------------------------------------
 
@@ -125,9 +127,43 @@ INSERT INTO `reports_table` (`r_id`, `b_id`, `r_datesettled`, `r_description`) V
 CREATE TABLE `system_logs` (
   `logs_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  `logs_action` varchar(200) NOT NULL,
-  `logs_date` datetime(6) NOT NULL DEFAULT current_timestamp(6)
+  `logs_action` varchar(255) NOT NULL,
+  `logs_date` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `system_logs`
+--
+
+INSERT INTO `system_logs` (`logs_id`, `user_id`, `logs_action`, `logs_date`) VALUES
+(1, 2, 'Admin logged in', '2025-04-18 03:16:28'),
+(2, 1, 'Updated user profile for Lawrence Sumbi', '2025-04-18 03:16:41'),
+(3, 2, 'Admin logged in', '2025-04-18 03:24:31'),
+(4, 2, 'Admin logged in', '2025-04-18 05:57:49'),
+(5, 2, 'Admin logged in', '2025-04-18 06:06:34'),
+(7, 2, 'Patricia logged in', '2025-04-18 06:30:58'),
+(8, 2, 'Admin logged in', '2025-04-18 06:34:42'),
+(9, 2, 'Admin logged in', '2025-04-18 06:37:29'),
+(10, 2, 'Admin logged in', '2025-04-18 06:37:59'),
+(11, 2, 'Logged out', '2025-04-18 06:38:02'),
+(12, 2, 'Admin logged in', '2025-04-18 06:41:48'),
+(13, 2, 'Logged out', '2025-04-18 06:41:57'),
+(14, 2, 'Admin logged in', '2025-04-18 06:54:57'),
+(15, 2, 'Updated user profile for Guian Sumbi', '2025-04-18 06:55:13'),
+(16, 2, 'Deleted user account for sample sample', '2025-04-18 06:55:22'),
+(17, 2, 'Logged out', '2025-04-18 06:56:54'),
+(18, 2, 'Admin logged in', '2025-04-18 07:00:30'),
+(19, 2, 'Registered new user: Pancit Cantoon', '2025-04-18 07:01:02'),
+(20, 2, 'Admin logged in', '2025-04-18 07:10:04'),
+(24, 2, 'Admin logged in', '2025-04-18 07:29:53'),
+(25, 2, 'Added a new Citizen: sample sample', '2025-04-18 07:30:29'),
+(26, 2, 'Admin logged in', '2025-04-18 07:36:08'),
+(27, 2, 'Admin Updated Citizen: samples samples', '2025-04-18 07:36:42'),
+(28, 2, 'Admin Deleted a Citizen with phone number: 0000000000', '2025-04-18 07:36:55'),
+(29, 2, 'Admin Logged out', '2025-04-18 07:36:59'),
+(30, 2, 'Admin Logged in', '2025-04-18 07:55:44'),
+(31, 2, 'Admin Added a new Blotter entry (ID: 7) for Suspect: Juan Dela Cruz', '2025-04-18 07:58:19'),
+(32, 2, 'Admin Updated Report (r_id: 11) with description.', '2025-04-18 07:59:36');
 
 -- --------------------------------------------------------
 
@@ -143,7 +179,7 @@ CREATE TABLE `user_table` (
   `password` varchar(50) NOT NULL,
   `use_type` varchar(50) NOT NULL,
   `user_status` varchar(50) NOT NULL,
-  `u_image` varchar(100) NOT NULL
+  `u_image` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
@@ -151,14 +187,12 @@ CREATE TABLE `user_table` (
 --
 
 INSERT INTO `user_table` (`user_id`, `firstName`, `lastName`, `email`, `password`, `use_type`, `user_status`, `u_image`) VALUES
-(1, 'Lawrence', 'Sumbi', 'guian@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Active', 'src/usersImagesguian@gmail.com.jpg'),
+(1, 'Guian', 'Sumbi', 'guian@gmail.com', 'c07eb5a8c0dc7bb81c217b67f11c3b7a5e95ffd7', 'User	', 'Deactivated', 'src/usersImagesguian@gmail.com.jpg'),
 (2, 'Patricia', 'Obaob', 'pat@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'Admin', 'Active', 'src/usersImagespat@gmail.com.jpg'),
 (5, 'Mary', 'Largo', 'largo@gmail.com', 'uglymary', 'User	', 'Pending', ''),
 (6, 'Risa', 'Ravina', 'risahon@gmail.com', 'mamarisa', 'User	', 'Pending', ''),
 (7, 'Jaymaica', 'Narvasa', 'maica@gmail.com', 'maicamaica', 'User	', 'Pending', ''),
-(11, 'sample', 'sample', 'sample@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Pending', ''),
-(12, 'sample2', 'sample2', 'sample2@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Pending', ''),
-(14, 'Ann', 'Obaob', 'obaob@gmail.com', 'c07eb5a8c0dc7bb81c217b67f11c3b7a5e95ffd7', 'Admin', 'Deactivated', '');
+(15, 'Pancit', 'Cantoon', 'pan@gmail.com', '7c222fb2927d828af22f592134e8932480637c0d', 'User	', 'Pending', NULL);
 
 --
 -- Indexes for dumped tables
@@ -205,31 +239,31 @@ ALTER TABLE `user_table`
 -- AUTO_INCREMENT for table `blotter_table`
 --
 ALTER TABLE `blotter_table`
-  MODIFY `b_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `b_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `citizen_table`
 --
 ALTER TABLE `citizen_table`
-  MODIFY `c_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `c_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `reports_table`
 --
 ALTER TABLE `reports_table`
-  MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `system_logs`
 --
 ALTER TABLE `system_logs`
-  MODIFY `logs_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `logs_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `user_table`
 --
 ALTER TABLE `user_table`
-  MODIFY `user_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+  MODIFY `user_id` int(50) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables

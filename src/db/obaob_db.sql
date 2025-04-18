@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2025 at 10:07 AM
+-- Generation Time: Apr 18, 2025 at 03:23 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -163,7 +163,11 @@ INSERT INTO `system_logs` (`logs_id`, `user_id`, `logs_action`, `logs_date`) VAL
 (29, 2, 'Admin Logged out', '2025-04-18 07:36:59'),
 (30, 2, 'Admin Logged in', '2025-04-18 07:55:44'),
 (31, 2, 'Admin Added a new Blotter entry (ID: 7) for Suspect: Juan Dela Cruz', '2025-04-18 07:58:19'),
-(32, 2, 'Admin Updated Report (r_id: 11) with description.', '2025-04-18 07:59:36');
+(32, 2, 'Admin Updated Report (r_id: 11) with description.', '2025-04-18 07:59:36'),
+(33, 2, 'Admin Logged in', '2025-04-18 12:19:29'),
+(34, 2, 'Admin Updated Report (r_id: 11) with description.', '2025-04-18 12:20:29'),
+(35, 2, 'Admin Logged in', '2025-04-18 12:40:10'),
+(36, 2, 'Admin Updated Report (r_id: 11) with description.', '2025-04-18 12:40:36');
 
 -- --------------------------------------------------------
 
@@ -257,7 +261,7 @@ ALTER TABLE `reports_table`
 -- AUTO_INCREMENT for table `system_logs`
 --
 ALTER TABLE `system_logs`
-  MODIFY `logs_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `logs_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `user_table`

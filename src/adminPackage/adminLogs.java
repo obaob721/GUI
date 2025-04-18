@@ -110,6 +110,7 @@ public class adminLogs extends javax.swing.JFrame {
         header = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        back = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         logs = new javax.swing.JTable();
         jLabel3 = new javax.swing.JLabel();
@@ -120,10 +121,10 @@ public class adminLogs extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         logs1 = new javax.swing.JTable();
         jLabel6 = new javax.swing.JLabel();
-        settings1 = new javax.swing.JLabel();
         searchbtn = new javax.swing.JPanel();
         search = new javax.swing.JLabel();
         searchlogs = new javax.swing.JTextField();
+        settings2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -142,6 +143,22 @@ public class adminLogs extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-refresh-32.png"))); // NOI18N
         header.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 10, -1, -1));
+
+        back.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        back.setForeground(new java.awt.Color(255, 255, 255));
+        back.setIcon(new javax.swing.ImageIcon(getClass().getResource("/image/icons8-left-arrow-50.png"))); // NOI18N
+        back.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                backMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                backMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                backMouseExited(evt);
+            }
+        });
+        header.add(back, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 0, -1, 50));
 
         jPanel1.add(header, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 980, 50));
 
@@ -203,22 +220,6 @@ public class adminLogs extends javax.swing.JFrame {
         jLabel6.setText("Recent Activities:");
         jPanel2.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 90, 130, 40));
 
-        settings1.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        settings1.setForeground(new java.awt.Color(255, 255, 255));
-        settings1.setText("Account Settings");
-        settings1.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                settings1MouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                settings1MouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                settings1MouseExited(evt);
-            }
-        });
-        jPanel2.add(settings1, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 50, 120, 40));
-
         searchbtn.setBackground(new java.awt.Color(0, 51, 51));
         searchbtn.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
         searchbtn.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -266,6 +267,22 @@ public class adminLogs extends javax.swing.JFrame {
 
         jPanel2.add(searchbtn, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 70, -1, -1));
 
+        settings2.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        settings2.setForeground(new java.awt.Color(255, 255, 255));
+        settings2.setText("Account Settings");
+        settings2.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                settings2MouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                settings2MouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                settings2MouseExited(evt);
+            }
+        });
+        jPanel2.add(settings2, new org.netbeans.lib.awtextra.AbsoluteConstraints(420, 90, 120, 40));
+
         jPanel1.add(jPanel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, -1, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -283,17 +300,18 @@ public class adminLogs extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void settings1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settings1MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_settings1MouseClicked
+    private void backMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseClicked
+       new admindashboard(fullname, userImagePath).setVisible(true);
+       this.dispose();   
+    }//GEN-LAST:event_backMouseClicked
 
-    private void settings1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settings1MouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_settings1MouseEntered
+    private void backMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseEntered
+        back.setBackground(bodycolor);
+    }//GEN-LAST:event_backMouseEntered
 
-    private void settings1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settings1MouseExited
-        // TODO add your handling code here:
-    }//GEN-LAST:event_settings1MouseExited
+    private void backMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_backMouseExited
+        back.setBackground(navcolor);
+    }//GEN-LAST:event_backMouseExited
 
     private void searchlogsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchlogsActionPerformed
 
@@ -310,6 +328,21 @@ public class adminLogs extends javax.swing.JFrame {
     private void searchbtnMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_searchbtnMouseExited
         searchbtn.setBackground(navcolor);
     }//GEN-LAST:event_searchbtnMouseExited
+
+    private void settings2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settings2MouseClicked
+        new adminSettings(fullname, userImagePath).setVisible(true);
+        this.dispose();   
+    }//GEN-LAST:event_settings2MouseClicked
+
+    private void settings2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settings2MouseEntered
+
+        settings2.setForeground(java.awt.Color.GREEN);
+        
+    }//GEN-LAST:event_settings2MouseEntered
+
+    private void settings2MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_settings2MouseExited
+        settings2.setForeground(java.awt.Color.WHITE);
+    }//GEN-LAST:event_settings2MouseExited
 
     /**
      * @param args the command line arguments
@@ -348,6 +381,7 @@ public class adminLogs extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel back;
     private javax.swing.JPanel header;
     private javax.swing.JPanel header1;
     private javax.swing.JLabel jLabel1;
@@ -365,6 +399,6 @@ public class adminLogs extends javax.swing.JFrame {
     private javax.swing.JLabel search;
     private javax.swing.JPanel searchbtn;
     private javax.swing.JTextField searchlogs;
-    private javax.swing.JLabel settings1;
+    private javax.swing.JLabel settings2;
     // End of variables declaration//GEN-END:variables
 }
