@@ -246,7 +246,7 @@ public class adminCitizen extends javax.swing.JFrame {
         });
         citizen.setViewportView(c_table);
 
-        main.add(citizen, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 290, 780, 330));
+        main.add(citizen, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 250, 780, 370));
 
         jPanel1.setBackground(new java.awt.Color(0, 51, 51));
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

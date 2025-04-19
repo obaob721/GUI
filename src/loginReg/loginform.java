@@ -371,7 +371,6 @@ public class loginform extends JFrame {
                 session.setLname(rs.getString("lastnName"));
                 session.setType(rs.getString("use_type"));
 
-// ✅ Log login activity using the getter
                 logActivity(session.getUid(), session.getType() + " Logged in");
 
                 JOptionPane.showMessageDialog(this, "Login successful!", "Success", JOptionPane.INFORMATION_MESSAGE);

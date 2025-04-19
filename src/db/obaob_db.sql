@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 18, 2025 at 03:23 PM
+-- Generation Time: Apr 19, 2025 at 06:46 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -92,7 +92,19 @@ INSERT INTO `citizen_table` (`c_id`, `c_fname`, `c_lname`, `c_age`, `c_address`,
 (23, 'Samuel', 'Roldan', 39, 'Minglanilla, Cebu.', '09728901234'),
 (27, 'King James', 'Ravina', 19, 'Minglanilla, Cebu.', '09839012345'),
 (28, 'John', 'Rome', 31, 'Minglanilla, Cebu.', '09940123456'),
-(29, 'Angelica', 'Mendoza', 25, 'Minglanilla, Cebu.', '09180987654');
+(29, 'Angelica', 'Mendoza', 25, 'Minglanilla, Cebu.', '09180987654'),
+(33, 'Isabella', 'Torres', 24, 'Minglanilla, Cebu.', '09290123456'),
+(34, 'Nathan', 'Cortez', 33, 'Minglanilla, Cebu.', '09301234567'),
+(35, 'Elena', 'Rosales', 27, 'Minglanilla, Cebu.', '09412345678'),
+(36, 'Leo', 'Marquez', 35, 'Minglanilla, Cebu.', '09523456789'),
+(37, 'Camille', 'Andrada', 21, 'Minglanilla, Cebu.', '09634567890'),
+(38, 'Zandro', 'Reyes', 29, 'Minglanilla, Cebu.', '09745678901'),
+(39, 'Mika', 'Soriano', 26, 'Minglanilla, Cebu.', '09856789012'),
+(40, 'Gabriel', 'Lopez', 42, 'Minglanilla, Cebu.', '09967890123'),
+(41, 'Bea', 'Villamor', 31, 'Minglanilla, Cebu.', '09178901234'),
+(42, 'Tristan', 'Delos Reyes', 38, 'Minglanilla, Cebu.', '09289012345'),
+(43, 'Andrea', 'Montes', 23, 'Minglanilla, Cebu.', '09390123456'),
+(44, 'Dominic', 'Salvador', 36, 'Minglanilla, Cebu.', '09401234567');
 
 -- --------------------------------------------------------
 
@@ -167,7 +179,22 @@ INSERT INTO `system_logs` (`logs_id`, `user_id`, `logs_action`, `logs_date`) VAL
 (33, 2, 'Admin Logged in', '2025-04-18 12:19:29'),
 (34, 2, 'Admin Updated Report (r_id: 11) with description.', '2025-04-18 12:20:29'),
 (35, 2, 'Admin Logged in', '2025-04-18 12:40:10'),
-(36, 2, 'Admin Updated Report (r_id: 11) with description.', '2025-04-18 12:40:36');
+(36, 2, 'Admin Updated Report (r_id: 11) with description.', '2025-04-18 12:40:36'),
+(37, 2, 'Admin Logged in', '2025-04-19 04:15:14'),
+(38, 2, 'Admin Logged in', '2025-04-19 04:17:38'),
+(39, 2, 'Admin Added a new Citizen: Isabella Torres', '2025-04-19 04:25:32'),
+(40, 2, 'Admin Added a new Citizen: Nathan Cortez', '2025-04-19 04:26:22'),
+(41, 2, 'Admin Added a new Citizen: Elena Rosales', '2025-04-19 04:27:03'),
+(42, 2, 'Admin Added a new Citizen: Leo Marquez', '2025-04-19 04:28:04'),
+(43, 2, 'Admin Added a new Citizen: Camille Andrada', '2025-04-19 04:28:52'),
+(44, 2, 'Admin Added a new Citizen: Zandro Reyes', '2025-04-19 04:29:40'),
+(45, 2, 'Admin Added a new Citizen: Mika Soriano', '2025-04-19 04:30:16'),
+(46, 2, 'Admin Added a new Citizen: Gabriel Lopez', '2025-04-19 04:30:58'),
+(47, 2, 'Admin Added a new Citizen: Bea Villamor', '2025-04-19 04:31:40'),
+(48, 2, 'Admin Added a new Citizen: Tristan Delos Reyes', '2025-04-19 04:32:41'),
+(49, 2, 'Admin Added a new Citizen: Andrea Montes', '2025-04-19 04:33:21'),
+(50, 2, 'Admin Added a new Citizen: Dominic Salvador', '2025-04-19 04:34:22'),
+(51, 2, 'Admin Logged out', '2025-04-19 04:35:15');
 
 -- --------------------------------------------------------
 
@@ -249,7 +276,7 @@ ALTER TABLE `blotter_table`
 -- AUTO_INCREMENT for table `citizen_table`
 --
 ALTER TABLE `citizen_table`
-  MODIFY `c_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
+  MODIFY `c_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `reports_table`
@@ -261,7 +288,7 @@ ALTER TABLE `reports_table`
 -- AUTO_INCREMENT for table `system_logs`
 --
 ALTER TABLE `system_logs`
-  MODIFY `logs_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `logs_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `user_table`
