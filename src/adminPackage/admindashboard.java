@@ -3,6 +3,7 @@ package adminPackage;
 
 import config.dbConnector;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
@@ -21,10 +22,10 @@ import loginReg.loginform;
 
 
 public class admindashboard extends javax.swing.JFrame {
-       private String fullname;
+        private String fullname;
         private static String userImagePath = null;
         public static int userId;
-     private JLabel warningIconLabel;
+       
 
 
     /**
@@ -49,10 +50,8 @@ public class admindashboard extends javax.swing.JFrame {
         userImagePath = imgPath;
         displayImage();
         
-        warningIconLabel = new JLabel("⚠️");
-        warningIcon.setForeground(Color.RED);
-        warningIcon.setVisible(false); 
-        pendingusers.add(warningIcon);
+        
+
     }
     
     public admindashboard(){
@@ -79,25 +78,38 @@ public class admindashboard extends javax.swing.JFrame {
  
   
   
- public void displayPendingUsers() {
-     dbConnector dbc = new dbConnector();
-       String query = "SELECT COUNT(*) AS pending_users FROM user_table WHERE user_status = 'Pending'";
+ public void displayPendingUsers() { 
+    dbConnector dbc = new dbConnector();
+    String query = "SELECT COUNT(*) AS pending_users FROM user_table WHERE user_status = 'Pending'";
 
-     try (ResultSet rs = dbc.getData(query)) {
-
+    try (ResultSet rs = dbc.getData(query)) {
         if (rs.next()) {
             int pendingUsers = rs.getInt("pending_users");
-         if (pendingUsers > 0) {
-                warningIcon.setVisible(true);
+            pendingUsersLabel.setText(String.valueOf(pendingUsers));
+
+            // Show warning icon if there are pending users
+            if (pendingUsers > 0) {
+                java.net.URL imgURL = getClass().getResource("/image/warning1.png");
+                if (imgURL != null) {
+                    warningIconn.setIcon(new javax.swing.ImageIcon(imgURL));
+                    warningIconn.setVisible(true);
+                } else {
+                    System.out.println("Warning icon not found at /image/warning1.png");
+                    warningIconn.setVisible(false);
+                }
             } else {
-                warningIcon.setVisible(false);
+                warningIconn.setIcon(null);
+                warningIconn.setVisible(false);
             }
         }
-
     } catch (SQLException ex) {
         System.out.println("Error: " + ex.getMessage());
     }
 }
+
+
+
+
     public void displayTotalUsers() {
         dbConnector dbc = new dbConnector();
         String query = "SELECT COUNT(*) AS total_users FROM user_table";
@@ -282,13 +294,13 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         settledCasesLabel = new javax.swing.JLabel();
         pendingusers = new javax.swing.JPanel();
         jLabel27 = new javax.swing.JLabel();
+        warningIconn = new javax.swing.JLabel();
         pendingUsersLabel = new javax.swing.JLabel();
         jLabel22 = new javax.swing.JLabel();
         pendingcases = new javax.swing.JPanel();
         jLabel28 = new javax.swing.JLabel();
         jLabel25 = new javax.swing.JLabel();
         pendingCasesLabel = new javax.swing.JLabel();
-        warningIcon = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -743,25 +755,18 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
         dashboardPanel.add(settledCasesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 440, 330, 40));
 
         pendingusers.setBackground(new java.awt.Color(153, 0, 0));
+        pendingusers.setLayout(null);
 
         jLabel27.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
         jLabel27.setForeground(new java.awt.Color(255, 255, 255));
         jLabel27.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel27.setText("Pending Users");
+        pendingusers.add(jLabel27);
+        jLabel27.setBounds(65, 12, 226, 17);
 
-        javax.swing.GroupLayout pendingusersLayout = new javax.swing.GroupLayout(pendingusers);
-        pendingusers.setLayout(pendingusersLayout);
-        pendingusersLayout.setHorizontalGroup(
-            pendingusersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(pendingusersLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        pendingusersLayout.setVerticalGroup(
-            pendingusersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, 40, Short.MAX_VALUE)
-        );
+        warningIconn.setText("       chcuchuh");
+        pendingusers.add(warningIconn);
+        warningIconn.setBounds(230, 0, 50, 40);
 
         dashboardPanel.add(pendingusers, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 510, 350, 40));
 
@@ -812,9 +817,6 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
             }
         });
         dashboardPanel.add(pendingCasesLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(630, 440, 320, 40));
-
-        warningIcon.setText("chuchuc");
-        dashboardPanel.add(warningIcon, new org.netbeans.lib.awtextra.AbsoluteConstraints(830, 504, -1, 40));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -1116,7 +1118,7 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     private javax.swing.JLabel totalUsersLabel;
     private javax.swing.JLabel update;
     private javax.swing.JLabel usersIcon;
-    private javax.swing.JLabel warningIcon;
+    private javax.swing.JLabel warningIconn;
     // End of variables declaration//GEN-END:variables
 
     

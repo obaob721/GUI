@@ -650,8 +650,8 @@ private String getSusFullName(int c_id) {
     }//GEN-LAST:event_deletebuttonMouseExited
 
     private void c_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_tableMouseClicked
-   int selectedRow = c_table.getSelectedRow();
-     
+    int selectedRow = c_table.getSelectedRow();
+
     if (selectedRow != -1) {
         int c_id = Integer.parseInt(c_table.getValueAt(selectedRow, 0).toString());
         int b_id = Integer.parseInt(c_table.getValueAt(selectedRow, 1).toString()); 
@@ -663,9 +663,17 @@ private String getSusFullName(int c_id) {
         String b_witness1 = c_table.getValueAt(selectedRow, 7).toString();
         String b_witness2 = c_table.getValueAt(selectedRow, 8).toString();
 
+        // Check if the status is "Settled"
+        if (b_status.equalsIgnoreCase("Settled")) {
+            JOptionPane.showMessageDialog(null, "This record is settled and cannot be edited.");
+            return; // Exit early
+        }
+
         String susFullName = getSusFullName(c_id); // Retrieve suspect's full name
 
-        adminBlotterCRUD editForm = new adminBlotterCRUD(susFullName, userImagePath, c_id, b_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2);
+        adminBlotterCRUD editForm = new adminBlotterCRUD(
+            susFullName, userImagePath, c_id, b_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2
+        );
         editForm.setVisible(true);
         this.dispose();
     }

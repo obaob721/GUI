@@ -256,7 +256,7 @@ public class loginform extends JFrame {
         forgotpass.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         forgotpass.setForeground(new java.awt.Color(255, 255, 255));
         forgotpass.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        forgotpass.setText("Forgotten password?");
+        forgotpass.setText("Forgot Password?");
         forgotpass.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 forgotpassMouseClicked(evt);
