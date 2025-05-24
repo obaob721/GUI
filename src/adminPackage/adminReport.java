@@ -77,7 +77,7 @@ public class adminReport extends javax.swing.JFrame {
         datereported.setText(dateReported);
         description10.setText(description);
         datesettled.setText(dateSettled.toString()); // ✅ Convert Timestamp to String for display
-
+         
         if (reportPanel == null) {
             reportPanel = new JPanel(); // If it's missing, initialize it
         }

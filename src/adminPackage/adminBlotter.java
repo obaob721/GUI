@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
+import javax.swing.table.TableModel;
 import loginReg.loginform;
 import net.proteanit.sql.DbUtils;
 
@@ -55,15 +56,30 @@ public class adminBlotter extends javax.swing.JFrame {
     Color bodycolor = new Color(0,153,153);
 
     
-    private void displayBlotterData() {
+private void displayBlotterData() {
     try {
         dbConnector dbc = new dbConnector();
-        ResultSet rs = dbc.getData("SELECT c_id,b_id ,b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2 FROM blotter_table");
+        ResultSet rs = dbc.getData("SELECT c_id, b_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2 FROM blotter_table");
         c_table.setModel(DbUtils.resultSetToTableModel(rs));
+
+        c_table.getColumnModel().getColumn(2).setHeaderValue("Complainant's Name");
+        c_table.getColumnModel().getColumn(3).setHeaderValue("Incident Type");
+        c_table.getColumnModel().getColumn(4).setHeaderValue("Location");
+        c_table.getColumnModel().getColumn(5).setHeaderValue("Status");
+
+        c_table.getTableHeader().repaint();
+
+        int[] columnsToHide = {8, 7, 6, 1, 0}; 
+        for (int i : columnsToHide) {
+            c_table.removeColumn(c_table.getColumnModel().getColumn(i));
+        }
+
     } catch (SQLException ex) {
         System.out.println("Error: " + ex.getMessage());
     }
 }
+
+
 
     private void highlightRow() {
     String searchText = searchblotter.getText().trim().toLowerCase();
@@ -72,27 +88,26 @@ public class adminBlotter extends javax.swing.JFrame {
         return;
     }
 
-    c_table.clearSelection(); // Clear previous selection
+    c_table.clearSelection();
     boolean matchFound = false;
 
-    for (int i = 0; i < c_table.getRowCount(); i++) { // Corrected loop condition
-        for (int j = 0; j < c_table.getColumnCount(); j++) { // Use 0-based index
+    for (int i = 0; i < c_table.getRowCount(); i++) { 
+        for (int j = 0; j < c_table.getColumnCount(); j++) { 
             Object cellValue = c_table.getValueAt(i, j);
 
             if (cellValue != null) {
                 String cellText = cellValue.toString().trim().toLowerCase();
 
                 if (cellText.contains(searchText)) {
-                    c_table.addRowSelectionInterval(i, i); // Select row
+                    c_table.addRowSelectionInterval(i, i); 
                     matchFound = true;
-                    break; // Exit column loop once a match is found
+                    break;
                 }
             }
         }
     }
 
     if (matchFound) {
-        // Scroll to the first selected row
         int firstSelectedRow = c_table.getSelectedRow();
         if (firstSelectedRow != -1) {
             c_table.scrollRectToVisible(c_table.getCellRect(firstSelectedRow, 0, true));
@@ -128,13 +143,10 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     BufferedImage output = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2 = output.createGraphics();
     
-    // Enable anti-aliasing for smooth edges
     g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
     
-    // Create a circular clipping mask
     g2.setClip(new Ellipse2D.Float(0, 0, width, height));
     
-    // Draw the image inside the circular area
     g2.drawImage(img, 0, 0, width, height, null);
     g2.dispose();
     
@@ -298,6 +310,7 @@ private String getSusFullName(int c_id) {
         main.add(deletebutton, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 70, 80, 30));
 
         citizen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0), 2));
+        citizen.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         c_table.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -650,34 +663,30 @@ private String getSusFullName(int c_id) {
     }//GEN-LAST:event_deletebuttonMouseExited
 
     private void c_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_tableMouseClicked
-    int selectedRow = c_table.getSelectedRow();
-
+     int selectedRow = c_table.getSelectedRow();
     if (selectedRow != -1) {
-        int c_id = Integer.parseInt(c_table.getValueAt(selectedRow, 0).toString());
-        int b_id = Integer.parseInt(c_table.getValueAt(selectedRow, 1).toString()); 
-        String b_fname = c_table.getValueAt(selectedRow, 2).toString();
-        String b_incident = c_table.getValueAt(selectedRow, 3).toString();
-        String b_location = c_table.getValueAt(selectedRow, 4).toString();
-        String b_status = c_table.getValueAt(selectedRow, 5) != null ? c_table.getValueAt(selectedRow, 5).toString() : "Pending";
-        String b_date = c_table.getValueAt(selectedRow, 6).toString();  
-        String b_witness1 = c_table.getValueAt(selectedRow, 7).toString();
-        String b_witness2 = c_table.getValueAt(selectedRow, 8).toString();
+        TableModel model = c_table.getModel();
 
-        // Check if the status is "Settled"
-        if (b_status.equalsIgnoreCase("Settled")) {
-            JOptionPane.showMessageDialog(null, "This record is settled and cannot be edited.");
-            return; // Exit early
-        }
+        int c_id = Integer.parseInt(model.getValueAt(selectedRow, 0).toString());
+        int b_id = Integer.parseInt(model.getValueAt(selectedRow, 1).toString());
+        String b_fname = model.getValueAt(selectedRow, 2).toString();
+        String b_incident = model.getValueAt(selectedRow, 3).toString();
+        String b_location = model.getValueAt(selectedRow, 4).toString();
+        String b_status = model.getValueAt(selectedRow, 5) != null ? model.getValueAt(selectedRow, 5).toString() : "Pending";
+        String b_date = model.getValueAt(selectedRow, 6).toString();
+        String b_witness1 = model.getValueAt(selectedRow, 7).toString();
+        String b_witness2 = model.getValueAt(selectedRow, 8).toString();
 
-        String susFullName = getSusFullName(c_id); // Retrieve suspect's full name
+        String susFullName = getSusFullName(c_id);
+        boolean isEditable = !b_status.equalsIgnoreCase("Settled");
 
         adminBlotterCRUD editForm = new adminBlotterCRUD(
-            susFullName, userImagePath, c_id, b_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2
+            susFullName, userImagePath, c_id, b_id, b_fname, b_incident, b_location,
+            b_status, b_date, b_witness1, b_witness2, isEditable
         );
         editForm.setVisible(true);
         this.dispose();
     }
-
     }//GEN-LAST:event_c_tableMouseClicked
 
     private void dashMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_dashMouseClicked
@@ -704,27 +713,23 @@ private String getSusFullName(int c_id) {
     try (Connection conn = db.getConnection();
          PreparedStatement pst = conn.prepareStatement(sql)) {
 
-        pst.setString(1, this.fullname); // Set the logged-in user's full name (firstName + lastName)
+        pst.setString(1, this.fullname); 
 
         ResultSet rs = pst.executeQuery();
 
         if (rs.next()) {
             int user_id = rs.getInt("user_id");
 
-            // Confirm logout with the user
             int response = JOptionPane.showConfirmDialog(this,
                 "Confirm Log Out?",
                 "Logout Confirmation",
                 JOptionPane.YES_NO_OPTION);
 
             if (response == JOptionPane.YES_OPTION) {
-                // Log the logout activity
                 logActivity(user_id, "Admin Logged out");
 
-                // Redirect to login form
                 new loginform().setVisible(true);
 
-                // Dispose current window (user is logged out)
                 this.dispose();
             }
         }        

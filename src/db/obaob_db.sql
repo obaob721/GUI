@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 19, 2025 at 06:46 AM
+-- Generation Time: May 24, 2025 at 06:28 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -48,7 +48,11 @@ INSERT INTO `blotter_table` (`b_id`, `c_id`, `b_fname`, `b_incident`, `b_locatio
 (4, 1, 'Jaylon Mantillas', 'Scam', 'Sport\'s Complex, Minglanilla, Cebu.', 'Pending', '2025-03-30 22:35:03', 'David Vergara', 'Dustin Collins'),
 (5, 11, 'Lelouch Takanashi', 'kusog pa sound bisag gabie na kaayo', 'Minglanilla, Cebu.', 'Pending', '2025-04-01 00:08:06', 'Ren Takahashi', 'Hakuie Takahashi'),
 (6, 16, 'Mark Sanchez', 'Lumay', 'Minglanilla, Cebu.', 'Settled', '2025-04-01 01:03:54', 'Dhyll Roco', 'Angel Amaro'),
-(7, 8, 'Michael Frodo', 'Thief', 'Lungsod, Minglanilla, Cebu.', 'Pending', '2025-04-18 15:58:16', 'Anney Capta', 'Jerolle Undas');
+(7, 8, 'Michael Frodo', 'Thief', 'Lungsod, Minglanilla, Cebu.', 'Pending', '2025-04-18 15:58:16', 'Anney Capta', 'Jerolle Undas'),
+(8, 10, 'Maria Santos', 'Robbery', 'Lungsod, Minglanilla, Cebu.', 'Pending', '2025-05-24 23:31:41', 'N/A', 'N/A'),
+(9, 1, 'Juan Dela Cruz', 'Scam', 'Minglanilla', 'Pending', '2025-05-24 23:36:34', 'N/A', 'N/A'),
+(10, 1, 'Justin Valen', 'Scam', 'Minglanilla', 'Pending', '2025-05-24 23:39:31', 'N/A', 'N/A'),
+(11, 7, 'Juan Dela Cruz', 'Robbery', 'Minglanilla', 'Pending', '2025-05-24 23:43:58', 'N/A', 'N/A');
 
 -- --------------------------------------------------------
 
@@ -127,8 +131,10 @@ INSERT INTO `reports_table` (`r_id`, `b_id`, `r_datesettled`, `r_description`) V
 (3, 3, '2025-03-31 08:32:45', 'imissyou guiannn'),
 (5, 4, '2025-03-31 09:29:38', 'Fist Warning, If done again the suspect\'s may suffers or be punished.'),
 (9, 5, '2025-03-31 16:08:42', 'skskskskskksks'),
-(10, 6, '2025-03-31 17:04:01', 'okay ragud basta ikaw lodicakes'),
-(11, 7, '2025-04-18 07:58:22', 'Second Warning or else might send a warrant of arrest.');
+(10, 6, '2025-03-31 17:04:01', 'sdsds'),
+(11, 7, '2025-04-18 07:58:22', 'Second Warning or else might send a warrant of arrest.'),
+(12, 8, '2025-05-24 15:31:55', 'SAMPLE'),
+(13, 11, '2025-05-24 15:44:00', 'SAMPLE AGAIN');
 
 -- --------------------------------------------------------
 
@@ -194,7 +200,88 @@ INSERT INTO `system_logs` (`logs_id`, `user_id`, `logs_action`, `logs_date`) VAL
 (48, 2, 'Admin Added a new Citizen: Tristan Delos Reyes', '2025-04-19 04:32:41'),
 (49, 2, 'Admin Added a new Citizen: Andrea Montes', '2025-04-19 04:33:21'),
 (50, 2, 'Admin Added a new Citizen: Dominic Salvador', '2025-04-19 04:34:22'),
-(51, 2, 'Admin Logged out', '2025-04-19 04:35:15');
+(51, 2, 'Admin Logged out', '2025-04-19 04:35:15'),
+(52, 2, 'Admin Logged in', '2025-05-01 12:09:33'),
+(53, 2, 'Admin Logged in', '2025-05-01 12:37:24'),
+(54, 2, 'Admin Logged in', '2025-05-01 12:43:24'),
+(55, 2, 'Admin Logged in', '2025-05-01 12:54:00'),
+(56, 2, 'Logged out', '2025-05-01 12:54:58'),
+(57, 2, 'Admin Logged in', '2025-05-01 12:56:28'),
+(58, 2, 'Logged out', '2025-05-01 12:57:20'),
+(59, 2, 'Admin Logged in', '2025-05-04 02:23:11'),
+(60, 2, 'Logged out', '2025-05-04 02:24:14'),
+(61, 2, 'Admin Logged in', '2025-05-04 02:39:11'),
+(62, 2, 'Logged out', '2025-05-04 02:47:01'),
+(63, 2, 'Admin Logged in', '2025-05-04 02:47:15'),
+(64, 2, 'Logged out', '2025-05-04 02:49:50'),
+(65, 2, 'Admin Logged in', '2025-05-04 02:50:05'),
+(66, 2, 'Logged out', '2025-05-04 02:52:01'),
+(67, 2, 'Admin Logged in', '2025-05-04 02:52:15'),
+(68, 2, 'Admin Logged in', '2025-05-04 02:54:14'),
+(69, 2, 'Admin Logged in', '2025-05-04 02:54:53'),
+(70, 2, 'Logged out', '2025-05-04 02:55:13'),
+(71, 2, 'Admin Logged in', '2025-05-04 02:56:23'),
+(72, 2, 'Admin Logged in', '2025-05-04 03:00:20'),
+(73, 2, 'Admin Logged in', '2025-05-04 03:01:29'),
+(74, 2, 'Logged out', '2025-05-04 03:01:43'),
+(75, 2, 'Admin Logged in', '2025-05-04 03:12:04'),
+(76, 2, 'Logged out', '2025-05-04 03:13:17'),
+(77, 2, 'Admin Logged in', '2025-05-04 03:13:39'),
+(78, 2, 'Logged out', '2025-05-04 03:13:50'),
+(79, 2, 'Admin Logged in', '2025-05-04 03:25:36'),
+(80, 2, 'Admin Logged in', '2025-05-20 14:10:16'),
+(81, 2, 'Admin Logged out', '2025-05-20 14:10:28'),
+(82, 2, 'Admin Logged in', '2025-05-20 14:16:29'),
+(83, 2, 'Admin Logged out', '2025-05-20 14:16:46'),
+(84, 2, 'Admin Logged in', '2025-05-20 14:18:30'),
+(85, 2, 'Admin Logged in', '2025-05-20 14:21:15'),
+(86, 2, 'Admin Logged out', '2025-05-20 14:22:25'),
+(87, 2, 'Admin Logged in', '2025-05-20 14:22:43'),
+(88, 2, 'Admin Logged out', '2025-05-20 14:22:48'),
+(89, 2, 'Admin Logged in', '2025-05-20 14:24:56'),
+(90, 2, 'Admin Logged out', '2025-05-20 14:25:11'),
+(91, 2, 'Admin Logged in', '2025-05-20 14:26:37'),
+(92, 2, 'Admin Logged in', '2025-05-24 11:17:45'),
+(93, 2, 'Admin Logged in', '2025-05-24 11:26:24'),
+(94, 2, 'Admin Logged in', '2025-05-24 11:43:07'),
+(95, 2, 'Admin Updated Report (r_id: 10) with description.', '2025-05-24 11:43:24'),
+(96, 2, 'Admin Logged in', '2025-05-24 11:57:03'),
+(97, 2, 'Admin Logged in', '2025-05-24 11:58:47'),
+(98, 2, 'Admin Logged in', '2025-05-24 12:01:01'),
+(99, 2, 'Admin Updated Report (r_id: 10) with description.', '2025-05-24 12:01:09'),
+(100, 2, 'Printed a report from the admin panel.', '2025-05-24 12:01:27'),
+(101, 2, 'Admin Logged in', '2025-05-24 12:01:46'),
+(102, 2, 'Admin Logged in', '2025-05-24 14:16:48'),
+(103, 2, 'Admin Logged in', '2025-05-24 14:41:11'),
+(104, 2, 'Admin Logged out', '2025-05-24 14:43:24'),
+(105, 2, 'Admin Logged in', '2025-05-24 14:43:43'),
+(106, 2, 'Admin Logged out', '2025-05-24 14:44:25'),
+(107, 2, 'Admin Logged in', '2025-05-24 14:54:37'),
+(108, 2, 'Admin Logged out', '2025-05-24 14:55:04'),
+(109, 2, 'Admin Logged in', '2025-05-24 14:56:49'),
+(110, 2, 'Admin Logged out', '2025-05-24 14:57:02'),
+(111, 2, 'Admin Logged in', '2025-05-24 14:58:14'),
+(112, 2, 'Admin Logged out', '2025-05-24 14:59:35'),
+(113, 2, 'Admin Logged in', '2025-05-24 14:59:47'),
+(114, 2, 'Admin Logged out', '2025-05-24 15:00:09'),
+(115, 2, 'Admin Logged in', '2025-05-24 15:00:53'),
+(116, 2, 'Admin Logged out', '2025-05-24 15:01:10'),
+(117, 2, 'Admin Logged in', '2025-05-24 15:01:52'),
+(118, 2, 'Admin Logged in', '2025-05-24 15:05:52'),
+(119, 2, 'Admin Logged out', '2025-05-24 15:07:11'),
+(120, 2, 'Admin Logged in', '2025-05-24 15:07:50'),
+(121, 2, 'Admin Logged out', '2025-05-24 15:08:46'),
+(122, 2, 'Admin Logged in', '2025-05-24 15:26:42'),
+(123, 2, 'Admin Logged out', '2025-05-24 15:30:27'),
+(124, 2, 'Admin Logged in', '2025-05-24 15:30:42'),
+(125, 2, 'Admin Updated Report (r_id: 12) with description.', '2025-05-24 15:33:13'),
+(126, 2, 'Admin Logged in', '2025-05-24 15:35:59'),
+(127, 2, 'Admin Logged in', '2025-05-24 15:39:02'),
+(128, 2, 'Admin Logged in', '2025-05-24 15:43:19'),
+(129, 2, 'Admin Updated Report (r_id: 13) with description.', '2025-05-24 15:44:11'),
+(130, 2, 'Admin Logged in', '2025-05-24 15:57:06'),
+(131, 2, 'Admin Logged in', '2025-05-24 15:59:29'),
+(132, 2, 'Admin Logged in', '2025-05-24 16:25:12');
 
 -- --------------------------------------------------------
 
@@ -270,7 +357,7 @@ ALTER TABLE `user_table`
 -- AUTO_INCREMENT for table `blotter_table`
 --
 ALTER TABLE `blotter_table`
-  MODIFY `b_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `b_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `citizen_table`
@@ -282,13 +369,13 @@ ALTER TABLE `citizen_table`
 -- AUTO_INCREMENT for table `reports_table`
 --
 ALTER TABLE `reports_table`
-  MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- AUTO_INCREMENT for table `system_logs`
 --
 ALTER TABLE `system_logs`
-  MODIFY `logs_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
+  MODIFY `logs_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=133;
 
 --
 -- AUTO_INCREMENT for table `user_table`

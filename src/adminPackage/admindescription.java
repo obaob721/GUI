@@ -40,19 +40,47 @@ public class admindescription extends javax.swing.JFrame {
         
         userImagePath = imgPath;
     }
-  public admindescription(int r_id, int b_id, Timestamp dateSettled) {
+ public admindescription(int r_id, int b_id, Timestamp dateSettled) {
     initComponents(); 
 
     this.r_id = r_id;
-    this.b_id = String.valueOf(b_id); // ✅ Convert int to String
-    this.dateSettled = dateSettled; // ✅ Keep dateSettled as a Timestamp
+    this.b_id = String.valueOf(b_id); // Convert int to String
+    this.dateSettled = dateSettled;
 
-    // ✅ Display values in JLabels
+    // Display values in labels
     txtr_id.setText(String.valueOf(r_id));
-    txtb_id.setText(this.b_id); // ✅ Already a String
+    txtb_id.setText(this.b_id);
     datesettled.setText(dateSettled.toString()); 
+
+    // ✅ Fetch description and status
+    String url = "jdbc:mysql://localhost:3306/obaob_db";
+    String user = "root";
+    String pass = "";
+
+    try (Connection conn = DriverManager.getConnection(url, user, pass)) {
+        PreparedStatement stmt = conn.prepareStatement(
+            "SELECT b.b_status, r.r_description FROM blotter_table b " +
+            "JOIN reports_table r ON b.b_id = r.b_id WHERE b.b_id = ?");
+        stmt.setInt(1, b_id);
+        ResultSet rs = stmt.executeQuery();
+
+        if (rs.next()) {
+            String status = rs.getString("b_status");
+            String dbDescription = rs.getString("r_description");
+
+            // ✅ Always show description
+            decription.setText(dbDescription);
+
+            // ✅ Disable text area if Settled
+            if ("Settled".equalsIgnoreCase(status)) {
+                decription.setEnabled(false);
+            }
+        }
+    } catch (SQLException ex) {
+        Logger.getLogger(admindescription.class.getName()).log(Level.SEVERE, null, ex);
+    }
 }
-    
+
     
      private void logActivity(int user_id, String action) {
         String sql = "INSERT INTO system_logs (user_id, logs_action, logs_date) VALUES (?, ?, NOW())";

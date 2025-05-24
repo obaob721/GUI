@@ -52,11 +52,24 @@ public class userBlotter extends javax.swing.JFrame {
     
     
     
-     private void displayBlotterData() {
+    private void displayBlotterData() {
     try {
         dbConnector dbc = new dbConnector();
-        ResultSet rs = dbc.getData("SELECT c_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2 FROM blotter_table");
+        ResultSet rs = dbc.getData("SELECT c_id, b_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2 FROM blotter_table");
         c_table.setModel(DbUtils.resultSetToTableModel(rs));
+
+        c_table.getColumnModel().getColumn(2).setHeaderValue("Complainant's Name");
+        c_table.getColumnModel().getColumn(3).setHeaderValue("Incident Type");
+        c_table.getColumnModel().getColumn(4).setHeaderValue("Location");
+        c_table.getColumnModel().getColumn(5).setHeaderValue("Status");
+
+        c_table.getTableHeader().repaint();
+
+        int[] columnsToHide = {8, 7, 6, 1, 0}; 
+        for (int i : columnsToHide) {
+            c_table.removeColumn(c_table.getColumnModel().getColumn(i));
+        }
+
     } catch (SQLException ex) {
         System.out.println("Error: " + ex.getMessage());
     }
@@ -555,20 +568,25 @@ private Image getRoundedImage(BufferedImage img, int width, int height) {
     }//GEN-LAST:event_deletebuttonMouseExited
 
     private void c_tableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_c_tableMouseClicked
-         int selectedRow = c_table.getSelectedRow();
-     
+        int selectedRow = c_table.getSelectedRow();
+
     if (selectedRow != -1) {
         int c_id = Integer.parseInt(c_table.getValueAt(selectedRow, 0).toString());
         int b_id = Integer.parseInt(c_table.getValueAt(selectedRow, 1).toString()); 
         String b_fname = c_table.getValueAt(selectedRow, 2).toString();
         String b_incident = c_table.getValueAt(selectedRow, 3).toString();
         String b_location = c_table.getValueAt(selectedRow, 4).toString();
-        String b_status = c_table.getValueAt(selectedRow, 5) != null ? c_table.getValueAt(selectedRow, 4).toString() : "Pending"; // Ensure "Pending" if null
+        String b_status = c_table.getValueAt(selectedRow, 5) != null ? c_table.getValueAt(selectedRow, 5).toString() : "Pending";
         String b_date = c_table.getValueAt(selectedRow, 6).toString();  
         String b_witness1 = c_table.getValueAt(selectedRow, 7).toString();
         String b_witness2 = c_table.getValueAt(selectedRow, 8).toString();
 
-        adminBlotterCRUD editForm = new adminBlotterCRUD(fullname,userImagePath,c_id, b_id, b_fname, b_incident, b_location, b_status, b_date, b_witness1, b_witness2);
+        boolean isEditable = !b_status.equalsIgnoreCase("Settled"); // Disable editing if Settled
+
+        userBlotterCRUD editForm = new userBlotterCRUD(
+            fullname, userImagePath, c_id, b_id, b_fname, b_incident, b_location,
+            b_status, b_date, b_witness1, b_witness2, isEditable
+        );
         editForm.setVisible(true);
         this.dispose();
     }
